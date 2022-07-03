@@ -1,0 +1,21 @@
+#+title: Warmacs
+
+Emacs configuration heavily inspired by Doom, Spacemacs.
+
+Built around the capabilities of =use-package=, =straight.el=, =general=, and =evil=.
+
+* Core Principles
+
+** Speed
+
+** Mnemonic Key Bindings
+
+** Discoverable
+
+** Consistency
+
+** Evil
+
+* License
+
+The license is GPLv3 for all parts specific to Warmacs.
