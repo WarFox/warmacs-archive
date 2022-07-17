@@ -18,7 +18,7 @@
           treemacs-find-workspace-method           'find-for-file-or-pick-first
           treemacs-git-command-pipe                ""
           treemacs-goto-tag-strategy               'refetch-index
-          treemacs-header-scroll-indicators        '(nil . "^^^^^^")'
+          treemacs-header-scroll-indicators        '(nil . "^^^^^^")
           treemacs-hide-dot-git-directory          t
           treemacs-indentation                     2
           treemacs-indentation-string              " "
@@ -106,4 +106,5 @@
 
 (use-package treemacs-all-the-icons
   :after (treemacs)
-  :config (treemacs-set-scope-type 'Tabs))
+  :config (treemacs-set-scope-type 'Tabs)
+  :hook ((treemacs-mode dired-mode) . (lambda () (treemacs-load-theme 'all-the-icons))))

@@ -1,0 +1,2 @@
+
+(provide 'warmacs-tabs)
