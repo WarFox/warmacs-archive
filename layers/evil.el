@@ -1,13 +1,14 @@
 (use-package evil
-  :defer 2
-  :custom
-  (evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (evil-want-keybinding nil)
+  :demand t
+  ;; :custom
+  ;; (evil-want-integration t) ;; This is optional since it's already set to t by default.
+  ;; (evil-want-keybinding nil)
   :config
+  (message "evil config")
   (evil-mode 1)
   :init
   (progn
-    (message "loaded evil")))
+    (message "evil init")))
 
 (use-package evil-collection
   :after evil
@@ -16,6 +17,8 @@
 
 (use-package evil-nerd-commenter
   :commands evilnc-comment-operator
+  :after evil
+  :defer 4
   :init
   (progn
     ;; double all the commenting functions so that the inverse operations
@@ -65,7 +68,7 @@
 	    "gc" 'evilnc-comment-operator
       "gy" 'warmacs/copy-and-comment-lines)
 
-    (global-definer
+    (warmacs/set-leader-keys
       ";"  'evilnc-comment-operator
 	    "c"  '(:ignore t :which-key "comment")
       "cl" 'warmacs/comment-or-uncomment-lines
@@ -78,5 +81,13 @@
       "cY" 'warmacs/copy-and-comment-lines-inverse)))
 
 (use-package evil-mc
+  :after evil
+  :defer 4
   :init
   (evil-mc-mode 1))
+
+(use-package evil-surround
+  :after evil
+  :defer 4
+  :config
+  (global-evil-surround-mode 1))

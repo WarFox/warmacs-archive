@@ -3,7 +3,7 @@
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
   :init
-  (global-definer
+  (warmacs/set-leader-keys
     "p" '(:keymap projectile-command-map :package projectile))
   (setq projectile-switch-project-action #'projectile-dired))
 

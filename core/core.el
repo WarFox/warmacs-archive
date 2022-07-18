@@ -76,6 +76,9 @@
 (defconst warmacs-layers-dir (concat warmacs-dir "layers/")
   "The root directory for warmacs' layers. Must end with a slash.")
 
+(defconst warmacs-cache-dir (concat warmacs-dir ".cache/")
+  "The root directory for warmacs' cache. Must end with a slash.")
+
 ;; Setup straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -153,7 +156,7 @@
 		                    treemacs
 			                  windows
 		                    zoom
-                        ;; +source-control/git
+                        +source-control/git
                         ))
 
 (dolist (item warmacs-layer-list)
@@ -162,6 +165,7 @@
        nil (not init-file-debug)))
 
 (message "core end")
+
 
 (provide 'core)
 ;;; core.el ends here

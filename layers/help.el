@@ -3,9 +3,13 @@
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
   :general
-  (+global-leader-menu! "help" "h")
-  (+global-definer
+  (warmacs/set-major-mode-leader-keys
+    "h" 'helpful-at-point)
+  (warmacs/set-leader-keys
     "hh" 'helpful-at-point)
+  (:keymaps 'helpful-mode-map
+	    :states 'normal
+	    (kbd "q") 'quit-window)
   :bind
   ([remap describe-function] . helpful-function)
   ([remap describe-symbol] . helpful-symbol)

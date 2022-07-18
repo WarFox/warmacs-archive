@@ -54,7 +54,7 @@
     "y"  'counsel-yank-pop
     "m"  'counsel-mark-ring)
 
-  (global-definer
+  (warmacs/set-leader-keys
     ;; jumping
     "sj"  'warmacs/counsel-jump-in-buffer
     ;; themes

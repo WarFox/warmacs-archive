@@ -13,6 +13,12 @@
 
 ;; general
 (use-package general
+  :custom
+  (general-use-package-emit-autoloads t)
+  :init
+  (setq
+    warmacs-leader-key "SPC"
+    warmacs-major-mode-leader-key ",")
   :config
   (general-evil-setup)
 
@@ -20,33 +26,27 @@
 ;; https://gist.github.com/progfolio/1c96a67fcec7584b31507ef664de36cc
 ;; https://www.reddit.com/r/emacs/comments/des3cl/comment/f2yw45k/?utm_source=share&utm_medium=web2x&context=3
 
-  (general-create-definer global-definer
+  (general-create-definer warmacs/set-leader-keys
     :keymaps 'override
     :states  '(insert emacs normal hybrid motion visual operator)
-    :prefix  "SPC"
-    :non-normal-prefix "S-SPC")
+    :prefix  warmacs-leader-key
+    :non-normal-prefix "S-SPC"
+    "" '(:ignore t :whick-key "leader key"))
 
-  (general-create-definer global-leader
+  (general-create-definer warmacs/set-major-mode-leader-keys
     :keymaps 'override
     :states '(emacs normal hybrid motion visual operator)
-    :prefix "SPC m"
-    :non-normal-prefix "S-SPC m"
-    "" '(:ignore t :which-key (lambda (arg) `(,(cadr (split-string (car arg) " ")) . ,(replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
-
-  (general-create-definer major-mode-leader
-    :keymaps 'override
-    :states '(emacs normal hybrid motion visual operator)
-    :prefix ","
+    :prefix warmacs-major-mode-leader-key
     :non-normal-prefix "S-SPC ,"
     "" '(:ignore t :which-key (lambda (arg) `(,(cadr (split-string (car arg) " ")) . ,(replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
 
   (defmacro +general-global-menu! (name infix-key &rest body)
-    "Create a definer named +general-global-NAME wrapping global-definer.
+    "Create a definer named +general-global-NAME wrapping warmacs/set-leader-keys.
   Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY."
     (declare (indent 2))
     `(progn
       (general-create-definer ,(intern (concat "+general-global-" name))
-        :wrapping global-definer
+        :wrapping warmacs/set-leader-keys
         :prefix-map (quote ,(intern (concat "+general-global-" name "-map")))
         :infix ,infix-key
         :wk-full-keys nil
@@ -54,7 +54,7 @@
       (,(intern (concat "+general-global-" name))
         ,@body)))
 
-  (global-definer
+  (warmacs/set-leader-keys
     "!" 'shell-command
     ":" 'eval-expression
     "SPC" 'counsel-M-x)
