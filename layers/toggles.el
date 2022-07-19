@@ -1,2 +1,2 @@
 (+general-global-toggles/themes
-  "F" 'fullscreen-frame)
+  "F" 'toggle-frame-fullscreen)

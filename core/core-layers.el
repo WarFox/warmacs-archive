@@ -42,8 +42,7 @@ whichever is found first. Must end in a slash.")
   (require 'core-keybindings)
   (require 'core-ui)
   ;; (require 'core-projects)
-  ;; (require 'core-editor)
-  )
+  (require 'core-editor))
 
 
 (defun warmacs-layer-loader (file)
@@ -56,6 +55,7 @@ symbols, and that layer's plist."
     (let ((warmacs--current-layer layer)
           (warmacs--current-flags (plist-get plist :flags))
           (inhibit-redisplay t))
+      (message "loading layers from file" file)
       (load! file (plist-get plist :path) t))))
 
 (defun warmacs-initialize-layers (&optional force-p no-config-p)

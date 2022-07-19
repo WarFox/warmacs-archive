@@ -1,10 +1,6 @@
-(scroll-bar-mode -1)        ; Disable scroll-bar-mode
-(set-fringe-mode 10)        ; Give some breathing room
-(tool-bar-mode -1)          ; Disable the toolbar
-(tooltip-mode -1)           ; Disable tooltips
-(transient-mark-mode 1)     ; Enable transient mark
+;;; early-init.el -*- lexical-binding: t; -*-
 
-(defconst emacs-start-time (current-time))
+(require 'cl-lib)
 
 ;; Fast startup tricks from Doom emacs
 ;; A big contributor to startup times is garbage collection. We up the gc
@@ -34,25 +30,25 @@ package-enable-at-startup nil)
           init-file-debug)
 ;; Premature redisplays can substantially affect startup times and produce
 ;; ugly flashes of unstyled Emacs.
-(setq-default inhibit-redisplay t
-  inhibit-message t)
-(add-hook 'window-setup-hook
+  (setq-default inhibit-redisplay t
+                inhibit-message t)
+  (add-hook 'window-setup-hook
   (lambda ()
     (setq-default inhibit-redisplay nil
       inhibit-message nil)
     (redisplay)))
 
-;; Site files tend to use `load-file', which emits "Loading X..." messages in
-;; the echo area, which in turn triggers a redisplay. Redisplays can have a
-;; substantial effect on startup times and in this case happens so early that
-;; Emacs may flash white while starting up.
-(define-advice load-file (:override (file) silence)
-  (load file nil 'nomessage))
+  ;; Site files tend to use `load-file', which emits "Loading X..." messages in
+  ;; the echo area, which in turn triggers a redisplay. Redisplays can have a
+  ;; substantial effect on startup times and in this case happens so early that
+  ;; Emacs may flash white while starting up.
+  (define-advice load-file (:override (file) silence)
+    (load file nil 'nomessage))
 
-;; Undo our `load-file' advice above, to limit the scope of any edge cases it
-;; may introduce down the road.
-(define-advice startup--load-user-init-file (:before (&rest _) init-doom)
-  (advice-remove #'load-file #'load-file@silence)))
+  ;; Undo our `load-file' advice above, to limit the scope of any edge cases it
+  ;; may introduce down the road.
+  (define-advice startup--load-user-init-file (:before (&rest _) init-warmacs)
+    (advice-remove #'load-file #'load-file@silence)))
 
 ;;
 ;;; Bootstrap

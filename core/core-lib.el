@@ -2,7 +2,6 @@
 
 (message "core-lib")
 
-(require 'cl-lib)
 (require 'core-keybindings)
 
 (defun warmacs/find-file-in-project (filename)
@@ -66,16 +65,17 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
 (use-package restart-emacs
   :demand t
   :init
-  (defun warmacs/restart-emacs (&optional args)
-    (interactive)
-    (restart-emacs args))
+  (progn 
+    (defun warmacs/restart-emacs (&optional args)
+	(interactive)
+	(restart-emacs args))
 
-  (defun warmacs/kill-emacs (prompt &optional args)
-    (interactive)
-    (if (not prompt)
-      (save-some-buffers nil t))
-    (kill-emacs))
-  :config
+    (defun warmacs/kill-emacs (prompt &optional args)
+	(interactive)
+	(if (not prompt)
+	    (save-some-buffers nil t))
+	(kill-emacs args)))
+  :general
   (+general-global-menu! "quit" "q"
     "d" '((lambda (&optional args)
             (interactive)
@@ -85,15 +85,17 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
     "t" '((lambda (&optional args)
              (interactive)
              (warmacs/restart-emacs (cons "--timed-requires" args)))
-            :which-key "restart-emacs-adv-timers")
+            :which-key "restart-emacs-timed-requires")
     "T" '((lambda (&optional args)
             (interactive)
             (warmacs/restart-emacs (cons "--adv-timers" args)))
-           :which-key "restart-emacs-debug-init")
+           :which-key "restart-emacs-adv-timers")
     "q" '((lambda (&optional args)
-            (warmacs/kill-emacs t))
+	    (interactive)
+            (warmacs/kill-emacs t args))
            :which-key "prompt-kill-emacs")
     "Q" 'warmacs/kill-emacs))
+
 
 (use-package elisp-mode
    ;;this is a built in package, so we don't want to try and install it

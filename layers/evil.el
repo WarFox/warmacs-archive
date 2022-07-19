@@ -1,17 +1,17 @@
 (use-package evil
   :demand t
-  ;; :custom
-  ;; (evil-want-integration t) ;; This is optional since it's already set to t by default.
-  ;; (evil-want-keybinding nil)
-  :config
-  (message "evil config")
-  (evil-mode 1)
   :init
   (progn
-    (message "evil init")))
+  (setq
+    evil-want-keybinding nil)
+    (message "evil init"))
+  :config
+  (message "evil config")
+  (evil-mode 1))
 
 (use-package evil-collection
   :after evil
+  :defer 4
   :config
   (evil-collection-init))
 

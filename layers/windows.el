@@ -18,22 +18,6 @@ If the universal prefix argument is used then kill the buffer too."
       (kill-buffer-and-window)
     (delete-window)))
 
-;;
-;;; Windows/frames
-
-;; A simple frame title
-(setq frame-title-format '("%b – Warmacs Emacs")
-      icon-title-format frame-title-format)
-
-;; Don't resize the frames in steps; it looks weird, especially in tiling window
-;; managers, where it can leave unseemly gaps.
-(setq frame-resize-pixelwise t)
-
-;; But do not resize windows pixelwise, this can cause crashes in some cases
-;; when resizing too many windows at once or rapidly.
-(setq window-resize-pixelwise nil)
-
-
 (+general-global-menu! "windows" "w"
   "TAB"  'warmacs/alternate-window
   "1"  'warmacs/window-split-single-column
@@ -83,4 +67,3 @@ If the universal prefix argument is used then kill the buffer too."
   "_"  'warmacs/maximize-horizontally
   "|"  'warmacs/maximize-vertically)
  
-(provide 'core-windows)

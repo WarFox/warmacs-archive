@@ -142,7 +142,6 @@
 
 ;; ...then load *the* one
 (require 'core-lib)
-(require 'core-ui)
 
 (setq-default
   warmacs-layer-list '(
