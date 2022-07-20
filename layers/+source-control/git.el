@@ -39,21 +39,20 @@
   :general
   (:keymaps 'magit-blame-read-only-mode-map
     :states 'normal
-	  (kbd "RET") 'magit-show-commit)
+	  "RET" 'magit-show-commit)
 
   (:keymaps 'magit-mode-map
-	  (kbd "<tab>") 'magit-section-toggle)
+	  "<tab>" 'magit-section-toggle)
 
   ;; bind function keys
   (:keymaps 'magit-repolist-mode-map
     :major-modes 'magit-repolist-mode
-    (kbd "gr") 'magit-list-repositories
-    (kbd "RET") 'magit-repolist-status)
+    "gr" 'magit-list-repositories
+    "RET" 'magit-repolist-status)
 
-  (+general-global-menu! "git" "g"
+  (warmacs/leader-menu-git
     "b"  'warmacs/git-blame-transient-state/body
     "c"  'magit-clone
-	  "f"  '(:ignore t :which-key "file")
     "fF" 'magit-find-file
     "fl" 'magit-log-buffer-file
     "fd" 'magit-diff
@@ -71,9 +70,8 @@
   (warmacs/set-major-mode-leader-keys
     :major-modes 'gitignore-mode
     "i" 'gitignore-templates-insert)
-  (+general-global-git
-    "fi" 'gitignore-templates-new-file))
-
+  (warmacs/leader-menu-files
+    "i" 'gitignore-templates-new-file))
 
 (use-package forge
   :after magit

@@ -1,2 +1,2 @@
-(+general-global-toggles/themes
+(warmacs/leader-menu-toggles/themes
   "F" 'toggle-frame-fullscreen)

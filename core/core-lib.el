@@ -100,18 +100,18 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
     :non-normal-prefix "S-SPC ,"
     "" '(:ignore t :which-key (lambda (arg) `(,(cadr (split-string (car arg) " ")) . ,(replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
 
-  (defmacro +general-global-menu! (name infix-key &rest body)
-    "Create a definer named +general-global-NAME wrapping warmacs/set-leader-keys.
-  Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY."
+  (defmacro warmacs/leader-menu (name infix-key &rest body)
+    "Create a definer named warmacs/leader-NAME-menu wrapping warmacs/set-leader-keys.
+  Create prefix map: warmacs-leader-NAME-menu-map. Prefix bindings in BODY with INFIX-KEY."
     (declare (indent 2))
     `(progn
-      (general-create-definer ,(intern (concat "+general-global-" name))
+      (general-create-definer ,(intern (concat "warmacs/leader-menu-" name))
         :wrapping warmacs/set-leader-keys
-        :prefix-map (quote ,(intern (concat "+general-global-" name "-map")))
+        :prefix-map (quote ,(intern (concat "warmacs-leader-menu-" name "-map")))
         :infix ,infix-key
         :wk-full-keys nil
         "" '(:ignore t :which-key ,name))
-      (,(intern (concat "+general-global-" name))
-        ,@body))))
+      (,(intern (concat "warmacs/leader-menu-" name))
+       ,@body))))
 
 (provide 'core-lib)

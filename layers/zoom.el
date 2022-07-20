@@ -7,5 +7,5 @@
   ("-" text-scale-decrease "out")
   ("q" nil "finished" :exit t))
 
-(+general-global-menu! "zoom" "z"
+(warmacs/leader-menu-zoom
   "s" '(hydra-text-scale/body :which-key "scale text"))

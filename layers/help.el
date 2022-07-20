@@ -5,11 +5,11 @@
   :general
   (warmacs/set-major-mode-leader-keys
     "h" 'helpful-at-point)
-  (warmacs/set-leader-keys
-    "hh" 'helpful-at-point)
+  (warmacs/leader-menu-help
+    "h" 'helpful-at-point)
   (:keymaps 'helpful-mode-map
-	    :states 'normal
-	    (kbd "q") 'quit-window)
+   :states 'normal
+   "q" 'quit-window)
   :bind
   ([remap describe-function] . helpful-function)
   ([remap describe-symbol] . helpful-symbol)

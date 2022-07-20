@@ -1,3 +1,4 @@
+;;; completion.el -*- lexical-binding: t; -*-
 
 (use-package counsel
   :demand t
@@ -26,18 +27,18 @@
     (counsel-mode 1)
     ;; Set syntax highlighting for counsel search results
 
-    (ivy-set-display-transformer 'counsel-search 'counsel-git-grep-transformer)
+    (ivy-set-display-transformer 'counsel-search 'counsel-git-grep-transformer))
 
   :general
   (general-define-key
     "C-s" 'counsel-grep-or-swiper)
 
-  (+general-global-files
+  (warmacs/leader-menu-files
     "f"  'counsel-find-file
     "el" 'counsel-find-library
     "L"  'counsel-locate)
 
-  (+general-global-help
+  (warmacs/leader-menu-help
     "?"   'counsel-descbinds
     "gff" 'counsel-git
     "da" 'counsel-apropos
@@ -47,26 +48,27 @@
     "i"  'counsel-info-lookup-symbol
     "m"  'man)
 
-  (+general-global-insert
+  (warmacs/leader-menu-insert
    "u" 'counsel-unicode-char)
 
-  (+general-global-registers/rings
+  (warmacs/leader-menu-registers/rings
     "y"  'counsel-yank-pop
     "m"  'counsel-mark-ring)
 
   (warmacs/set-leader-keys
-    ;; jumping
-    "sj"  'warmacs/counsel-jump-in-buffer
-    ;; themes
-    "Ts"  'counsel-load-theme
     ;; search
-    "/"   'counsel-rg
-    "sgp" 'counsel-git-grep)
-  ))
+    "/"   'counsel-rg)
+
+  (warmacs/leader-menu-search
+    "j"  'warmacs/counsel-jump-in-buffer
+    "gg" 'counsel-git-grep)
+
+  (warmacs/leader-menu-toggles/themes
+    "s"  'counsel-load-theme))
 
 (use-package ivy
   :general
   (general-def ivy-minibuffer-map
-    (kbd "<escape>") 'minibuffer-keyboard-quit))
+    "<escape>" 'minibuffer-keyboard-quit))
 
 (use-package swiper)

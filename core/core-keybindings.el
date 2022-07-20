@@ -12,15 +12,26 @@
 (general-def
   "TAB" 'indent-for-tab-command)
 
-(+general-global-menu! "buffers" "b")
-(+general-global-menu! "files" "f")
-(+general-global-menu! "help" "h")
-(+general-global-menu! "insert" "i")
-(+general-global-menu! "registers/rings" "r")
-(+general-global-menu! "search" "s")
-(+general-global-menu! "toggles/themes" "T")
+;; Declare global menus
+(warmacs/leader-menu "applications" "a")
+(warmacs/leader-menu "buffers" "b")
+(warmacs/leader-menu "files" "f"
+  "y" '(:ignore t :which-key "yank"))
+(warmacs/leader-menu "help" "h"
+  "d" '(:ignore t :which-key "describe")
+  "g" '(:ignore t :which-key "git"))
+(warmacs/leader-menu "git" "g"
+  "f"  '(:ignore t :which-key "file"))
+(warmacs/leader-menu "insert" "i")
+(warmacs/leader-menu "project" "p")
+(warmacs/leader-menu "registers/rings" "r")
+(warmacs/leader-menu "search" "s"
+  "g"  '(:ignore t :which-key "git"))
+(warmacs/leader-menu "toggles/themes" "T")
+(warmacs/leader-menu "windows" "w")
+(warmacs/leader-menu "zoom" "z")
 
-(+general-global-buffers
+(warmacs/leader-menu-buffers
   "d"  'kill-current-buffer
   "o" '((lambda () (interactive) (switch-to-buffer nil))
         :which-key "other-buffer")
@@ -62,7 +73,7 @@
 	    (save-some-buffers nil t))
 	(kill-emacs args)))
   :general
-  (+general-global-menu! "quit" "q"
+  (warmacs/leader-menu "quit" "q"
     "d" '((lambda (&optional args)
             (interactive)
             (warmacs/restart-emacs (cons "--debug-init" args)))

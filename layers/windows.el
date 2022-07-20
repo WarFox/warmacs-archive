@@ -18,7 +18,7 @@ If the universal prefix argument is used then kill the buffer too."
       (kill-buffer-and-window)
     (delete-window)))
 
-(+general-global-menu! "windows" "w"
+(warmacs/leader-menu-windows
   "TAB"  'warmacs/alternate-window
   "1"  'warmacs/window-split-single-column
   "2"  'warmacs/window-split-double-columns

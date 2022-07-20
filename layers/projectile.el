@@ -3,15 +3,14 @@
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
   :init
-  (+general-global-files
+  (warmacs/leader-menu-files
 	  ;; File path
-    "y" '(:ignore t :which-key "yank")
-	  "yC" 'warmacs/projectile-copy-file-path-with-line-column
-	  "yD" 'warmacs/projectile-copy-directory-path
-	  "yL" 'warmacs/projectile-copy-file-path-with-line
-	  "yY" 'warmacs/projectile-copy-file-path)
+    "yC" 'warmacs/projectile-copy-file-path-with-line-column
+    "yD" 'warmacs/projectile-copy-directory-path
+    "yL" 'warmacs/projectile-copy-file-path-with-line
+    "yY" 'warmacs/projectile-copy-file-path)
 
-  (+general-global-menu! "project" "p"
+  (warmacs/leader-menu-project
     ;; Project
     "!" 'projectile-run-shell-command-in-root
     "&" 'projectile-run-async-shell-command-in-root
@@ -43,3 +42,5 @@
   (counsel-projectile-mode))
 
 (put 'dired-find-alternate-file 'disabled nil)
+
+(use-package persp-projectile)

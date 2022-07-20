@@ -7,6 +7,13 @@
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
 
+;; frame
+(add-to-list 'default-frame-alist
+            '(ns-transparent-titlebar . t))
+
+(add-to-list 'default-frame-alist
+            '(ns-appearance . dark)) ;; or light - depending on your theme
+
 ;;
 ;;; Scrolling
 
