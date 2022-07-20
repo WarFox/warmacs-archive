@@ -1,57 +1,59 @@
+;;; core.el -*- lexical-binding: t; -*-
 
-;; (load (concat (file-name-directory load-file-name)
-;;         "core/core-versions")
-;;   nil (not init-file-debug))
+(message "core")
 
-(setq inhibit-startup-message t) ; No startup message
+; single setq for a bunge of flags
+(setq
 
-(setq highlight-nonselected-windows nil)
+ inhibit-startup-message t ; No startup message
 
-;; More performant rapid scrolling over unfontified regions. May cause brief
-;; spells of inaccurate syntax highlighting right after scrolling, which should
-;; quickly self-correct.
-(setq fast-but-imprecise-scrolling t)
+ highlight-nonselected-windows nil
 
-;; Don't ping things that look like domain names.
-(setq ffap-machine-p-known 'reject)
+ ;; More performant rapid scrolling over unfontified regions. May cause brief
+ ;; spells of inaccurate syntax highlighting right after scrolling, which should
+ ;; quickly self-correct.
+ fast-but-imprecise-scrolling t
 
-;; Resizing the Emacs frame can be a terribly expensive part of changing the
-;; font. By inhibiting this, we halve startup times, particularly when we use
-;; fonts that are larger than the system default (which would resize the frame).
-(setq frame-inhibit-implied-resize t)
+ ;; Don't ping things that look like domain names.
+ ffap-machine-p-known 'reject
 
-;; The GC introduces annoying pauses and stuttering into our Emacs experience,
-;; so we use `gcmh' to stave off the GC while we're using Emacs, and provoke it
-;; when it's idle. However, if the idle delay is too long, we run the risk of
-;; runaway memory usage in busy sessions. If it's too low, then we may as well
-;; not be using gcmh at all.
-(setq gcmh-idle-delay 'auto  ; default is 15s
-      gcmh-auto-idle-delay-factor 10
-      gcmh-high-cons-threshold (* 16 1024 1024))  ; 16mb
+ ;; Resizing the Emacs frame can be a terribly expensive part of changing the
+ ;; font. By inhibiting this, we halve startup times, particularly when we use
+ ;; fonts that are larger than the system default (which would resize the frame).
+ frame-inhibit-implied-resize t
 
-;; Emacs "updates" its ui more often than it needs to, so slow it down slightly
-(setq idle-update-delay 1.0)  ; default is 0.5
+ ;; The GC introduces annoying pauses and stuttering into our Emacs experience,
+ ;; so we use `gcmh' to stave off the GC while we're using Emacs, and provoke it
+ ;; when it's idle. However, if the idle delay is too long, we run the risk of
+ ;; runaway memory usage in busy sessions. If it's too low, then we may as well
+ ;; not be using gcmh at all.
+ gcmh-idle-delay 'auto  ; default is 15s
+ gcmh-auto-idle-delay-factor 10
+ gcmh-high-cons-threshold (* 32 1024 1024)  ; 32mb
 
-;; Font compacting can be terribly expensive, especially for rendering icon
-;; fonts on Windows. Whether disabling it has a notable affect on Linux and Mac
-;; hasn't been determined, but do it there anyway, just in case. This increases
-;; memory usage, however!
-(setq inhibit-compacting-font-caches t)
+ ;; Emacs "updates" its ui more often than it needs to, so slow it down slightly
+ idle-update-delay 1.0  ; default is 0.5
 
-;; PGTK builds only: this timeout adds latency to frame operations, like
-;; `make-frame-invisible', which are frequently called without a guard because
-;; it's inexpensive in non-PGTK builds. Lowering the timeout from the default
-;; 0.1 should make childframes and packages that manipulate them (like `lsp-ui',
-;; `company-box', and `posframe') feel much snappier. See emacs-lsp/lsp-ui#613.
-(setq pgtk-wait-for-event-timeout 0.001)
+ ;; Font compacting can be terribly expensive, especially for rendering icon
+ ;; fonts on Windows. Whether disabling it has a notable affect on Linux and Mac
+ ;; hasn't been determined, but do it there anyway, just in case. This increases
+ ;; memory usage, however!
+ inhibit-compacting-font-caches t
 
-;; Increase how much is read from processes in a single chunk (default is 4kb).
-;; This is further increased elsewhere, where needed (like our LSP layer).
-(setq read-process-output-max (* 64 1024))  ; 64kb
+ ;; PGTK builds only: this timeout adds latency to frame operations, like
+ ;; `make-frame-invisible', which are frequently called without a guard because
+ ;; it's inexpensive in non-PGTK builds. Lowering the timeout from the default
+ ;; 0.1 should make childframes and packages that manipulate them (like `lsp-ui',
+ ;; `company-box', and `posframe') feel much snappier. See emacs-lsp/lsp-ui#613.
+ pgtk-wait-for-event-timeout 0.001
 
-;; Introduced in Emacs HEAD (b2f8c9f), this inhibits fontification while
-;; receiving input, which should help a little with scrolling performance.
-(setq redisplay-skip-fontification-on-input t)
+ ;; Increase how much is read from processes in a single chunk (default is 4kb).
+ ;; This is further increased elsewhere, where needed (like our LSP layer).
+ read-process-output-max (* 64 1024)  ; 64kb
+
+ ;; Introduced in Emacs HEAD (b2f8c9f), this inhibits fontification while
+ ;; receiving input, which should help a little with scrolling performance.
+ redisplay-skip-fontification-on-input t)
 
 ;; Auto refresh
 (global-auto-revert-mode 1)
@@ -133,38 +135,17 @@
 (define-error 'warmacs-private-error "Error in private config" 'warmacs-error)
 (define-error 'warmacs-package-error "Error with packages" 'warmacs-error)
 
-
 ;;
 ;;; Bootstrap
 
 ;; Ensure Warmacs's core libraries are visible for loading
 (add-to-list 'load-path warmacs-core-dir)
 
-;; ...then load *the* one
+;; load core library functions and start!
+(require 'core-versions)
 (require 'core-lib)
 
-(setq-default
-  warmacs-layer-list '(
-			                  all-the-icons
-			                  completion
-			                  evil
-                        help
-                        ;; osx
-			                  projectile
-                        toggles
-		                    treemacs
-			                  windows
-		                    zoom
-                        +source-control/git
-                        ))
-
-(dolist (item warmacs-layer-list)
- (load (concat (file-name-directory warmacs-layers-dir)
-               (symbol-name item))
-       nil (not init-file-debug)))
-
-(message "core end")
-
+(setq inhibit-startup-echo-area-message user-login-name
+      inhibit-default-init t)
 
 (provide 'core)
-;;; core.el ends here

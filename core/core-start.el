@@ -1,3 +1,7 @@
+;;; core-start.el -*- lexical-binding: t; -*-
+
+(message "core-start")
+
 (require 'core-layers)
 
 ;; There's a chance the user will later use package.el or straight in this
@@ -10,17 +14,24 @@
 ;; Load all things.
 (warmacs-initialize-layers)
 
+(setq-default
+ warmacs-layer-list '(all-the-icons
+                      completion
+                      help
+                      ;; osx
+                      projectile
+                      tabs
+                      toggles
+                      treemacs
+                      windows
+                      zoom
+                      +source-control/git
+                      ))
+
+(dolist (item warmacs-layer-list)
+ (load (concat (file-name-directory warmacs-layers-dir)
+               (symbol-name item))
+       nil (not init-file-debug)))
+
+
 (provide 'core-start)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("02f57ef0a20b7f61adce51445b68b2a7e832648ce2e7efb19d217b6454c1b644" default)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

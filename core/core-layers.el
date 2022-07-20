@@ -1,3 +1,7 @@
+;;; core-layers.el -*- lexical-binding: t; -*-
+
+(message "core-layers")
+
 (defvar warmacs-init-layers-p nil
   "Non-nil if `warmacs-initialize-layers' has run.")
 
@@ -38,11 +42,12 @@ whichever is found first. Must end in a slash.")
 ;; (add-to-list )
 
 (defun warmacs-initialize-core-layers ()
-  "Load Warmacs's core files for an interactive session."
+  "Load Warmacs's core files for an interactive session. Order matters here"
   (require 'core-keybindings)
   (require 'core-ui)
+  (require 'core-editor)
   ;; (require 'core-projects)
-  (require 'core-editor))
+  )
 
 
 (defun warmacs-layer-loader (file)
@@ -77,6 +82,5 @@ non-nil."
         (load! "init" warmacs-private-dir t)
         (when custom-file
           (load custom-file 'noerror (not warmacs-debug-mode)))))))
-
 
 (provide 'core-layers)

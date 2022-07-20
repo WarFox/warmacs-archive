@@ -2,8 +2,6 @@
 
 (message "core-lib")
 
-(require 'core-keybindings)
-
 (defun warmacs/find-file-in-project (filename)
     "Open a file like find-file. If the file belongs to a project, creates
     a new persp and enables projectile mode for it."
@@ -62,57 +60,58 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
        (warmacs-error (signal (car e) (cdr e)))
        (error (warmacs--handle-load-error e ,file ,path)))))
 
-(use-package restart-emacs
+;; setup keybindings
+(use-package which-key
   :demand t
   :init
-  (progn 
-    (defun warmacs/restart-emacs (&optional args)
-	(interactive)
-	(restart-emacs args))
+  (which-key-mode)
+  :diminish
+  which-key-mode
+  :config
+  (setq which-key-idle-delay 0.1))
 
-    (defun warmacs/kill-emacs (prompt &optional args)
-	(interactive)
-	(if (not prompt)
-	    (save-some-buffers nil t))
-	(kill-emacs args)))
-  :general
-  (+general-global-menu! "quit" "q"
-    "d" '((lambda (&optional args)
-            (interactive)
-            (warmacs/restart-emacs (cons "--debug-init" args)))
-           :which-key "restart-emacs-debug-init")
-    "R" 'warmacs/restart-emacs
-    "t" '((lambda (&optional args)
-             (interactive)
-             (warmacs/restart-emacs (cons "--timed-requires" args)))
-            :which-key "restart-emacs-timed-requires")
-    "T" '((lambda (&optional args)
-            (interactive)
-            (warmacs/restart-emacs (cons "--adv-timers" args)))
-           :which-key "restart-emacs-adv-timers")
-    "q" '((lambda (&optional args)
-	    (interactive)
-            (warmacs/kill-emacs t args))
-           :which-key "prompt-kill-emacs")
-    "Q" 'warmacs/kill-emacs))
+;; general
+(use-package general
+  :demand t
+  :custom
+  (general-use-package-emit-autoloads t)
+  :init
+  (setq
+    warmacs-leader-key "SPC"
+    warmacs-major-mode-leader-key ",")
+  :config
+  (general-evil-setup)
 
+;; Spacemacs-like menu
+;; https://gist.github.com/progfolio/1c96a67fcec7584b31507ef664de36cc
+;; https://www.reddit.com/r/emacs/comments/des3cl/comment/f2yw45k/?utm_source=share&utm_medium=web2x&context=3
 
-(use-package elisp-mode
-   ;;this is a built in package, so we don't want to try and install it
-   :ensure nil
-   :straight nil
-   :general
-   (warmacs/set-major-mode-leader-keys
-     ;;specify the major modes these should apply to:
-     :major-modes '(emacs-lisp-mode lisp-interaction-mode)
-     ;;and the keymaps:
-     :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
-     "e" '(:ignore t :which-key "eval")
-     "eb" 'eval-buffer
-     "ed" 'eval-defun
-     "ee" 'eval-expression
-     "ep" 'pp-eval-last-sexp
-     "es" 'eval-last-sexp
-     "i" 'elisp-index-search))
+  (general-create-definer warmacs/set-leader-keys
+    :keymaps 'override
+    :states  '(insert emacs normal hybrid motion visual operator)
+    :prefix  warmacs-leader-key
+    :non-normal-prefix "S-SPC"
+    "" '(:ignore t :whick-key "leader key"))
+
+  (general-create-definer warmacs/set-major-mode-leader-keys
+    :keymaps 'override
+    :states '(emacs normal hybrid motion visual operator)
+    :prefix warmacs-major-mode-leader-key
+    :non-normal-prefix "S-SPC ,"
+    "" '(:ignore t :which-key (lambda (arg) `(,(cadr (split-string (car arg) " ")) . ,(replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
+
+  (defmacro +general-global-menu! (name infix-key &rest body)
+    "Create a definer named +general-global-NAME wrapping warmacs/set-leader-keys.
+  Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY."
+    (declare (indent 2))
+    `(progn
+      (general-create-definer ,(intern (concat "+general-global-" name))
+        :wrapping warmacs/set-leader-keys
+        :prefix-map (quote ,(intern (concat "+general-global-" name "-map")))
+        :infix ,infix-key
+        :wk-full-keys nil
+        "" '(:ignore t :which-key ,name))
+      (,(intern (concat "+general-global-" name))
+        ,@body))))
 
 (provide 'core-lib)

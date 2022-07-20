@@ -1,3 +1,6 @@
+;;; core-ui.el -*- lexical-binding: t; -*-
+
+(message "core-ui")
 
 (scroll-bar-mode -1)        ; Disable scroll-bar-mode
 (set-fringe-mode 10)        ; Give some breathing room
@@ -96,34 +99,5 @@
 
   ;; load default theme
   (load-theme 'doom-one t))
-
-(use-package centaur-tabs
-  :demand t
-  :custom
-  (centaur-tabs-set-icons t)
-  (centaur-tabs-set-modified-marker t)
-  (centaur-tabs-modified-marker "⚠")
-  (centaur-tabs-cycle-scope 'tabs)
-  :config
-  (progn
-    (unless (daemonp)
-      (setq centaur-tabs-set-bar 'left))
-
-    (centaur-tabs-headline-match)
-    (centaur-tabs-group-by-projectile-project)
-    (centaur-tabs-mode t)
-
-    (which-key-add-keymap-based-replacements evil-normal-state-map  "C-c t" "tab"))
-   :bind
-   (:map evil-normal-state-map
-         ("g t"     . centuar-tabs-forward)
-         ("g T"     . centuar-tabs-backward)
-         ("g C-t"   . centaur-tabs-move-current-tab-to-right)
-         ("g C-S-t" . centaur-tabs-move-current-tab-to-left))
-   ("C-c t s" . centaur-tabs-counsel-switch-group)
-   ("C-c t p" . centaur-tabs-group-by-projectile-project)
-   ("C-c t g" . centaur-tabs-group-buffer-groups))
-
-(message "core-ui")
 
 (provide 'core-ui)
