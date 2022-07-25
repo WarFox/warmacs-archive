@@ -4,3 +4,4 @@ elpa
 persp-confs
 *.eld
 amx-items
+.persistent-scratch
