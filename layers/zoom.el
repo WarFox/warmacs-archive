@@ -1,3 +1,4 @@
+;;; zoom.el -*- lexical-binding: t; -*-
 
 (use-package hydra)
 
@@ -5,7 +6,10 @@
   "scale text"
   ("+" text-scale-increase "in")
   ("-" text-scale-decrease "out")
+  ("0" text-scale-adjust "adjust")
   ("q" nil "finished" :exit t))
 
 (warmacs/leader-menu-zoom
   "s" '(hydra-text-scale/body :which-key "scale text"))
+
+(provide 'layer/zoom)

@@ -140,6 +140,7 @@
 
 ;; Ensure Warmacs's core libraries are visible for loading
 (add-to-list 'load-path warmacs-core-dir)
+(add-to-list 'load-path warmacs-layers-dir)
 
 ;; load core library functions and start!
 (require 'core-versions)

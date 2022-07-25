@@ -1,3 +1,5 @@
+;;; layers/+source-control/git.el -*- lexical-binding: t; -*-
+
 (use-package magit
   :defer 2
   ;; :after git-rebase
@@ -108,3 +110,5 @@
   :defer 4
   :diminish git-gutter-mode
   :config (global-git-gutter-mode 1))
+
+(provide 'layer/+source-control/git)

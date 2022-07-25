@@ -17,21 +17,25 @@
 (setq-default
  warmacs-layer-list '(all-the-icons
                       completion
-                      help
                       ;; osx
                       projectile
                       tabs
                       toggles
                       treemacs
                       windows
-                      zoom
-                      +source-control/git
                       ))
 
 (dolist (item warmacs-layer-list)
  (load (concat (file-name-directory warmacs-layers-dir)
                (symbol-name item))
        nil (not init-file-debug)))
+
+
+(use-layer! "help")
+
+(use-layer! "zoom")
+
+(use-layer! "+source-control/git")
 
 
 (provide 'core-start)

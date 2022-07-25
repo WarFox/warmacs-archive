@@ -114,4 +114,14 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
       (,(intern (concat "warmacs/leader-menu-" name))
        ,@body))))
 
+(defun warmacs--require-layer (layer)
+   (require (intern (concat "layer" "/" layer)) layer))
+
+(defmacro use-layer! (layername)
+  "TODO need Macro?"
+   (declare (indent 2))
+   `(progn
+      (message "use-layer! %s" ,layername)
+      (warmacs--require-layer ,layername)))
+
 (provide 'core-lib)

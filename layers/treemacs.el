@@ -56,6 +56,15 @@
           treemacs-width-is-initially-locked       t
           treemacs-workspace-switch-cleanup        nil)
 
+          (which-key-add-major-mode-key-based-replacements 'treemacs-mode
+                    "c"         "treemacs-create"
+                    "o"         "treemacs-visit-node"
+                    "oa"        "treemacs-visit-node-ace"
+                    "t"         "treemacs-toggles"
+                    "y"         "treemacs-copy"
+                    "C-c C-p"   "treemacs-projects"
+                    "C-c C-p c" "treemacs-projects-collapse")
+
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
     ;;(treemacs-resize-icons 44)
