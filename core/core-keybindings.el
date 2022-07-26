@@ -99,7 +99,7 @@
    :ensure nil
    :straight nil
    :general
-   (warmacs/set-major-mode-leader-keys
+   (warmacs/set-local-leader-keys
      ;;specify the major modes these should apply to:
      :major-modes '(emacs-lisp-mode lisp-interaction-mode)
      ;;and the keymaps:

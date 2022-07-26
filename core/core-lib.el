@@ -78,7 +78,7 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
   :init
   (setq
     warmacs-leader-key "SPC"
-    warmacs-major-mode-leader-key ",")
+    warmacs-local-leader-key ",")
   :config
   (general-evil-setup)
 
@@ -90,14 +90,14 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
     :keymaps 'override
     :states  '(insert emacs normal hybrid motion visual operator)
     :prefix  warmacs-leader-key
-    :non-normal-prefix "S-SPC"
+    :non-normal-prefix "C-SPC"
     "" '(:ignore t :whick-key "leader key"))
 
-  (general-create-definer warmacs/set-major-mode-leader-keys
+  (general-create-definer warmacs/set-local-leader-keys
     :keymaps 'override
     :states '(emacs normal hybrid motion visual operator)
-    :prefix warmacs-major-mode-leader-key
-    :non-normal-prefix "S-SPC ,"
+    :prefix warmacs-local-leader-key
+    :non-normal-prefix "C-SPC ,"
     "" '(:ignore t :which-key (lambda (arg) `(,(cadr (split-string (car arg) " ")) . ,(replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
 
   (defmacro warmacs/leader-menu (name infix-key &rest body)

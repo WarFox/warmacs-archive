@@ -5,7 +5,7 @@
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
   :general
-  (warmacs/set-major-mode-leader-keys
+  (warmacs/set-local-leader-keys
     "h" 'helpful-at-point)
   (warmacs/leader-menu-help
     "h" 'helpful-at-point)

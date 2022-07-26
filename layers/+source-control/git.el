@@ -16,9 +16,9 @@
   :config
   (progn
     ;; confirm/abort
-    (when warmacs-major-mode-leader-key
+    (when warmacs-local-leader-key
       (add-hook 'with-editor-mode-hook 'evil-normalize-keymaps)
-      (let ((mm-key warmacs-major-mode-leader-key))
+      (let ((mm-key warmacs-local-leader-key))
         (dolist (state '(normal motion))
           (general-def
             :states '(state)
@@ -69,7 +69,7 @@
 (use-package gitignore-templates
   :after (magit)
   :init
-  (warmacs/set-major-mode-leader-keys
+  (warmacs/set-local-leader-keys
     :major-modes 'gitignore-mode
     "i" 'gitignore-templates-insert)
   (warmacs/leader-menu-files
@@ -82,7 +82,7 @@
     (setq forge-database-file (concat warmacs-cache-dir
                                 "forge-database.sqlite")
       forge-add-default-bindings nil)
-    (warmacs/set-major-mode-leader-keys
+    (warmacs/set-local-leader-keys
       :major-modes 'forge-topic-mode
       "a" 'forge-edit-topic-assignees
       "c" 'forge-create-post
@@ -97,9 +97,9 @@
       "s" 'forge-edit-topic-state
       "t" 'forge-edit-topic-title
       "u" 'forge-copy-url-at-point-as-kill)
-    (warmacs/set-major-mode-leader-keys
+    (warmacs/set-local-leader-keys
       :major-modes 'forge-post-mode
-      warmacs-major-mode-leader-key 'forge-post-submit
+      warmacs-local-leader-key 'forge-post-submit
       "c" 'forge-post-submit
       "k" 'forge-post-cancel
       "a" 'forge-post-cancel)))
