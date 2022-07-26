@@ -20,6 +20,25 @@
 (setq fill-column 80
       word-wrap t)
 
+;; disable file backups
+(setq make-backup-files nil) ; stop creating backup~ files
+(setq auto-save-default nil) ; stop creating #autosave# files
+;; backup in one place. flat, no tree structure
+(setq backup-directory-alist '(("" . "~/.emacs.d/auto-save/")))
+
+(defun warmacs-backup-file-name (fpath)
+"If the new path's directories does not exist, create them."
+  (let* ((backupRootDir "~/.emacs.d/emacs-backup/")
+        (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path, ➢ for example: “C:”
+        (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~"))))
+    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
+    backupFilePath))
+
+(setq
+  make-backup-file-name-function 'warmacs-backup-file-name)
+;; end disable file backups ~ and ##autosave
+
+
 ;; Evil Keybindings
 
 (use-package evil

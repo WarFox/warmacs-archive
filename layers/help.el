@@ -19,6 +19,4 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
 
-(message "help layer active")
-
 (provide 'layer/help)

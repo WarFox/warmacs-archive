@@ -105,25 +105,11 @@
 
 ;; Configure use-package to use straight.el by default
 (use-package straight
-  :custom (straight-use-package-by-default t))
-
-;; disable file backups
-(setq make-backup-files nil) ; stop creating backup~ files
-(setq auto-save-default nil) ; stop creating #autosave# files
-;; backup in one place. flat, no tree structure
-(setq backup-directory-alist '(("" . "~/.emacs.d/auto-save/")))
-
-(defun warmacs-backup-file-name (fpath)
-"If the new path's directories does not exist, create them."
-  (let* ((backupRootDir "~/.emacs.d/emacs-backup/")
-        (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path, ➢ for example: “C:”
-        (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~"))))
-    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
-    backupFilePath))
-
-(setq
-  make-backup-file-name-function 'warmacs-backup-file-name)
-;; end disable file backups ~ and ##autosave
+  :custom
+  (straight-use-package-by-default t)
+  (straight-vc-git-default-clone-depth 1)
+  (straight-check-for-modifications nil)
+  (straight-recipes-gnu-elpa-use-mirror t))
 
 ;;
 ;;; Custom error types
