@@ -72,3 +72,5 @@
     "<escape>" 'minibuffer-keyboard-quit))
 
 (use-package swiper)
+
+(provide 'layer/completion)

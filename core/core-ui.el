@@ -87,24 +87,31 @@
 
 ;; Themes
 
-(use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
-
 (use-package doom-themes
   :demand t
   :custom
   (doom-themes-enable-bold t)
   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (doom-themes-treemacs-theme "doom-colors") ; uses all the icons
   :config
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
-  (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
 
   ;; load default theme
   (load-theme 'doom-one t))
+
+;; Load all the icons for pretty UI
+(use-package all-the-icons
+  :demand t
+  :if (display-graphic-p))
+
+(use-package doom-modeline
+  :custom
+  (doom-modeline-height 15)
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (column-number-mode 1)
+  (size-indication-mode 1))
 
 (provide 'core-ui)

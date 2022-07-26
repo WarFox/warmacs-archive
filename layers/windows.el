@@ -1,3 +1,5 @@
+;;; windows.el -*- lexical-binding: t; -*-
+
 ;; from https://gist.github.com/3402786
 (defun warmacs/toggle-maximize-buffer ()
   "Maximize buffer"
@@ -67,3 +69,5 @@ If the universal prefix argument is used then kill the buffer too."
   "_"  'warmacs/maximize-horizontally
   "|"  'warmacs/maximize-vertically)
  
+(provide 'layer/windows)
+

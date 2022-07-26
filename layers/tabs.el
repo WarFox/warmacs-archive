@@ -1,3 +1,4 @@
+;;; tabs.el -*- lexical-binding: t; -*-
 
 (use-package centaur-tabs
   :demand t
@@ -24,3 +25,4 @@
    ("C-c t p" . centaur-tabs-group-by-projectile-project)
    ("C-c t g" . centaur-tabs-group-buffer-groups))
 
+(provide 'layer/tabs)

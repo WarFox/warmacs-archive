@@ -14,28 +14,4 @@
 ;; Load all things.
 (warmacs-initialize-layers)
 
-(setq-default
- warmacs-layer-list '(all-the-icons
-                      completion
-                      ;; osx
-                      projectile
-                      tabs
-                      toggles
-                      treemacs
-                      windows
-                      ))
-
-(dolist (item warmacs-layer-list)
- (load (concat (file-name-directory warmacs-layers-dir)
-               (symbol-name item))
-       nil (not init-file-debug)))
-
-
-(use-layer! "help")
-
-(use-layer! "zoom")
-
-(use-layer! "+source-control/git")
-
-
 (provide 'core-start)

@@ -46,8 +46,7 @@ whichever is found first. Must end in a slash.")
   (require 'core-keybindings)
   (require 'core-ui)
   (require 'core-editor)
-  ;; (require 'core-projects)
-  )
+  (require 'core-projects))
 
 
 (defun warmacs-layer-loader (file)
@@ -70,8 +69,9 @@ non-nil."
   (when (or force-p (not warmacs-init-layers-p))
     (setq warmacs-init-layers-p t)
     (unless no-config-p
-      (message "Initializing core layers")
+      (message "> Initializing core layers")
       (warmacs-initialize-core-layers))
+      (message "> Core layers initialized")
     (when-let (init-p (load! warmacs-layer-init-file warmacs-private-dir t))
       (message "Initializing user config")
       (maphash (warmacs-layer-loader warmacs-layer-init-file) warmacs-layers)
@@ -79,7 +79,7 @@ non-nil."
       (unless no-config-p
         (maphash (warmacs-layer-loader warmacs-layer-config-file) warmacs-layers)
         ;; (warmacs-run-hooks 'warmacs-init-layers-hook)
-        (load! "init" warmacs-private-dir t)
+        (load! warmacs-layer-config-file warmacs-private-dir t)
         (when custom-file
           (load custom-file 'noerror (not warmacs-debug-mode)))))))
 

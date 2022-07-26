@@ -1,6 +1,8 @@
+;; core-projects.el -*- lexical-binding: t; -*-
+
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode)
+  :config (projectile-mode 1)
   :custom ((projectile-completion-system 'ivy))
   :init
   (warmacs/leader-menu-files
@@ -27,8 +29,7 @@
     "G" 'projectile-regenerate-tags
     "I" 'projectile-invalidate-cache
     "k" 'projectile-kill-buffers
-    "p" 'projectile-switch-project
-    "o" 'projectile-switch-open-project
+    "l" 'projectile-switch-open-project
     "r" 'projectile-recentf
     "R" 'projectile-replace
     "t" 'treemacs
@@ -39,8 +40,13 @@
 (use-package counsel-projectile
   :after projectile
   :config
-  (counsel-projectile-mode))
+  (counsel-projectile-mode 1)
+  :general
+  (warmacs/leader-menu-project
+    "p" 'counsel-projectile-switch-project))
 
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package persp-projectile)
+
+(provide 'core-projects)
