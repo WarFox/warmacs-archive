@@ -32,7 +32,6 @@
     "l" 'projectile-switch-open-project
     "r" 'projectile-recentf
     "R" 'projectile-replace
-    "t" 'treemacs
     "T" 'projectile-test-project
     "v" 'projectile-vc)
   (setq projectile-switch-project-action #'projectile-find-file-dwim))

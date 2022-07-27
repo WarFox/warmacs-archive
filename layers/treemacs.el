@@ -28,7 +28,10 @@
   :after (treemacs evil))
 
 (use-package treemacs-projectile
-  :after (treemacs projectile))
+  :after (treemacs projectile)
+  :general
+  (warmacs/leader-menu-project
+    "t" 'treemacs))
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once))

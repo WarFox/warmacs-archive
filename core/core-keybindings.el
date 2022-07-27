@@ -23,12 +23,14 @@
 (warmacs/leader-menu "git" "g"
   "f"  '(:ignore t :which-key "file"))
 (warmacs/leader-menu "insert" "i")
+(warmacs/leader-menu "jump/join/split" "j")
 (warmacs/leader-menu "project" "p")
 (warmacs/leader-menu "registers/rings" "r")
 (warmacs/leader-menu "search" "s"
   "g"  '(:ignore t :which-key "git"))
 (warmacs/leader-menu "toggles/themes" "T")
 (warmacs/leader-menu "windows" "w")
+(warmacs/leader-menu "text" "x")
 (warmacs/leader-menu "zoom" "z")
 
 (warmacs/leader-menu-buffers
