@@ -112,7 +112,8 @@
 
     (general-def evil-normal-state-map
 	    "gc" 'evilnc-comment-operator
-      "gy" 'warmacs/copy-and-comment-lines)
+        "gC" '(:ignore t :which-key "yank comment")
+        "gCy" 'evilnc-copy-and-comment-operator)
 
     (warmacs/set-leader-keys
       ";"  'evilnc-comment-operator

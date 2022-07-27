@@ -78,12 +78,14 @@
 (use-package forge
   :after magit
   :init
-  (progn
-    (setq forge-database-file (concat warmacs-cache-dir
-                                "forge-database.sqlite")
-      forge-add-default-bindings nil)
+  (setq
+   forge-database-file (concat warmacs-cache-dir
+                        "forge-database.sqlite")
+   forge-add-default-bindings nil)
+  :general
     (warmacs/set-local-leader-keys
       :major-modes 'forge-topic-mode
+      :keymaps 'forge-topic-mode-map
       "a" 'forge-edit-topic-assignees
       "c" 'forge-create-post
       "C" 'forge-checkout-pullreq
@@ -99,11 +101,11 @@
       "u" 'forge-copy-url-at-point-as-kill)
     (warmacs/set-local-leader-keys
       :major-modes 'forge-post-mode
+      :keymaps 'forge-post-mode-map
       warmacs-local-leader-key 'forge-post-submit
       "c" 'forge-post-submit
       "k" 'forge-post-cancel
-      "a" 'forge-post-cancel)))
-
+      "a" 'forge-post-cancel))
 
 ;; highlight changes
 (use-package git-gutter-fringe

@@ -93,7 +93,6 @@
            :which-key "prompt-kill-emacs")
     "Q" 'warmacs/kill-emacs))
 
-
 (use-package elisp-mode
    ;;this is a built in package, so we don't want to try and install it
    :ensure nil
