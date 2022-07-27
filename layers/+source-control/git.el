@@ -6,51 +6,53 @@
   :commands (magit-status magit-get-current-branch magit-completing-read-function)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-
   :init
   (setq
-    git-magit-status-fullscreen nil
-    magit-bury-buffer-function #'magit-restore-window-configuration
-    magit-completing-read-function 'ivy-completing-read
-    magit-revision-show-gravatars '("^Author:     " . "^Commit:     ") )
+   git-magit-status-fullscreen nil
+   magit-bury-buffer-function #'magit-restore-window-configuration
+   magit-completing-read-function 'ivy-completing-read
+   magit-revision-show-gravatars '("^Author:     " . "^Commit:     ") )
+  :hook
+  (with-editor-mode . evil-normalize-keymaps)
   :config
-  (progn
-    ;; confirm/abort
-    (when warmacs-local-leader-key
-      (add-hook 'with-editor-mode-hook 'evil-normalize-keymaps)
-      (let ((mm-key warmacs-local-leader-key))
-        (dolist (state '(normal motion))
-          (general-def
-            :states '(state)
-            :keymaps 'with-editor-mode-map
-            (concat (kbd mm-key) (kbd mm-key)) 'with-editor-finish
-            (concat (kbd mm-key) "a")    'with-editor-cancel
-            (concat (kbd mm-key) "c")    'with-editor-finish
-            (concat (kbd mm-key) "k")    'with-editor-cancel)
-          (general-def
-            :states '(state)
-            :keymaps 'magit-log-select-mode-map
-            (concat (kbd mm-key) (kbd mm-key)) 'magit-log-select-pick
-            (concat (kbd mm-key) "a")    'magit-log-select-quit
-            (concat (kbd mm-key) "c")    'magit-log-select-pick
-            (concat (kbd mm-key) "k")    'magit-log-select-quit))))
-    ;; full screen magit-status
-    (when git-magit-status-fullscreen
-      (setq magit-display-buffer-function
-        'magit-display-buffer-fullframe-status-v1)))
+  ;; confirm/abort
+  ;; (add-hook 'with-editor-mode-hook 'evil-normalize-keymaps)
+  ;; full screen magit-status
+  (when git-magit-status-fullscreen
+    (setq magit-display-buffer-function
+          'magit-display-buffer-fullframe-status-v1))
   :general
+
+  (warmacs/set-local-leader-keys
+    :states '(normal motion)
+    :major-modes t
+    :keymaps '(with-editor-mode-map)
+    "," 'with-editor-finish
+    "a"    'with-editor-cancel
+    "c"    'with-editor-finish
+    "k"    'with-editor-cancel)
+
+  (warmacs/set-local-leader-keys
+    :states '(normal motion)
+    :major-modes t
+    :keymaps '(magit-log-select-mode-map)
+    "," 'magit-log-select-pick
+    "a"    'magit-log-select-quit
+    "c"    'magit-log-select-pick
+    "k"    'magit-log-select-quit)
+
   (:keymaps 'magit-blame-read-only-mode-map
-    :states 'normal
-	  "RET" 'magit-show-commit)
+            :states 'normal
+            "RET" 'magit-show-commit)
 
   (:keymaps 'magit-mode-map
-	  "<tab>" 'magit-section-toggle)
+            "<tab>" 'magit-section-toggle)
 
   ;; bind function keys
   (:keymaps 'magit-repolist-mode-map
-    :major-modes 'magit-repolist-mode
-    "gr" 'magit-list-repositories
-    "RET" 'magit-repolist-status)
+            :major-modes 'magit-repolist-mode
+            "gr" 'magit-list-repositories
+            "RET" 'magit-repolist-status)
 
   (warmacs/leader-menu-git
     "b"  'warmacs/git-blame-transient-state/body
