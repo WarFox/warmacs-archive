@@ -20,8 +20,8 @@
 
 (use-package string-edit
   :general
-  (warmacs/set-leader-keys "xe" 'string-edit-at-point)
-  (warmacs/set-local-leader-keys
+  (warmacs/leader-keys "xe" 'string-edit-at-point)
+  (warmacs/local-leader-keys
     :major-modes 'string-edit-mode
     :keymaps 'string-edit-mode-map
     "," 'string-edit-conclude

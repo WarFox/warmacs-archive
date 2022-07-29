@@ -4,7 +4,7 @@
 
 ;; Setup evil and base keybindings for menu 
 
-(warmacs/set-leader-keys
+(warmacs/leader-keys
   "!" 'shell-command
   ":" 'eval-expression
   "SPC" 'counsel-M-x)
@@ -100,7 +100,7 @@
    :ensure nil
    :straight nil
    :general
-   (warmacs/set-local-leader-keys
+   (warmacs/local-leader-keys
      ;;specify the major modes these should apply to:
      :major-modes '(emacs-lisp-mode lisp-interaction-mode)
      ;;and the keymaps:

@@ -115,7 +115,7 @@
         "gC" '(:ignore t :which-key "yank comment")
         "gCy" 'evilnc-copy-and-comment-operator)
 
-    (warmacs/set-leader-keys
+    (warmacs/leader-keys
       ";"  'evilnc-comment-operator
       "c"  '(:ignore t :which-key "comment")
       "cl" 'warmacs/comment-or-uncomment-lines

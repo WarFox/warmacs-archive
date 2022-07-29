@@ -24,7 +24,7 @@
     ;; in confluence, it creates a lot of useless revision in a page history.
     (advice-add 'confluence-base-mode-init
                   :after 'warmacs--confluence-remove-save-hook)
-    (warmacs/set-local-leader-keys
+    (warmacs/local-leader-keys
         :major-modes t
         :keymaps '(confluence-mode-map
                     confluence-xml-mode-map
@@ -34,7 +34,7 @@
         "TAB" 'confluence-toggle-page-content-type)
 
         (require 'ox-confluence)
-        (warmacs/set-local-leader-keys
+        (warmacs/local-leader-keys
           :major-modes t
           :keymaps 'org-mode-map
           "ec" 'org-confluence-export-as-confluence))

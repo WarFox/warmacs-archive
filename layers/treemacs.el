@@ -20,7 +20,7 @@
   (treemacs-fringe-indicator-mode 'always)
   (treemacs-hide-gitignored-files-mode 0)
 
-  ;; setup treemacs theme 
+  ;; setup treemacs theme
   (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
   (doom-themes-treemacs-config))
 
@@ -28,10 +28,7 @@
   :after (treemacs evil))
 
 (use-package treemacs-projectile
-  :after (treemacs projectile)
-  :general
-  (warmacs/leader-menu-project
-    "t" 'treemacs))
+  :after (treemacs projectile))
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once))

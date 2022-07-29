@@ -23,7 +23,7 @@
           'magit-display-buffer-fullframe-status-v1))
   :general
 
-  (warmacs/set-local-leader-keys
+  (warmacs/local-leader-keys
     :states '(normal motion)
     :major-modes t
     :keymaps '(with-editor-mode-map)
@@ -32,7 +32,7 @@
     "c"    'with-editor-finish
     "k"    'with-editor-cancel)
 
-  (warmacs/set-local-leader-keys
+  (warmacs/local-leader-keys
     :states '(normal motion)
     :major-modes t
     :keymaps '(magit-log-select-mode-map)
@@ -71,7 +71,7 @@
 (use-package gitignore-templates
   :after (magit)
   :init
-  (warmacs/set-local-leader-keys
+  (warmacs/local-leader-keys
     :major-modes 'gitignore-mode
     "i" 'gitignore-templates-insert)
   (warmacs/leader-menu-files
@@ -85,7 +85,7 @@
                         "forge-database.sqlite")
    forge-add-default-bindings nil)
   :general
-    (warmacs/set-local-leader-keys
+    (warmacs/local-leader-keys
       :major-modes 'forge-topic-mode
       :keymaps 'forge-topic-mode-map
       "a" 'forge-edit-topic-assignees
@@ -101,7 +101,7 @@
       "s" 'forge-edit-topic-state
       "t" 'forge-edit-topic-title
       "u" 'forge-copy-url-at-point-as-kill)
-    (warmacs/set-local-leader-keys
+    (warmacs/local-leader-keys
       :major-modes 'forge-post-mode
       :keymaps 'forge-post-mode-map
       warmacs-local-leader-key 'forge-post-submit

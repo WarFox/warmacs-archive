@@ -88,7 +88,7 @@
                                          (t 'cider-repl-history-occur))
                                "r" 'cider-repl-history-update)
 
-  (warmacs/set-leader-keys-for-major-mode 'cider-repl-history-mode
+  (warmacs/leader-keys-for-major-mode 'cider-repl-history-mode
                                           "s" 'cider-repl-history-save)
 
   (evil-define-key 'normal cider-repl-mode-map
@@ -117,7 +117,7 @@
 
 
   :general
-  (warmacs/set-local-leader-keys
+  (warmacs/local-leader-keys
     :major-modes t
     :keymaps clojure-mode-maps
     "hh" 'cider-doc
@@ -245,12 +245,12 @@
     "pv" 'cider-profile-var-profiled-p)
 
   ;; cider-repl-mode only
-  (warmacs/set-local-leader-keys
+  (warmacs/local-leader-keys
     :major-modes t
     :keymaps 'cider-repl-mode-map
     "," 'cider-repl-handle-shortcut)
 
-  (warmacs/set-local-leader-keys
+  (warmacs/local-leader-keys
     :major-modes t
     :keymaps 'cider-clojure-interaction-mode-map
     "epl" 'cider-eval-print-last-sexp))
@@ -271,7 +271,7 @@
 ;;                                     (let* ((binding (car r))
 ;;                                            (func (cadr r)))
 ;;                                       (unless (string-prefix-p "hydra" (symbol-name func))
-;;                                         (warmacs/set-leader-keys-for-major-mode m
+;;                                         (warmacs/leader-keys-for-major-mode m
 ;;                                                                                 (concat "r" binding) func)))))))
 
 ;; (use-package clojure-mode
@@ -307,7 +307,7 @@
 ;;                                       (mapc (lambda (x) (warmacs/declare-prefix-for-mode
 ;;                                                          m (car x) (cdr x)))
 ;;                                             clj-refactor--key-binding-non-lsp-prefixes))
-;;                                     (warmacs/set-leader-keys-for-major-mode m
+;;                                     (warmacs/leader-keys-for-major-mode m
 ;;                                                                             "=l" 'clojure-align
 ;;                                                                             "ran" 'clojure-insert-ns-form
 ;;                                                                             "raN" 'clojure-insert-ns-form-at-point
@@ -326,7 +326,7 @@
 ;;                                                                             "rua" 'clojure-unwind-all
 ;;                                                                             "ruw" 'clojure-unwind)
 ;;                                     (unless clojure-enable-clj-refactor
-;;                                       (warmacs/set-leader-keys-for-major-mode m
+;;                                       (warmacs/leader-keys-for-major-mode m
 ;;                                                                               "r?" 'warmacs/clj-describe-missing-refactorings)))))
 ;;   :config
 ;;   (when clojure-enable-fancify-symbols
@@ -342,7 +342,7 @@
 ;;   (setq sayid--key-binding-prefixes
 ;;           '(("mdt" . "trace")))
   
-;;   (warmacs/set-local-leader-keys
+;;   (warmacs/local-leader-keys
 ;;     :major-modes t
 ;;     :keymaps '(clojure-mode-map)
 ;;                                     ;;These keybindings mostly preserved from the default sayid bindings

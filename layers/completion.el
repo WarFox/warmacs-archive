@@ -22,7 +22,9 @@
     (unless (fboundp 'counsel--elisp-to-pcre)
       (defalias 'counsel--elisp-to-pcre 'counsel-unquote-regex-parens))
 
-    (define-key read-expression-map (kbd "C-r") 'counsel-minibuffer-history)
+    (general-def read-expression-map
+      "C-r" 'counsel-minibuffer-history)
+
     ;; remaps built-in commands that have a counsel replacement
     (counsel-mode 1)
     ;; Set syntax highlighting for counsel search results
@@ -30,8 +32,7 @@
     (ivy-set-display-transformer 'counsel-search 'counsel-git-grep-transformer))
 
   :general
-  (general-define-key
-    "C-s" 'counsel-grep-or-swiper)
+  ("C-s" 'counsel-grep-or-swiper)
 
   (warmacs/leader-menu-files
     "f"  'counsel-find-file
@@ -55,7 +56,7 @@
     "y"  'counsel-yank-pop
     "m"  'counsel-mark-ring)
 
-  (warmacs/set-leader-keys
+  (warmacs/leader-keys
     ;; search
     "/"   'counsel-rg)
 

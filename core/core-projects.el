@@ -6,7 +6,7 @@
   :custom ((projectile-completion-system 'ivy))
   :init
   (warmacs/leader-menu-files
-	  ;; File path
+      ;; File path
     "yC" 'warmacs/projectile-copy-file-path-with-line-column
     "yD" 'warmacs/projectile-copy-directory-path
     "yL" 'warmacs/projectile-copy-file-path-with-line
@@ -32,6 +32,8 @@
     "l" 'projectile-switch-open-project
     "r" 'projectile-recentf
     "R" 'projectile-replace
+    "S" 'projectile-save-project-buffers
+    "t" 'treemacs
     "T" 'projectile-test-project
     "v" 'projectile-vc)
   (setq projectile-switch-project-action #'projectile-find-file-dwim))

@@ -5,8 +5,7 @@
   :config
   (require 'org-tempo)
   :general
-  (warmacs/set-local-leader-keys
-    :major-modes 'org-mode
+  (warmacs/local-leader-keys
     :keymaps 'org-mode-map
     "a" 'org-agenda
     "e" '(:ignore t :which-key "export")
