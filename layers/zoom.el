@@ -1,7 +1,5 @@
 ;;; zoom.el -*- lexical-binding: t; -*-
 
-(use-package hydra)
-
 (defhydra hydra-text-scale (:timeout 4)
   "scale text"
   ("+" text-scale-increase "in")

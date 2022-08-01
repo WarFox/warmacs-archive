@@ -2,7 +2,7 @@
 
 (message "core-keybindings")
 
-;; Setup evil and base keybindings for menu 
+;; Setup evil and base keybindings for menu
 
 (warmacs/leader-keys
   "!" 'shell-command
@@ -34,15 +34,16 @@
 (warmacs/leader-menu "zoom" "z")
 
 (warmacs/leader-menu-buffers
-  "d"  'kill-current-buffer
-  "o" '((lambda () (interactive) (switch-to-buffer nil))
-        :which-key "other-buffer")
   "b"  'counsel-switch-buffer ;'list-buffers
-  "p"  'previous-buffer
-  "r"  'rename-buffer
+  "d"  'kill-current-buffer
+  "e"  'erase-buffer
   "m" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
         :which-key "messages-buffer")
   "n"  'next-buffer
+  "o" '((lambda () (interactive) (switch-to-buffer nil))
+        :which-key "other-buffer")
+  "p"  'previous-buffer
+  "r"  'rename-buffer
   "s" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
         :which-key "scratch-buffer")
   "TAB" '((lambda () (interactive) (switch-to-buffer nil))
@@ -64,16 +65,16 @@
 (use-package restart-emacs
   :demand t
   :init
-  (progn 
+  (progn
     (defun warmacs/restart-emacs (&optional args)
-	(interactive)
-	(restart-emacs args))
+    (interactive)
+    (restart-emacs args))
 
     (defun warmacs/kill-emacs (prompt &optional args)
-	(interactive)
-	(if (not prompt)
-	    (save-some-buffers nil t))
-	(kill-emacs args)))
+    (interactive)
+    (if (not prompt)
+        (save-some-buffers nil t))
+    (kill-emacs args)))
   :general
   (warmacs/leader-menu "quit" "q"
     "d" '((lambda (&optional args)
@@ -90,15 +91,14 @@
             (warmacs/restart-emacs (cons "--adv-timers" args)))
            :which-key "restart-emacs-adv-timers")
     "q" '((lambda (&optional args)
-	    (interactive)
+        (interactive)
             (warmacs/kill-emacs t args))
            :which-key "prompt-kill-emacs")
     "Q" 'warmacs/kill-emacs))
 
 (use-package elisp-mode
    ;;this is a built in package, so we don't want to try and install it
-   :ensure nil
-   :straight nil
+   :straight (:type built-in)
    :general
    (warmacs/local-leader-keys
      ;;specify the major modes these should apply to:

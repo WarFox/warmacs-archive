@@ -111,7 +111,7 @@
         (evilnc-comment-or-uncomment-paragraphs arg)))
 
     (general-def evil-normal-state-map
-	    "gc" 'evilnc-comment-operator
+        "gc" 'evilnc-comment-operator
         "gC" '(:ignore t :which-key "yank comment")
         "gCy" 'evilnc-copy-and-comment-operator)
 

@@ -60,6 +60,12 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
        (warmacs-error (signal (car e) (cdr e)))
        (error (warmacs--handle-load-error e ,file ,path)))))
 
+;; Do things asynchronously
+(use-package emacs-async
+  :config
+  (dired-async-mode 1)
+  (async-bytecomp-package-mode 1))
+
 ;; setup keybindings
 (use-package which-key
   :demand t
@@ -69,6 +75,9 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
   which-key-mode
   :config
   (setq which-key-idle-delay 0.1))
+
+;; Hydra for transient menus
+(use-package hydra)
 
 ;; general
 (use-package general
