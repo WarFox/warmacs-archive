@@ -74,4 +74,20 @@
 
 (use-package swiper)
 
+(use-package vertico
+  :demand
+  :config
+  (vertico-mode 1))
+
+;; TODO
+;; https://github.com/minad/consult
+;; Move completions to core
+
+;; (use-package selectrum
+;;   :demand
+;;   :config
+;;   (selectrum-mode +1))
+
+;; (use-package consult)
+
 (provide 'layer/completion)

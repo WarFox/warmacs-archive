@@ -1,3 +1,17 @@
+;; -*- lexical-binding: t; -*-
+
+;; tree-sitter
+
+(use-package tree-sitter
+  :hook
+  (tree-sitter-after-on-hook . #'tree-sitter-hl-mode)
+  :config
+  (global-tree-sitter-mode 1))
+
+(use-package tree-sitter-langs)
+
+;; lsp
+
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")

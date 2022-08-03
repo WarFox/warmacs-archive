@@ -12,6 +12,9 @@
 (use-package cider
   :hook (clojure-mode . cider-mode)
   ;; (add-hook 'clojure-mode-hook 'cider-mode)
+  :custom
+  ;; open cider-doc directly and close it with q
+  (cider-prompt-for-symbol t)
   :init
   (setq cider-stacktrace-default-filters '(tooling dup)
         cider-repl-pop-to-buffer-on-connect nil
@@ -29,27 +32,23 @@
   (evil-set-initial-state 'cider-popup-buffer-mode 'motion)
   (add-hook 'cider--debug-mode-hook 'warmacs/cider-debug-setup)
 
-  (evilified-state-evilify-map cider-stacktrace-mode-map
-                               :mode cider-stacktrace-mode
-                               :bindings
-                               (kbd "C-j") 'cider-stacktrace-next-cause
-                               (kbd "C-k") 'cider-stacktrace-previous-cause
-                               (kbd "TAB") 'cider-stacktrace-cycle-current-cause
-                               (kbd "0")   'cider-stacktrace-cycle-all-causes
-                               (kbd "1")   'cider-stacktrace-cycle-cause-1
-                               (kbd "2")   'cider-stacktrace-cycle-cause-2
-                               (kbd "3")   'cider-stacktrace-cycle-cause-3
-                               (kbd "4")   'cider-stacktrace-cycle-cause-4
-                               (kbd "5")   'cider-stacktrace-cycle-cause-5
-                               (kbd "a")   'cider-stacktrace-toggle-all
-                               (kbd "c")   'cider-stacktrace-toggle-clj
-                               (kbd "d")   'cider-stacktrace-toggle-duplicates
-                               (kbd "J")   'cider-stacktrace-toggle-java
-                               (kbd "r")   'cider-stacktrace-toggle-repl
-                               (kbd "T")   'cider-stacktrace-toggle-tooling)
-
-  ;; open cider-doc directly and close it with q
-  (setq cider-prompt-for-symbol t)
+  (general-def cider-stacktrace-mode-map
+    :modes '(cider-stacktrace-mode)
+    "C-j" #'cider-stacktrace-next-cause
+    "C-k" #'cider-stacktrace-previous-cause
+    "TAB" #'cider-stacktrace-cycle-current-cause
+    "0"   #'cider-stacktrace-cycle-all-causes
+    "1"   #'cider-stacktrace-cycle-cause-1
+    "2"   #'cider-stacktrace-cycle-cause-2
+    "3"   #'cider-stacktrace-cycle-cause-3
+    "4"   #'cider-stacktrace-cycle-cause-4
+    "5"   #'cider-stacktrace-cycle-cause-5
+    "a"   #'cider-stacktrace-toggle-all
+    "c"   #'cider-stacktrace-toggle-clj
+    "d"   #'cider-stacktrace-toggle-duplicates
+    "J"   #'cider-stacktrace-toggle-java
+    "r"   #'cider-stacktrace-toggle-repl
+    "T"   #'cider-stacktrace-toggle-tooling)
 
   (evilified-state-evilify-map cider-docview-mode-map
                                :mode cider-docview-mode
@@ -91,10 +90,11 @@
   (warmacs/leader-keys-for-major-mode 'cider-repl-history-mode
                                           "s" 'cider-repl-history-save)
 
-  (evil-define-key 'normal cider-repl-mode-map
-    (kbd "C-j") 'cider-repl-next-input
-    (kbd "C-k") 'cider-repl-previous-input
-    (kbd "RET") 'cider-repl-return)
+  (general-def cider-repl-mode-map
+    :states '(normal)
+    "C-j" 'cider-repl-next-input
+    "C-k" 'cider-repl-previous-input
+    "RET" 'cider-repl-return)
 
   (if (package-installed-p 'company)
       (evil-define-key 'insert cider-repl-mode-map
@@ -341,7 +341,7 @@
 ;;   :init
 ;;   (setq sayid--key-binding-prefixes
 ;;           '(("mdt" . "trace")))
-  
+
 ;;   (warmacs/local-leader-keys
 ;;     :major-modes t
 ;;     :keymaps '(clojure-mode-map)

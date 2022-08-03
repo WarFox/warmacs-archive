@@ -2,18 +2,12 @@
 
 (use-package treemacs
   :after doom-themes
+  :custom
+  (doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
 
-  (which-key-add-major-mode-key-based-replacements 'treemacs-mode
-        "c"         "treemacs-create"
-        "o"         "treemacs-visit-node"
-        "oa"        "treemacs-visit-node-ace"
-        "t"         "treemacs-toggles"
-        "y"         "treemacs-copy"
-        "C-c C-p"   "treemacs-projects"
-        "C-c C-p c" "treemacs-projects-collapse")
   :config
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
@@ -21,8 +15,18 @@
   (treemacs-hide-gitignored-files-mode 0)
 
   ;; setup treemacs theme
-  (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  (doom-themes-treemacs-config))
+  (doom-themes-treemacs-config)
+  :general
+
+  (general-def treemacs-mode-map
+    "c"         'treemacs-create
+    "d"         'treemacs-delet-file
+    "o"        (general-key-dispatch 'treemacs-visit-node
+                 "a" 'treemacs-visit-node-ace)
+    "t"         'treemacs-toggles
+    "y"         'treemacs-copy
+    "C-c C-p"   (general-key-dispatch 'treemacs-projects
+                  "c" 'treemacs-projects-collapse)))
 
 (use-package treemacs-evil
   :after (treemacs evil))

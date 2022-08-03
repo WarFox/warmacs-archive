@@ -12,8 +12,22 @@
 (general-def
   "TAB" 'indent-for-tab-command)
 
+(defun switch-to-message-buffer ()
+  (interactive)
+  (switch-to-buffer "*Messages*"))
+
+(defun switch-to-scratch-buffer ()
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
+(defun switch-to-other-buffer ()
+  (interactive)
+  (switch-to-buffer nil))
+
 ;; Declare global menus
-(warmacs/leader-menu "applications" "a")
+(warmacs/leader-menu "applications" "a"
+  "p" #'list-processes
+  "P" #'proced)
 (warmacs/leader-menu "buffers" "b")
 (warmacs/leader-menu "files" "f"
   "y" '(:ignore t :which-key "yank"))
@@ -37,16 +51,16 @@
   "b"  'counsel-switch-buffer ;'list-buffers
   "d"  'kill-current-buffer
   "e"  'erase-buffer
-  "m" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
+  "m" '(switch-to-message-buffer
         :which-key "messages-buffer")
   "n"  'next-buffer
   "o" '((lambda () (interactive) (switch-to-buffer nil))
         :which-key "other-buffer")
   "p"  'previous-buffer
   "r"  'rename-buffer
-  "s" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
+  "s" '(switch-to-scratch-buffer
         :which-key "scratch-buffer")
-  "TAB" '((lambda () (interactive) (switch-to-buffer nil))
+  "TAB" '(switch-to-other-buffer
           :which-key "other-buffer"))
 
 ;; Make <escape> quit as much as possible

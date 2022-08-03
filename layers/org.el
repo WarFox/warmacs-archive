@@ -9,11 +9,12 @@
     :keymaps 'org-mode-map
     "a" 'org-agenda
     "e" '(:ignore t :which-key "export")
-    "ec" 'org-confluence-export-as-confluence
     "ee" 'org-export-dispatch))
 
 (use-package org-contrib
-  :after org)
-
+  :after 'org
+  :general
+  (warmacs/local-leader-keys
+    "ec" 'org-confluence-export-as-confluence))
 
 (provide 'layer/org)

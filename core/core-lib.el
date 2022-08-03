@@ -66,6 +66,12 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
 
+;; Request package is required by aide
+(use-package request)
+
+;; bui is used by lsp
+(use-package bui)
+
 ;; setup keybindings
 (use-package which-key
   :demand t
