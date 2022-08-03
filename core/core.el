@@ -98,10 +98,15 @@
 (straight-use-package 'use-package)
 
 (setq
+ ;; compute statistics
+  use-package-compute-statistics 1
   ;; defer by default
   use-package-always-defer t
   ;; using straight.el so disable use-package-ensure
   use-package-always-ensure nil)
+
+(use-package use-package-ensure-system-package
+ :demand t)
 
 ;; Configure use-package to use straight.el by default
 (use-package straight
@@ -110,6 +115,14 @@
   (straight-vc-git-default-clone-depth 1)
   (straight-check-for-modifications nil)
   (straight-recipes-gnu-elpa-use-mirror t))
+
+;; This will expect a global binary package to exist called rg. If
+;; it does not, it will use your system package manager (using the
+;; package system-packages) to attempt an install of a binary by the
+;; same name asynchronously. For example, for most macOS users this
+;; would call: brew install rg.
+(use-package rg
+ :ensure-system-package rg)
 
 ;;
 ;;; Custom error types

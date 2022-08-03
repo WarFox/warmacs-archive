@@ -46,8 +46,8 @@ whichever is found first. Must end in a slash.")
   (require 'core-keybindings)
   (require 'core-ui)
   (require 'core-editor)
-  (require 'core-projects))
-
+  (require 'core-projects)
+  (require 'core-ide))
 
 (defun warmacs-layer-loader (file)
   "Return a closure that loads FILE from a layer.
