@@ -43,9 +43,12 @@ whichever is found first. Must end in a slash.")
 
 (defun warmacs-initialize-core-layers ()
   "Load Warmacs's core files for an interactive session. Order matters here"
-  (require 'core-keybindings)
   (require 'core-ui)
+  (require 'core-keybindings)
   (require 'core-editor)
+  (require 'core-treemacs)
+  (require 'core-completions)
+  (require 'core-layouts)
   (require 'core-projects)
   (require 'core-ide))
 

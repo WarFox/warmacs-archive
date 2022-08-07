@@ -90,4 +90,6 @@
 
 ;; (use-package consult)
 
-(provide 'layer/completion)
+;; perscient.el
+
+(provide 'core-completions)

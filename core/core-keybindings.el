@@ -2,6 +2,19 @@
 
 (message "core-keybindings")
 
+(defmacro with-system (type &rest body)
+  "Evaluate BODY if `system-type' equals TYPE."
+  (declare (indent defun))
+  `(when (eq system-type ',type)
+     ,@body))
+
+; Use the left alt/option key as meta
+; Use the right alt/option key for stock Apple stuff
+; e.g Use the right alt/option-option key on Mac for inputing special characters like #
+(with-system darwin
+  (setq ns-alternate-modifier 'meta)
+  (setq ns-right-alternate-modifier 'none))
+
 ;; Setup evil and base keybindings for menu
 
 (warmacs/leader-keys
@@ -10,7 +23,8 @@
   "SPC" 'counsel-M-x)
 
 (general-def
-  "TAB" 'indent-for-tab-command)
+  "TAB" 'indent-for-tab-command
+  [remap dabbrev-expand] 'hippie-expand)
 
 (defun switch-to-message-buffer ()
   (interactive)

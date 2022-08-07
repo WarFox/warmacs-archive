@@ -3,7 +3,9 @@
 (use-package org
   :defer 5
   :config
-  (require 'org-tempo)
+  (add-to-list 'org-export-backends 'beamer)
+  (add-to-list 'org-export-backends 'man)
+  (add-to-list 'org-export-backends 'md)
   :general
   (warmacs/local-leader-keys
     :keymaps 'org-mode-map
@@ -12,9 +14,15 @@
     "ee" 'org-export-dispatch))
 
 (use-package org-contrib
-  :after 'org
-  :general
-  (warmacs/local-leader-keys
-    "ec" 'org-confluence-export-as-confluence))
+  :after 'org)
+
+(use-package org-indent
+  :straight (:type built-in))
+
+(use-package org-tempo
+  :straight (:type built-in))
+
+;; org-modules
+;; org-export-backends
 
 (provide 'layer/org)

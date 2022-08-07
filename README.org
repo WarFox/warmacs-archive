@@ -4,17 +4,31 @@ Emacs configuration heavily inspired by Doom, Spacemacs.
 
 Built around the capabilities of =use-package=, =straight.el=, =general=, and =evil=.
 
+Supports =lsp= and =tree-sitter= out of the box for you programming experience.
+
 * Core Principles
 
 ** Speed
+
+No comproise on speed
 
 ** Mnemonic Key Bindings
 
 ** Discoverable
 
+Great help features
+
 ** Consistency
 
+No surprises, consitent workflow everywhere.
+
 ** Evil
+
+Vim key bindings for you!
+
+** Programming
+
+Start programming in your favourite language right away.
 
 * References
 - [[https://www.reddit.com/r/emacs/comments/f3ed3r/how_is_doom_emacs_so_damn_fast/][How is Doom Emacs so damn fast?]]

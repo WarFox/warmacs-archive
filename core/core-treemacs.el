@@ -1,4 +1,4 @@
-;;; treemacs.el -*- lexical-binding: t; -*-
+;;; core-treemacs.el -*- lexical-binding: t; -*-
 
 (use-package treemacs
   :after doom-themes
@@ -51,4 +51,4 @@
 (use-package treemacs-all-the-icons
   :after (treemacs))
 
-(provide 'layer/treemacs)
+(provide 'core-treemacs)

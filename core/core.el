@@ -105,9 +105,6 @@
   ;; using straight.el so disable use-package-ensure
   use-package-always-ensure nil)
 
-(use-package use-package-ensure-system-package
- :demand t)
-
 ;; Configure use-package to use straight.el by default
 (use-package straight
   :custom
@@ -116,13 +113,17 @@
   (straight-check-for-modifications nil)
   (straight-recipes-gnu-elpa-use-mirror t))
 
+;; TODO
+;; (use-package use-package-ensure-system-package
+;;   :ensure t)
+
 ;; This will expect a global binary package to exist called rg. If
 ;; it does not, it will use your system package manager (using the
 ;; package system-packages) to attempt an install of a binary by the
 ;; same name asynchronously. For example, for most macOS users this
 ;; would call: brew install rg.
-(use-package rg
- :ensure-system-package rg)
+;; (use-package rg
+;;  :ensure-system-package rg)
 
 ;;
 ;;; Custom error types

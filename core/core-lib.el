@@ -2,63 +2,7 @@
 
 (message "core-lib")
 
-(defun warmacs/find-file-in-project (filename)
-    "Open a file like find-file. If the file belongs to a project, creates
-    a new persp and enables projectile mode for it."
-    (interactive (list (read-file-name "Find file: " nil default-directory (confirm-nonexistent-file-or-buffer))))
-    (let* ((persp-reset-windows-on-nil-window-conf t)
-          (filename-fullpath (file-truename filename))
-          (filename-directory (if (file-directory-p filename-fullpath)
-                                  (file-name-as-directory filename-fullpath)
-                                (file-name-directory filename-fullpath)))
-          (projectile-switch-project-action (lambda () (find-file filename-fullpath)))
-          (project-root (projectile-root-bottom-up filename-directory)))
-      (if project-root
-          (progn
-            (persp-switch (file-name-nondirectory (directory-file-name project-root)))
-            (projectile-switch-project-by-name project-root))
-        (message "Requested file does not belong to any project"))))
-
-
-(defun warmacs--handle-load-error (e target path)
-  (let* ((source (file-name-sans-extension target))
-         (err (cond ((not (featurep 'core))
-                     (cons 'error (file-name-directory path)))
-                    ((file-in-directory-p source warmacs-core-dir)
-                     (cons 'warmacs-error warmacs-core-dir))
-                    ((file-in-directory-p source warmacs-private-dir)
-                     (cons 'warmacs-private-error warmacs-private-dir))
-                    ((file-in-directory-p source (expand-file-name "cli" warmacs-core-dir))
-                     (cons 'warmacs-cli-error (expand-file-name "cli" warmacs-core-dir)))
-                    ((cons 'warmacs-module-error warmacs-emacs-dir)))))
-    (signal (car err)
-            (list (file-relative-name
-                    (concat source ".el")
-                    (cdr err))
-                  e))))
-
-
-(defmacro load! (filename &optional path noerror)
-  "Load a file relative to the current executing file (`load-file-name').
-
-FILENAME is either a file path string or a form that should evaluate to such a
-string at run time. PATH is where to look for the file (a string representing a
-directory path). If omitted, the lookup is relative to either `load-file-name',
-`byte-compile-current-file' or `buffer-file-name' (checked in that order).
-
-If NOERROR is non-nil, don't throw an error if the file doesn't exist."
-  (let* ((path (or path
-                 (dir!)
-                 (error "Could not detect path to look for '%s' in"
-                   filename)))
-          (file (if path
-                  `(expand-file-name ,filename ,path)
-                  filename)))
-    `(condition-case-unless-debug e
-       (let (file-name-handler-alist)
-         (load ,file ,noerror 'nomessage))
-       (warmacs-error (signal (car e) (cdr e)))
-       (error (warmacs--handle-load-error e ,file ,path)))))
+;; Core packages
 
 ;; Do things asynchronously
 (use-package emacs-async
@@ -130,14 +74,75 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
       (,(intern (concat "warmacs/leader-menu-" name))
        ,@body))))
 
+;; Core library of functions
+
+(defun warmacs/find-file-in-project (filename)
+    "Open a file like find-file. If the file belongs to a project, creates
+    a new persp and enables projectile mode for it."
+    (interactive (list (read-file-name "Find file: " nil default-directory (confirm-nonexistent-file-or-buffer))))
+    (let* ((persp-reset-windows-on-nil-window-conf t)
+          (filename-fullpath (file-truename filename))
+          (filename-directory (if (file-directory-p filename-fullpath)
+                                  (file-name-as-directory filename-fullpath)
+                                (file-name-directory filename-fullpath)))
+          (projectile-switch-project-action (lambda () (find-file filename-fullpath)))
+          (project-root (projectile-root-bottom-up filename-directory)))
+      (if project-root
+          (progn
+            (persp-switch (file-name-nondirectory (directory-file-name project-root)))
+            (projectile-switch-project-by-name project-root))
+        (message "Requested file does not belong to any project"))))
+
+
+(defun warmacs--handle-load-error (e target path)
+  (let* ((source (file-name-sans-extension target))
+         (err (cond ((not (featurep 'core))
+                     (cons 'error (file-name-directory path)))
+                    ((file-in-directory-p source warmacs-core-dir)
+                     (cons 'warmacs-error warmacs-core-dir))
+                    ((file-in-directory-p source warmacs-private-dir)
+                     (cons 'warmacs-private-error warmacs-private-dir))
+                    ((file-in-directory-p source (expand-file-name "cli" warmacs-core-dir))
+                     (cons 'warmacs-cli-error (expand-file-name "cli" warmacs-core-dir)))
+                    ((cons 'warmacs-module-error warmacs-emacs-dir)))))
+    (signal (car err)
+            (list (file-relative-name
+                    (concat source ".el")
+                    (cdr err))
+                  e))))
+
+
+(defmacro load! (filename &optional path noerror)
+  "Load a file relative to the current executing file (`load-file-name').
+
+FILENAME is either a file path string or a form that should evaluate to such a
+string at run time. PATH is where to look for the file (a string representing a
+directory path). If omitted, the lookup is relative to either `load-file-name',
+`byte-compile-current-file' or `buffer-file-name' (checked in that order).
+
+If NOERROR is non-nil, don't throw an error if the file doesn't exist."
+  (let* ((path (or path
+                 (dir!)
+                 (error "Could not detect path to look for '%s' in"
+                   filename)))
+          (file (if path
+                  `(expand-file-name ,filename ,path)
+                  filename)))
+    `(condition-case-unless-debug e
+       (let (file-name-handler-alist)
+         (load ,file ,noerror 'nomessage))
+       (warmacs-error (signal (car e) (cdr e)))
+       (error (warmacs--handle-load-error e ,file ,path)))))
+
 (defun warmacs--require-layer (layer)
-   (require (intern (concat "layer" "/" layer)) layer))
+  (let ((filename (format "layers/%s" layer)))
+    ;; (message "load feature %s from %s" layer filename)
+    (require (intern (concat "layer" "/" layer)) layer)))
 
 (defmacro use-layer! (layername)
-  "TODO need Macro?"
    (declare (indent 2))
    `(progn
-      (message "use-layer! %s" ,layername)
+      ;; (message "use-layer! %s" ,layername)
       (warmacs--require-layer ,layername)))
 
 (provide 'core-lib)
