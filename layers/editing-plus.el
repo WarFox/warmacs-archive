@@ -30,7 +30,6 @@
     "k" 'string-edit-abort))
 
 (use-package avy
-  :defer t
   :commands (warmacs/avy-open-url warmacs/avy-goto-url avy-pop-mark avy-with)
   :custom
   (avy-all-windows 'all-frames)
@@ -59,7 +58,7 @@
     "o" 'warmacs/avy-open-url))
 
 (use-package evil-easymotion
-    :defer t
+    :after evil
     :init
     (defun buffer-evil-avy-goto-char-timer ()
       "Call jump to the given chars use avy"
@@ -94,9 +93,8 @@
                         :bind ((evil-ex-search-highlight-all nil))))
 
 (use-package whitespace-cleanup-mode
-  :demand
-  :custom
-  (whitespace-cleanup-mode-only-if-initially-clean nil)
+  :init
+  (setq whitespace-cleanup-mode-only-if-initially-clean nil)
   :config
   (global-whitespace-cleanup-mode 1))
 

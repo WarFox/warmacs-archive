@@ -160,28 +160,27 @@ initialized with the current directory instead of filename."
       (warmacs--rename-buffer-or-save-new-file))))
 
 (warmacs/leader-menu-files
-  "r" #'warmacs/rename-current-buffer-file)
+  "R" #'warmacs/rename-current-buffer-file)
 
 ;; Evil Keybindings
 (use-package evil
   :demand
   :init
-  (message "init evil")
-  :custom
-  ;; do not load evil-keybindings.el, we're using evil-collection
-  (evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
+  (setq
+   evil-want-integration t
+   evil-want-keybinding nil)
+   :config
+   (evil-mode 1))
 
 (use-package evil-collection
-  :after evil
   :defer 1
+  :after evil
   :config
   (evil-collection-init))
 
 (use-package evil-goggles
+  :defer 2
   :after evil
-  :demand
   :custom
   (evil-goggles-duration 0.05)
   :config
@@ -189,8 +188,9 @@ initialized with the current directory instead of filename."
   (evil-goggles-use-diff-faces))
 
 (use-package evil-nerd-commenter
+  :defer 3
+  :after evil
   :commands evilnc-comment-operator
-  :after evil-collection
   :init
   ;; double all the commenting functions so that the inverse operations
   ;; can be called without setting a flag
@@ -252,12 +252,12 @@ initialized with the current directory instead of filename."
     "cY" 'warmacs/copy-and-comment-lines-inverse))
 
 (use-package evil-mc
-  :after evil-collection
+  :after evil
   :hook
   ((prog-mode markdown-mode org-mode) . evil-mc-mode))
 
 (use-package evil-surround
-  :after evil-collection
+  :after evil
   :hook
   ((prog-mode markdown-mode org-mode) . evil-surround-mode))
 
@@ -269,7 +269,7 @@ initialized with the current directory instead of filename."
 ;; enable recent files
 (use-package emacs
   :config
-  (recentf-mode 1))
+  (recentf-mode 1)) 
 
 ;; hl-todo-mode in individual buffers or use the global variant global-hl-todo-mode
 ;; highlight todo and similar keywords
