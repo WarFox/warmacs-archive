@@ -36,15 +36,13 @@
     ([remap switch-to-buffer-other-window] #'consult-buffer-other-window)
     ([remap switch-to-buffer-other-frame]  #'consult-buffer-other-frame)
     ([remap yank-pop]                      #'consult-yank-pop)
+    ([remap vc-git-grep]                   #'consult-git-grep)
 
   ("C-s" 'consult-line)
 
   (warmacs/leader-keys
     ;; search
-    "/"   'consult-ripgrep)
-
-  (warmacs/leader-menu-search
-    "gg" 'consult-git-grep))
+    "/"   'consult-ripgrep))
 
 (use-package marginalia
   :init

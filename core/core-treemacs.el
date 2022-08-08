@@ -17,11 +17,10 @@
   ;; setup treemacs theme
   (doom-themes-treemacs-config)
   :general
-
-  (general-def treemacs-mode-map
-    "c"         'treemacs-create
-    "d"         'treemacs-delet-file
-    "o"        (general-key-dispatch 'treemacs-visit-node
+  (:keymaps 'treemacs-mode-map
+    "c"   'treemacs-create
+    "d"   'treemacs-delet-file
+    "o"    (general-key-dispatch 'treemacs-visit-node
                  "a" 'treemacs-visit-node-ace)
     "t"         'treemacs-toggles
     "y"         'treemacs-copy
@@ -29,7 +28,17 @@
                   "c" 'treemacs-projects-collapse)))
 
 (use-package treemacs-evil
-  :after (treemacs evil))
+  :after (treemacs evil)
+  :general
+  (:keymaps 'evil-treemacs-state-map
+    "d"         'treemacs-delet-file
+    [return] #'treemacs-RET-action
+    [tab]    #'treemacs-TAB-action
+    "TAB"    #'treemacs-TAB-action
+    ;; REVIEW Fix #1875 to be consistent with C-w {v,s}, but this should really
+    ;;        be considered upstream.
+    "o v"    #'treemacs-visit-node-horizontal-split
+    "o s"    #'treemacs-visit-node-vertical-split))
 
 (use-package treemacs-projectile
   :after (treemacs projectile))

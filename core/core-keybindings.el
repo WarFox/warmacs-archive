@@ -20,7 +20,8 @@
 (warmacs/leader-keys
   "!" #'shell-command
   ":" #'eval-expression
-  "SPC" #'execute-extended-command)
+  "/" #'grep
+  "SPC" '(execute-extended-command :which-key "M-x"))
 
 (defun switch-to-message-buffer ()
   (interactive)
@@ -41,19 +42,15 @@
 
 (warmacs/leader-menu "buffers" "b"
   "b"  #'consult-buffer
-  "d"  'kill-current-buffer
-  "e"  'erase-buffer
-  "m" '(switch-to-message-buffer
-        :which-key "messages-buffer")
-  "n"  'next-buffer
-  "o" '((lambda () (interactive) (switch-to-buffer nil))
-        :which-key "other-buffer")
-  "p"  'previous-buffer
-  "r"  'rename-buffer
-  "s" '(switch-to-scratch-buffer
-        :which-key "scratch-buffer")
-  "TAB" '(switch-to-other-buffer
-          :which-key "other-buffer"))
+  "d"  #'kill-current-buffer
+  "e"  #'erase-buffer
+  "m" '(switch-to-message-buffer :which-key "messages-buffer")
+  "n"  #'next-buffer
+  "o" '(switch-to-other-buffer :which-key "other-buffer")
+  "p"  #'previous-buffer
+  "r"  #'rename-buffer
+  "s" '(switch-to-scratch-buffer :which-key "scratch-buffer")
+  "TAB" '(switch-to-other-buffer :which-key "other-buffer"))
 
 (warmacs/leader-menu "files" "f"
   "f"  #'find-file
@@ -64,10 +61,12 @@
 
 (warmacs/leader-menu "help" "h"
   "d" '(:ignore t :which-key "describe")
-  "da" 'aprops
+  "da" 'apropos
   "df" 'describe-function
   "dF" 'describe-face
   "dv" 'describe-variable
+  "dk" 'describe-key
+  "dK" 'describe-keymap
   "?"  'describe-bindings
   "i"  'info-lookup-symbol
   "m"  'man
@@ -143,24 +142,23 @@
     "Q" 'warmacs/kill-emacs))
 
 (use-package elisp-mode
-   ;;this is a built in package, so we don't want to try and install it
-   :straight (:type built-in)
-   :general
-   (warmacs/local-leader-keys
-     ;;specify the major modes these should apply to:
-     :major-modes '(emacs-lisp-mode lisp-interaction-mode)
-     ;;and the keymaps:
-     :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
-     "e" '(:ignore t :which-key "eval")
-     "eb" 'eval-buffer
-     "ed" 'eval-defun
-     "ee" 'eval-expression
-     "ep" 'pp-eval-last-sexp
-     "es" 'eval-last-sexp
-     "i" 'elisp-index-search))
+  ;;this is a built in package, so we don't want to try and install it
+  :straight (:type built-in)
+  :general
+  (warmacs/local-leader-keys
+    :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
+    "e" '(:ignore t :which-key "eval")
+    "eb" 'eval-buffer
+    "ed" 'eval-defun
+    "ee" 'eval-expression
+    "ep" 'pp-eval-last-sexp
+    "es" 'eval-last-sexp
+    "i" 'elisp-index-search))
+
+(general-nvmap
+  "TAB" 'indent-for-tab-command)
 
 (general-def
-  "TAB" 'indent-for-tab-command
   [remap dabbrev-expand] 'hippie-expand)
 
 (provide 'core-keybindings)

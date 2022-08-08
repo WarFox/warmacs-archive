@@ -56,7 +56,7 @@
   (warmacs/leader-menu-git
     "b"  'warmacs/git-blame-transient-state/body
     "c"  'magit-clone
-    "/"  'consult-git-grep
+    "/"  'vc-git-grep
     "ff" 'magit-find-file
     "fl" 'magit-log-buffer-file
     "fd" 'magit-diff
