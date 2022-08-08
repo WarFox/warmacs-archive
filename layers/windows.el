@@ -1,5 +1,10 @@
 ;;; windows.el -*- lexical-binding: t; -*-
 
+(use-package ace-window
+  :general
+  (warmacs/leader-menu-windows
+    "W" #'ace-window))
+
 ;; from https://gist.github.com/3402786
 (defun warmacs/toggle-maximize-buffer ()
   "Maximize buffer"
@@ -68,6 +73,5 @@ If the universal prefix argument is used then kill the buffer too."
   "+"  'warmacs/window-layout-toggle
   "_"  'warmacs/maximize-horizontally
   "|"  'warmacs/maximize-vertically)
- 
-(provide 'layer/windows)
 
+(provide 'layer/windows)

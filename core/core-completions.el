@@ -1,95 +1,118 @@
 ;;; completion.el -*- lexical-binding: t; -*-
 
-(use-package counsel
-  :demand t
-  :init
-  (progn
-    (defun warmacs/counsel-jump-in-buffer ()
-      "Jump in buffer with `counsel-imenu' or `counsel-org-goto' if in org-mode"
-      (interactive)
-      (call-interactively
-        (cond
-          ((eq major-mode 'org-mode) 'counsel-org-goto)
-          (t 'counsel-imenu)))))
+;; default modern completion framework
+
+(use-package consult
   :custom
-  ;; Enable better auto completion of counsel-find-file
-  ;; by recognizing file at point.
-  (counsel-find-file-at-point t)
-  :config
-  (progn
-    ;; Temporarily handle older versions of ivy
-    ;; https://github.com/abo-abo/swiper/pull/1863/files
-    (unless (fboundp 'counsel--elisp-to-pcre)
-      (defalias 'counsel--elisp-to-pcre 'counsel-unquote-regex-parens))
+  (register-preview-delay 0.5)
+  ;; Use Consult to select xref locations with preview
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
+  :hook
+  (completion-list-mode . consult-preview-at-point-mode)
+  :init
 
-    (general-def read-expression-map
-      "C-r" 'counsel-minibuffer-history)
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-function #'consult-register-format)
 
-    ;; remaps built-in commands that have a counsel replacement
-    (counsel-mode 1)
-    ;; Set syntax highlighting for counsel search results
-
-    (ivy-set-display-transformer 'counsel-search 'counsel-git-grep-transformer))
-
+  ;; Optionally tweak the register preview window.
+  ;; This adds thin lines, sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+  (advice-add #'multi-occur :override #'consult-multi-occur)
   :general
-  ("C-s" 'counsel-grep-or-swiper)
+    ([remap apropos]                       #'consult-apropos)
+    ([remap bookmark-jump]                 #'consult-bookmark)
+    ([remap evil-show-marks]               #'consult-mark)
+    ([remap evil-show-registers]           #'consult-register)
+    ([remap goto-line]                     #'consult-goto-line)
+    ([remap imenu]                         #'consult-imenu)
+    ([remap locate]                        #'consult-locate)
+    ([remap load-theme]                    #'consult-theme)
+    ([remap man]                           #'consult-man)
+    ([remap recentf-open-files]            #'consult-recent-file)
+    ([remap switch-to-buffer]              #'consult-buffer)
+    ([remap switch-to-buffer-other-window] #'consult-buffer-other-window)
+    ([remap switch-to-buffer-other-frame]  #'consult-buffer-other-frame)
+    ([remap yank-pop]                      #'consult-yank-pop)
 
-  (warmacs/leader-menu-files
-    "f"  'counsel-find-file
-    "el" 'counsel-find-library
-    "L"  'counsel-locate)
-
-  (warmacs/leader-menu-help
-    "?"   'counsel-descbinds
-    "gff" 'counsel-git
-    "da" 'counsel-apropos
-    "df" 'counsel-describe-function
-    "dF" 'counsel-describe-face
-    "dv" 'counsel-describe-variable
-    "i"  'counsel-info-lookup-symbol
-    "m"  'man)
-
-  (warmacs/leader-menu-insert
-   "u" 'counsel-unicode-char)
-
-  (warmacs/leader-menu-registers/rings
-    "y"  'counsel-yank-pop
-    "m"  'counsel-mark-ring)
+  ("C-s" 'consult-line)
 
   (warmacs/leader-keys
     ;; search
-    "/"   'counsel-rg)
+    "/"   'consult-ripgrep)
 
   (warmacs/leader-menu-search
-    "j"  'warmacs/counsel-jump-in-buffer
-    "gg" 'counsel-git-grep)
+    "gg" 'consult-git-grep))
 
-  (warmacs/leader-menu-toggles/themes
-    "s"  'counsel-load-theme))
+(use-package marginalia
+  :init
+  (marginalia-mode 1))
 
-(use-package ivy
-  :general
-  (general-def ivy-minibuffer-map
-    "<escape>" 'minibuffer-keyboard-quit))
+(use-package all-the-icons-completion
+  :hook
+  (marginalia-mode . #'all-the-icons-completion-marginalia-setup)
+  :config
+  (all-the-icons-completion-mode 1))
 
-(use-package swiper)
+(use-package embark)
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
-  :demand
-  :config
+  :init
   (vertico-mode 1))
 
-;; TODO
-;; https://github.com/minad/consult
-;; Move completions to core
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
 
-;; (use-package selectrum
-;;   :demand
-;;   :config
-;;   (selectrum-mode +1))
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-;; (use-package consult)
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-;; perscient.el
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  (setq read-extended-command-predicate
+        #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
+;; Optionally use the `orderless' completion style.
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  :init
+  ;; TODO
+  ;; ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-category-defaults nil))
 
 (provide 'core-completions)

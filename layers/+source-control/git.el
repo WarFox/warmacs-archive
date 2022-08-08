@@ -10,7 +10,6 @@
   (setq
    git-magit-status-fullscreen nil
    magit-bury-buffer-function #'magit-restore-window-configuration
-   magit-completing-read-function 'ivy-completing-read
    magit-revision-show-gravatars '("^Author:     " . "^Commit:     ") )
   :hook
   (with-editor-mode . evil-normalize-keymaps)
@@ -28,18 +27,18 @@
     :major-modes t
     :keymaps '(with-editor-mode-map)
     "," 'with-editor-finish
-    "a"    'with-editor-cancel
-    "c"    'with-editor-finish
-    "k"    'with-editor-cancel)
+    "a" 'with-editor-cancel
+    "c" 'with-editor-finish
+    "k" 'with-editor-cancel)
 
   (warmacs/local-leader-keys
     :states '(normal motion)
     :major-modes t
     :keymaps '(magit-log-select-mode-map)
     "," 'magit-log-select-pick
-    "a"    'magit-log-select-quit
-    "c"    'magit-log-select-pick
-    "k"    'magit-log-select-quit)
+    "a" 'magit-log-select-quit
+    "c" 'magit-log-select-pick
+    "k" 'magit-log-select-quit)
 
   (:keymaps 'magit-blame-read-only-mode-map
             :states 'normal
@@ -57,7 +56,8 @@
   (warmacs/leader-menu-git
     "b"  'warmacs/git-blame-transient-state/body
     "c"  'magit-clone
-    "fF" 'magit-find-file
+    "/"  'consult-git-grep
+    "ff" 'magit-find-file
     "fl" 'magit-log-buffer-file
     "fd" 'magit-diff
     "fm" 'magit-file-dispatch
@@ -86,7 +86,6 @@
    forge-add-default-bindings nil)
   :general
     (warmacs/local-leader-keys
-      :major-modes 'forge-topic-mode
       :keymaps 'forge-topic-mode-map
       "a" 'forge-edit-topic-assignees
       "c" 'forge-create-post
@@ -102,7 +101,6 @@
       "t" 'forge-edit-topic-title
       "u" 'forge-copy-url-at-point-as-kill)
     (warmacs/local-leader-keys
-      :major-modes 'forge-post-mode
       :keymaps 'forge-post-mode-map
       warmacs-local-leader-key 'forge-post-submit
       "c" 'forge-post-submit

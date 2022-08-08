@@ -2,19 +2,19 @@
 
 (message "core-lib")
 
-;; Core packages
+;; Core packages and libs
+
+(use-package s)
+(use-package f)
+(use-package request)
+(use-package bui)
+(use-package dash)
 
 ;; Do things asynchronously
 (use-package emacs-async
   :config
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
-
-;; Request package is required by aide
-(use-package request)
-
-;; bui is used by lsp
-(use-package bui)
 
 ;; setup keybindings
 (use-package which-key

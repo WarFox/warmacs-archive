@@ -18,13 +18,9 @@
 ;; Setup evil and base keybindings for menu
 
 (warmacs/leader-keys
-  "!" 'shell-command
-  ":" 'eval-expression
-  "SPC" 'counsel-M-x)
-
-(general-def
-  "TAB" 'indent-for-tab-command
-  [remap dabbrev-expand] 'hippie-expand)
+  "!" #'shell-command
+  ":" #'eval-expression
+  "SPC" #'execute-extended-command)
 
 (defun switch-to-message-buffer ()
   (interactive)
@@ -42,27 +38,9 @@
 (warmacs/leader-menu "applications" "a"
   "p" #'list-processes
   "P" #'proced)
-(warmacs/leader-menu "buffers" "b")
-(warmacs/leader-menu "files" "f"
-  "y" '(:ignore t :which-key "yank"))
-(warmacs/leader-menu "help" "h"
-  "d" '(:ignore t :which-key "describe")
-  "g" '(:ignore t :which-key "git"))
-(warmacs/leader-menu "git" "g"
-  "f"  '(:ignore t :which-key "file"))
-(warmacs/leader-menu "insert" "i")
-(warmacs/leader-menu "jump/join/split" "j")
-(warmacs/leader-menu "project" "p")
-(warmacs/leader-menu "registers/rings" "r")
-(warmacs/leader-menu "search" "s"
-  "g"  '(:ignore t :which-key "git"))
-(warmacs/leader-menu "toggles/themes" "T")
-(warmacs/leader-menu "windows" "w")
-(warmacs/leader-menu "text" "x")
-(warmacs/leader-menu "zoom" "z")
 
-(warmacs/leader-menu-buffers
-  "b"  'counsel-switch-buffer ;'list-buffers
+(warmacs/leader-menu "buffers" "b"
+  "b"  #'consult-buffer
   "d"  'kill-current-buffer
   "e"  'erase-buffer
   "m" '(switch-to-message-buffer
@@ -77,21 +55,61 @@
   "TAB" '(switch-to-other-buffer
           :which-key "other-buffer"))
 
+(warmacs/leader-menu "files" "f"
+  "f"  #'find-file
+  "el" #'find-library
+  "l"  #'locate
+  "r"  #'recentf-open-files
+  "y" '(:ignore t :which-key "yank"))
+
+(warmacs/leader-menu "help" "h"
+  "d" '(:ignore t :which-key "describe")
+  "da" 'aprops
+  "df" 'describe-function
+  "dF" 'describe-face
+  "dv" 'describe-variable
+  "?"  'describe-bindings
+  "i"  'info-lookup-symbol
+  "m"  'man
+  "g" '(:ignore t :which-key "git"))
+
+(warmacs/leader-menu "git" "g"
+  "f"  '(:ignore t :which-key "file"))
+
+(warmacs/leader-menu "insert" "i"
+  ;; TODO
+  ;;"u" 'counsel-unicode-char)
+  )
+
+(warmacs/leader-menu "jump/join/split" "j")
+
+(warmacs/leader-menu "project" "p")
+
+(warmacs/leader-menu "registers/rings" "r"
+  "y" #'yank-pop)
+
+(warmacs/leader-menu "search" "s"
+  "g"  '(:ignore t :which-key "git"))
+
+(warmacs/leader-menu "toggles/themes" "T"
+  "s" #'load-theme)
+
+(warmacs/leader-menu "windows" "w")
+(warmacs/leader-menu "text" "x")
+(warmacs/leader-menu "zoom" "z")
+
 ;; Make <escape> quit as much as possible
-(general-def minibuffer-local-map
-  "<escape>" 'keyboard-escape-quit)
-(general-def minibuffer-local-ns-map
-  "<escape>" 'keyboard-escape-quit)
-(general-def minibuffer-local-completion-map
-  "<escape>" 'keyboard-escape-quit)
-(general-def minibuffer-local-must-match-map
-  "<escape>" 'keyboard-escape-quit)
-(general-def minibuffer-local-isearch-map
-  "<escape>" 'keyboard-escape-quit)
+(general-def
+  :keymaps '(minibuffer-local-map
+             minibuffer-local-ns-map
+             minibuffer-local-completion-map
+             minibuffer-local-must-match-map
+             minibuffer-local-isearch-map)
+  "<escape>" #'keyboard-escape-quit)
 
 ;; Restart / Quit
 (use-package restart-emacs
-  :demand t
+  :commands (restart-emacs)
   :init
   (progn
     (defun warmacs/restart-emacs (&optional args)
@@ -140,5 +158,9 @@
      "ep" 'pp-eval-last-sexp
      "es" 'eval-last-sexp
      "i" 'elisp-index-search))
+
+(general-def
+  "TAB" 'indent-for-tab-command
+  [remap dabbrev-expand] 'hippie-expand)
 
 (provide 'core-keybindings)

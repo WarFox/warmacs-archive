@@ -103,7 +103,6 @@
 
 ;; Load all the icons for pretty UI
 (use-package all-the-icons
-  :demand t
   :if (display-graphic-p))
 
 (use-package doom-modeline

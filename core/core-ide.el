@@ -27,9 +27,9 @@
 (use-package lsp-ui
   :commands lsp-ui-mode)
 
-;; if you are ivy user
-(use-package lsp-ivy
-  :commands lsp-ivy-workspace-symbol)
+(use-package consult-lsp
+  :after consult
+  :commands (consult-lsp-diagnostics consult-lsp-symbols consult-lsp-file-symbols))
 
 (use-package lsp-treemacs
   :after treemacs

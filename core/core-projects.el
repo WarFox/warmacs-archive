@@ -3,7 +3,6 @@
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode 1)
-  :custom ((projectile-completion-system 'ivy))
   :init
   (warmacs/leader-menu-files
       ;; File path
@@ -23,6 +22,7 @@
     "d" 'projectile-find-dir
     "D" 'projectile-dired
     "e" 'projectile-edit-dir-locals
+    ;; "f" #'project-find-file ; 'projectile-find-file
     "f" 'projectile-find-file
     "F" 'projectile-find-file-dwim
     "g" 'projectile-find-tag
@@ -30,6 +30,7 @@
     "I" 'projectile-invalidate-cache
     "k" 'projectile-kill-buffers
     "l" 'projectile-switch-open-project
+    "p" 'projectile-switch-project
     "r" 'projectile-recentf
     "R" 'projectile-replace
     "S" 'projectile-save-project-buffers
@@ -37,14 +38,6 @@
     "T" 'projectile-test-project
     "v" 'projectile-vc)
   (setq projectile-switch-project-action #'projectile-find-file-dwim))
-
-(use-package counsel-projectile
-  :after projectile
-  :config
-  (counsel-projectile-mode 1)
-  :general
-  (warmacs/leader-menu-project
-    "p" 'counsel-projectile-switch-project))
 
 (put 'dired-find-alternate-file 'disabled nil)
 

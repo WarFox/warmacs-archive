@@ -1,9 +1,6 @@
 ;;; help.el -*- lexical-binding: t; -*-
 
 (use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
   :general
   (warmacs/local-leader-keys
     "h" 'helpful-at-point)
