@@ -1,4 +1,6 @@
-(when (spacemacs/system-is-mac)
+;; org.el -*- lexical-binding: t; -*-
+
+(with-system darwin
   ;; Enable built-in trash support via finder API if available (only on Emacs
   ;; macOS Port)
   (when (boundp 'mac-system-move-file-to-trash-use-finder)
@@ -10,3 +12,5 @@
   (let ((gls (executable-find "gls")))
     (when gls
       (setq insert-directory-program gls))))
+
+(provide 'layer/osx)

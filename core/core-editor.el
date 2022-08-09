@@ -164,23 +164,19 @@ initialized with the current directory instead of filename."
 
 ;; Evil Keybindings
 (use-package evil
-  :demand
   :init
   (setq
    evil-want-integration t
    evil-want-keybinding nil)
-   :config
-   (evil-mode 1))
+  (evil-mode 1))
 
 (use-package evil-collection
-  :defer 1
   :after evil
-  :config
+  :init
   (evil-collection-init))
 
 (use-package evil-goggles
-  :defer 2
-  :after evil
+  :after evil-collection
   :custom
   (evil-goggles-duration 0.05)
   :config
@@ -188,7 +184,6 @@ initialized with the current directory instead of filename."
   (evil-goggles-use-diff-faces))
 
 (use-package evil-nerd-commenter
-  :defer 3
   :after evil
   :commands evilnc-comment-operator
   :init
@@ -233,6 +228,7 @@ initialized with the current directory instead of filename."
     (interactive "p")
     (let ((evilnc-invert-comment-line-by-line nil))
       (evilnc-comment-or-uncomment-paragraphs arg)))
+  
   :general
   (general-def evil-normal-state-map
     "gc" 'evilnc-comment-operator

@@ -12,34 +12,36 @@
 
 ;; Do things asynchronously
 (use-package emacs-async
-  :config
+  :init
   (dired-async-mode 1)
   (async-bytecomp-package-mode 1))
 
+(use-package auth-source
+  :no-require t
+  :config (setq auth-sources '("~/.authinfo.gpg" "~/.netrc")))
+
 ;; setup keybindings
 (use-package which-key
-  :demand t
   :init
-  (which-key-mode)
+  (which-key-mode 1)
+  :custom
+  (which-key-idle-delay 0.1)
   :diminish
-  which-key-mode
-  :config
-  (setq which-key-idle-delay 0.1))
+  which-key-mode)
 
 ;; Hydra for transient menus
 (use-package hydra)
 
 ;; general
 (use-package general
-  :demand t
   :custom
   (general-use-package-emit-autoloads t)
   :init
   (setq
     warmacs-leader-key "SPC"
     warmacs-local-leader-key ",")
-  :config
   (general-evil-setup)
+  :config
 
 ;; Spacemacs-like menu
 ;; https://gist.github.com/progfolio/1c96a67fcec7584b31507ef664de36cc
@@ -135,9 +137,10 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
        (error (warmacs--handle-load-error e ,file ,path)))))
 
 (defun warmacs--require-layer (layer)
-  (let ((filename (format "layers/%s" layer)))
-    ;; (message "load feature %s from %s" layer filename)
-    (require (intern (concat "layer" "/" layer)) layer)))
+  (let ((filename (concat warmacs-dir (format "layers/%s" layer)))
+        (feature  (intern (concat "layer" "/" layer))))
+    (message "use-layer! %s - load feature %s from %s" layer feature filename)
+    (require feature filename)))
 
 (defmacro use-layer! (layername)
    (declare (indent 2))

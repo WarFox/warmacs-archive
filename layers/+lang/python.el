@@ -7,7 +7,6 @@
 (use-package pipenv)
 
 (use-package lsp-pyright
-  :ensure t
   :hook (python-mode . lsp-deferred))
 
 (use-package dap-mode
@@ -27,4 +26,4 @@
       "vow" 'poetry-venv-workon
       "vot" 'poetry-venv-toggle))
 
-(provide '+lang/python)
+(provide 'layer/+lang/python)

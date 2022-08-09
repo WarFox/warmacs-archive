@@ -91,18 +91,16 @@
 ;; Themes
 
 (use-package doom-themes
-  :demand t
   :custom
   (doom-themes-enable-bold t)
   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  :init
+  (load-theme 'doom-one t)
   :config
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-
-  ;; load default theme
-  (load-theme 'doom-one t))
+  (doom-themes-org-config))
 
 ;; Load all the icons for pretty UI
 (use-package all-the-icons

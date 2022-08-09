@@ -105,6 +105,9 @@
   ;; using straight.el so disable use-package-ensure
   use-package-always-ensure nil)
 
+(eval-when-compile
+  (require 'use-package))
+
 ;; Configure use-package to use straight.el by default
 (use-package straight
   :custom
