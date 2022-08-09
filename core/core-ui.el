@@ -79,6 +79,9 @@
 ;; buffer is narrowed, and where you are, exactly.
 (setq-default display-line-numbers-widen t)
 
+;; Relative line numbers
+(setq display-line-numbers-type 'relative)
+
 ;; Enable line numbers in most text-editing modes. We avoid
 ;; `global-display-line-numbers-mode' because there are many special and
 ;; temporary modes where we don't need/want them.
