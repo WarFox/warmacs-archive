@@ -14,3 +14,6 @@ request/
 transient/
 url/
 .org-id-locations
+.dap-breakpoints
+.lsp-session*
+games/

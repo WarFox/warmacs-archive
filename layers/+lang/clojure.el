@@ -11,7 +11,6 @@
 
 (use-package cider
   :hook (clojure-mode . cider-mode)
-  ;; (add-hook 'clojure-mode-hook 'cider-mode)
   :custom
   ;; open cider-doc directly and close it with q
   (cider-prompt-for-symbol t)
@@ -32,101 +31,77 @@
   (evil-set-initial-state 'cider-popup-buffer-mode 'motion)
   (add-hook 'cider--debug-mode-hook 'warmacs/cider-debug-setup)
 
-  (general-def cider-stacktrace-mode-map
-    :modes '(cider-stacktrace-mode)
-    "C-j" #'cider-stacktrace-next-cause
-    "C-k" #'cider-stacktrace-previous-cause
-    "TAB" #'cider-stacktrace-cycle-current-cause
-    "0"   #'cider-stacktrace-cycle-all-causes
-    "1"   #'cider-stacktrace-cycle-cause-1
-    "2"   #'cider-stacktrace-cycle-cause-2
-    "3"   #'cider-stacktrace-cycle-cause-3
-    "4"   #'cider-stacktrace-cycle-cause-4
-    "5"   #'cider-stacktrace-cycle-cause-5
-    "a"   #'cider-stacktrace-toggle-all
-    "c"   #'cider-stacktrace-toggle-clj
-    "d"   #'cider-stacktrace-toggle-duplicates
-    "J"   #'cider-stacktrace-toggle-java
-    "r"   #'cider-stacktrace-toggle-repl
-    "T"   #'cider-stacktrace-toggle-tooling)
+  (defadvice cider-find-var (before add-evil-jump activate)
+    (evil-set-jump))
 
-  (evilified-state-evilify-map cider-docview-mode-map
-                               :mode cider-docview-mode
-                               :bindings
-                               (kbd "q") 'cider-popup-buffer-quit)
+  :general
 
-  (evilified-state-evilify-map cider-inspector-mode-map
-                               :mode cider-inspector-mode
-                               :bindings
-                               (kbd "L") 'cider-inspector-pop
-                               (kbd "n") 'cider-inspector-next-page
-                               (kbd "N") 'cider-inspector-prev-page
-                               (kbd "p") 'cider-inspector-prev-page
-                               (kbd "r") 'cider-inspector-refresh)
-
-  (evilified-state-evilify-map cider-test-report-mode-map
-                               :mode cider-test-report-mode
-                               :bindings
-                               (kbd "C-j") 'cider-test-next-result
-                               (kbd "C-k") 'cider-test-previous-result
-                               (kbd "RET") 'cider-test-jump
-                               (kbd "d")   'cider-test-ediff
-                               (kbd "e")   'cider-test-stacktrace
-                               (kbd "q")   'cider-popup-buffer-quit
-                               (kbd "r")   'cider-test-rerun-tests
-                               (kbd "t")   'cider-test-run-test
-                               (kbd "T")   'cider-test-run-ns-tests)
-
-  (evilified-state-evilify-map cider-repl-history-mode-map
-                               :mode cider-repl-history-mode
-                               :bindings
-                               "j" 'cider-repl-history-forward
-                               "k" 'cider-repl-history-previous
-                               "s" 'cider-repl-history-occur
-                               "r" 'cider-repl-history-update)
-
-  (warmacs/leader-keys-for-major-mode 'cider-repl-history-mode
-                                          "s" 'cider-repl-history-save)
+  (warmacs/local-leader-keys
+    :keymaps 'cider-repl-history-mode-map
+    "s" 'cider-repl-history-save)
 
   (general-def cider-repl-mode-map
-    :states '(normal)
+    :states '(normal insert)
     "C-j" 'cider-repl-next-input
     "C-k" 'cider-repl-previous-input
     "RET" 'cider-repl-return)
 
-  (if (package-installed-p 'company)
-      (evil-define-key 'insert cider-repl-mode-map
-        (kbd "C-j") 'warmacs//clj-repl-wrap-c-j
-        (kbd "C-k") 'warmacs//clj-repl-wrap-c-k)
-    (evil-define-key 'insert cider-repl-mode-map
-      (kbd "C-j") 'cider-repl-next-input
-      (kbd "C-k") 'cider-repl-previous-input))
+  (general-def  cider-repl-mode-map
+    :states 'insert
+    "<C-return>" 'cider-repl-newline-and-indent
+    "C-r" 'cider-repl-history)
 
-  (evil-define-key 'insert cider-repl-mode-map
-    (kbd "<C-return>") 'cider-repl-newline-and-indent
-    (kbd "C-r") 'cider-repl-history)
+  (:keymaps 'cider-stacktrace-mode-map
+            "C-j" #'cider-stacktrace-next-cause
+            "C-k" #'cider-stacktrace-previous-cause
+            "TAB" #'cider-stacktrace-cycle-current-cause
+            "0"   #'cider-stacktrace-cycle-all-causes
+            "1"   #'cider-stacktrace-cycle-cause-1
+            "2"   #'cider-stacktrace-cycle-cause-2
+            "3"   #'cider-stacktrace-cycle-cause-3
+            "4"   #'cider-stacktrace-cycle-cause-4
+            "5"   #'cider-stacktrace-cycle-cause-5
+            "a"   #'cider-stacktrace-toggle-all
+            "c"   #'cider-stacktrace-toggle-clj
+            "d"   #'cider-stacktrace-toggle-duplicates
+            "J"   #'cider-stacktrace-toggle-java
+            "r"   #'cider-stacktrace-toggle-repl
+            "T"   #'cider-stacktrace-toggle-tooling)
 
-  (when clojure-enable-fancify-symbols
-    (clojure/fancify-symbols 'cider-repl-mode)
-    (clojure/fancify-symbols 'cider-clojure-interaction-mode))
+  (:keymaps 'cider-docview-mode-map
+            "q" 'cider-popup-buffer-quit)
 
-  (defadvice cider-find-var (before add-evil-jump activate)
-    (evil-set-jump))
+  (:keymaps 'cider-inspector-mode-map
+            "L" 'cider-inspector-pop
+            "n" 'cider-inspector-next-page
+            "N" 'cider-inspector-prev-page
+            "p" 'cider-inspector-prev-page
+            "r" 'cider-inspector-refresh)
 
+  (:keymaps 'cider-test-report-mode-map
+            "C-j" 'cider-test-next-result
+            "C-k" 'cider-test-previous-result
+            "RET" 'cider-test-jump
+            "d"   'cider-test-ediff
+            "e"   'cider-test-stacktrace
+            "q"   'cider-popup-buffer-quit
+            "r"   'cider-test-rerun-tests
+            "t"   'cider-test-run-test
+            "T"   'cider-test-run-ns-tests)
 
-  :general
+  (:keymaps 'cider-repl-history-mode-map
+            "j" 'cider-repl-history-forward
+            "k" 'cider-repl-history-previous
+            "s" 'cider-repl-history-occur
+            "r" 'cider-repl-history-update)
+
   (warmacs/local-leader-keys
-    :major-modes t
     :keymaps clojure-mode-maps
-    "hh" 'cider-doc
-    "=r" 'cider-format-region
-    "ge" 'cider-jump-to-compilation-error
-    "gr" 'cider-find-resource
-    "gs" 'cider-browse-spec
-    "gS" 'cider-browse-spec-all
     ;; shortcuts
     "'"  'sesman-start
     ;; help / documentation
+    "h" '(:ignore t :which-key "help")
+    "hh" 'cider-doc
     "ha" 'cider-apropos
     "hc" 'cider-cheatsheet
     "hd" 'cider-clojuredocs
@@ -136,6 +111,7 @@
     "hs" 'cider-browse-spec
     "hS" 'cider-browse-spec-all
     ;; evaluate in source code buffer
+    "e" '(:ignore t :which-key "evaluate")
     "e;" 'cider-eval-defun-to-comment
     "e$" 'warmacs/cider-eval-sexp-end-of-line
     "e(" 'cider-eval-list-at-point
@@ -160,17 +136,25 @@
     "eV" 'cider-eval-sexp-up-to-point
     "ew" 'cider-eval-last-sexp-and-replace
     ;; format code style
+    "="  '(:ignore t :which-key "format")
+    "=r" 'cider-format-region
     "==" 'cider-format-buffer
     "=eb" 'cider-format-edn-buffer
     "=ee" 'cider-format-edn-last-sexp
     "=er" 'cider-format-edn-region
     "=f" 'cider-format-defun
     ;; goto
+    "g"  '(:ignore t :which-key "goto")
+    "gS" 'cider-browse-spec-all
     "gb" 'cider-pop-back
     "gc" 'cider-classpath
+    "ge" 'cider-jump-to-compilation-error
     "gg" 'warmacs/clj-find-var
     "gn" 'cider-find-ns
+    "gr" 'cider-find-resource
+    "gs" 'cider-browse-spec
     ;; manage cider connections / sesman
+    "m"  '(:ignore t :which-key "manager")
     "mb" 'sesman-browser
     "mi" 'sesman-info
     "mg" 'sesman-goto
@@ -187,6 +171,7 @@
     ;; "sa" (if (eq m 'cider-repl-mode)
     ;;          'cider-switch-to-last-clojure-buffer
     ;;        'cider-switch-to-repl-buffer)
+    "s"  '(:ignore t :which-key "session")
     "sb" 'cider-load-buffer
     "sB" 'warmacs/cider-send-buffer-in-repl-and-focus
     "scj" 'cider-connect-clj
@@ -244,12 +229,10 @@
 
   ;; cider-repl-mode only
   (warmacs/local-leader-keys
-    :major-modes t
     :keymaps 'cider-repl-mode-map
     "," 'cider-repl-handle-shortcut)
 
   (warmacs/local-leader-keys
-    :major-modes t
     :keymaps 'cider-clojure-interaction-mode-map
     "epl" 'cider-eval-print-last-sexp))
 

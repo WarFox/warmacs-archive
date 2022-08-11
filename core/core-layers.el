@@ -39,19 +39,17 @@ run before `warmacs-init-layers-hook'. Relevant to `warmacs-layer-init-file'.")
 Defaults to ~/.config/warmacs, ~/.warmacs.d or the value of the WARMACSDIR envvar;
 whichever is found first. Must end in a slash.")
 
-;; (add-to-list )
-
 (defun warmacs-initialize-core-layers ()
   "Load Warmacs's core files for an interactive session. Order matters here"
   (require 'core-ui)
   (require 'core-keybindings)
+  (require 'core-dashboard)
   (require 'core-editor)
   (require 'core-ide)
   (require 'core-treemacs)
   (require 'core-completions)
   (require 'core-layouts)
-  (require 'core-projects)
-  (require 'core-ide))
+  (require 'core-projects))
 
 (defun warmacs-layer-loader (file)
   "Return a closure that loads FILE from a layer.

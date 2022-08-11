@@ -38,14 +38,14 @@
   (general-use-package-emit-autoloads t)
   :init
   (setq
-    warmacs-leader-key "SPC"
-    warmacs-local-leader-key ",")
+   warmacs-leader-key "SPC"
+   warmacs-local-leader-key ",")
   (general-evil-setup)
   :config
 
-;; Spacemacs-like menu
-;; https://gist.github.com/progfolio/1c96a67fcec7584b31507ef664de36cc
-;; https://www.reddit.com/r/emacs/comments/des3cl/comment/f2yw45k/?utm_source=share&utm_medium=web2x&context=3
+  ;; Spacemacs-like menu
+  ;; https://gist.github.com/progfolio/1c96a67fcec7584b31507ef664de36cc
+  ;; https://www.reddit.com/r/emacs/comments/des3cl/comment/f2yw45k/?utm_source=share&utm_medium=web2x&context=3
 
   (general-create-definer warmacs/leader-keys
     :keymaps 'override
@@ -67,14 +67,14 @@
   Create prefix map: warmacs-leader-NAME-menu-map. Prefix bindings in BODY with INFIX-KEY."
     (declare (indent 2))
     `(progn
-      (general-create-definer ,(intern (concat "warmacs/leader-menu-" name))
-        :wrapping warmacs/leader-keys
-        :prefix-map (quote ,(intern (concat "warmacs-leader-menu-" name "-map")))
-        :infix ,infix-key
-        :wk-full-keys nil
-        "" '(:ignore t :which-key ,name))
-      (,(intern (concat "warmacs/leader-menu-" name))
-       ,@body))))
+       (general-create-definer ,(intern (concat "warmacs/leader-menu-" name))
+         :wrapping warmacs/leader-keys
+         :prefix-map (quote ,(intern (concat "warmacs-leader-menu-" name "-map")))
+         :infix ,infix-key
+         :wk-full-keys nil
+         "" '(:ignore t :which-key ,name))
+       (,(intern (concat "warmacs/leader-menu-" name))
+        ,@body))))
 
 ;; Core library of functions
 

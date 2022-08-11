@@ -97,16 +97,19 @@
 
 (straight-use-package 'use-package)
 
-(setq
- ;; compute statistics
-  use-package-compute-statistics 1
-  ;; defer by default
-  use-package-always-defer t
-  ;; using straight.el so disable use-package-ensure
-  use-package-always-ensure nil)
-
 (eval-when-compile
+  (message "when-compile")
   (require 'use-package))
+
+(setq
+ ;; verbose
+ use-package-verbose t
+ ;; compute statistics
+ use-package-compute-statistics 1
+ ;; defer by default
+ use-package-always-defer t
+ ;; using straight.el so disable use-package-ensure
+ use-package-always-ensure nil)
 
 ;; Configure use-package to use straight.el by default
 (use-package straight

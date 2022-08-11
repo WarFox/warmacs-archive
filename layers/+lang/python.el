@@ -13,15 +13,26 @@
   :config
   (require 'dap-python))
 
-(use-package python-mode)
+(use-package python-mode
+  :after lsp
+  :custom
+  (python-indent-offset 4)
+  :init
+  (tree-sitter-require 'python)
+  :hook
+  (python-mode . #'tree-sitter-indent-mode)
+  :general
+  (warmacs/local-leader-keys
+    :keymaps 'python-mode-map
+    "e" '(:ignore t :which-key "errors")
+    "eL" 'lsp-treemacs-error-list))
 
 (use-package poetry
-    :defer t
-    :commands (poetry-venv-toggle
-               poetry-tracking-mode)
+    :commands (poetry-venv-toggle poetry-tracking-mode)
     :general
     (warmacs/local-leader-keys
       :keymaps 'python-mode-map
+      "v" '(:ignore t :which-key "venv")
       "vod" 'poetry-venv-deactivate
       "vow" 'poetry-venv-workon
       "vot" 'poetry-venv-toggle))

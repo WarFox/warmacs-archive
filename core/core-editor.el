@@ -228,15 +228,9 @@ initialized with the current directory instead of filename."
     (interactive "p")
     (let ((evilnc-invert-comment-line-by-line nil))
       (evilnc-comment-or-uncomment-paragraphs arg)))
-  
-  :general
-  (general-def evil-normal-state-map
-    "gc" 'evilnc-comment-operator
-    "gC" '(:ignore t :which-key "yank comment")
-    "gCy" 'evilnc-copy-and-comment-operator)
 
   (warmacs/leader-keys
-    ";"  'evilnc-comment-operator
+    ";"  #'evilnc-comment-operator
     "c"  '(:ignore t :which-key "comment")
     "cl" 'warmacs/comment-or-uncomment-lines
     "cL" 'warmacs/comment-or-uncomment-lines-inverse
@@ -245,7 +239,13 @@ initialized with the current directory instead of filename."
     "ct" 'warmacs/quick-comment-or-uncomment-to-the-line
     "cT" 'warmacs/quick-comment-or-uncomment-to-the-line-inverse
     "cy" 'warmacs/copy-and-comment-lines
-    "cY" 'warmacs/copy-and-comment-lines-inverse))
+    "cY" 'warmacs/copy-and-comment-lines-inverse)
+
+  :general
+  (:keymaps 'evil-normal-state-map
+    "gc" #'evilnc-comment-operator
+    "gC" '(:ignore t :which-key "yank comment")
+    "gCy" 'evilnc-copy-and-comment-operator))
 
 (use-package evil-mc
   :after evil
@@ -265,7 +265,7 @@ initialized with the current directory instead of filename."
 ;; enable recent files
 (use-package emacs
   :config
-  (recentf-mode 1)) 
+  (recentf-mode 1))
 
 ;; hl-todo-mode in individual buffers or use the global variant global-hl-todo-mode
 ;; highlight todo and similar keywords
@@ -273,5 +273,17 @@ initialized with the current directory instead of filename."
   :hook ((prog-mode . hl-todo-mode)
          (markdown-mode . hl-todo-mode)
          (org-mode . hl-todo-mode)))
+
+(use-package fira-code-mode
+  :if (display-graphic-p)
+  :custom
+  (fira-code-mode-disabled-ligatures '())  ; ligatures you don't want
+  :hook prog-mode)                         ; mode to enable fira-code-mode in
+
+;; ;; highlight indent
+;; (use-package highlight-indent-guides
+;;   :custom
+;;   (highlight-indent-guides-method 'bitmap)
+;;   :hook (prog-mode . highlight-indent-guides-mode))
 
 (provide 'core-editor)

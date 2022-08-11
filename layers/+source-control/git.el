@@ -1,18 +1,33 @@
 ;;; layers/+source-control/git.el -*- lexical-binding: t; -*-
 
 (use-package magit
-  :defer 2
   ;; :after git-rebase
   :commands (magit-status magit-get-current-branch magit-completing-read-function)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :hook
+  (with-editor-mode . evil-normalize-keymaps)
   :init
   (setq
    git-magit-status-fullscreen nil
    magit-bury-buffer-function #'magit-restore-window-configuration
    magit-revision-show-gravatars '("^Author:     " . "^Commit:     ") )
-  :hook
-  (with-editor-mode . evil-normalize-keymaps)
+
+  (warmacs/leader-menu-git
+    "b"  'warmacs/git-blame-transient-state/body
+    "c"  'magit-clone
+    "/"  'vc-git-grep
+    "ff" 'magit-find-file
+    "fl" 'magit-log-buffer-file
+    "fd" 'magit-diff
+    "fm" 'magit-file-dispatch
+    "i"  'magit-init
+    "L"  'magit-list-repositories
+    "m"  'magit-dispatch
+    "s"  'magit-status
+    "S"  'magit-stage-file
+    "U"  'magit-unstage-file)
+
   :config
   ;; confirm/abort
   ;; (add-hook 'with-editor-mode-hook 'evil-normalize-keymaps)
@@ -51,28 +66,13 @@
   (:keymaps 'magit-repolist-mode-map
             :major-modes 'magit-repolist-mode
             "gr" 'magit-list-repositories
-            "RET" 'magit-repolist-status)
-
-  (warmacs/leader-menu-git
-    "b"  'warmacs/git-blame-transient-state/body
-    "c"  'magit-clone
-    "/"  'vc-git-grep
-    "ff" 'magit-find-file
-    "fl" 'magit-log-buffer-file
-    "fd" 'magit-diff
-    "fm" 'magit-file-dispatch
-    "i"  'magit-init
-    "L"  'magit-list-repositories
-    "m"  'magit-dispatch
-    "s"  'magit-status
-    "S"  'magit-stage-file
-    "U"  'magit-unstage-file))
+            "RET" 'magit-repolist-status))
 
 (use-package gitignore-templates
   :after (magit)
   :init
   (warmacs/local-leader-keys
-    :major-modes 'gitignore-mode
+    :keymaps 'gitignore-mode-map
     "i" 'gitignore-templates-insert)
   (warmacs/leader-menu-files
     "i" 'gitignore-templates-new-file))
@@ -82,30 +82,30 @@
   :init
   (setq
    forge-database-file (concat warmacs-cache-dir
-                        "forge-database.sqlite")
+                               "forge-database.sqlite")
    forge-add-default-bindings nil)
   :general
-    (warmacs/local-leader-keys
-      :keymaps 'forge-topic-mode-map
-      "a" 'forge-edit-topic-assignees
-      "c" 'forge-create-post
-      "C" 'forge-checkout-pullreq
-      "b" 'forge-browse-topic
-      "d" 'forge-delete-comment
-      "e" 'forge-edit-post
-      "m" 'forge-edit-topic-marks
-      "M" 'forge-create-mark
-      "n" 'forge-edit-topic-note
-      "r" 'forge-edit-topic-review-requests
-      "s" 'forge-edit-topic-state
-      "t" 'forge-edit-topic-title
-      "u" 'forge-copy-url-at-point-as-kill)
-    (warmacs/local-leader-keys
-      :keymaps 'forge-post-mode-map
-      warmacs-local-leader-key 'forge-post-submit
-      "c" 'forge-post-submit
-      "k" 'forge-post-cancel
-      "a" 'forge-post-cancel))
+  (warmacs/local-leader-keys
+    :keymaps 'forge-topic-mode-map
+    "a" 'forge-edit-topic-assignees
+    "c" 'forge-create-post
+    "C" 'forge-checkout-pullreq
+    "b" 'forge-browse-topic
+    "d" 'forge-delete-comment
+    "e" 'forge-edit-post
+    "m" 'forge-edit-topic-marks
+    "M" 'forge-create-mark
+    "n" 'forge-edit-topic-note
+    "r" 'forge-edit-topic-review-requests
+    "s" 'forge-edit-topic-state
+    "t" 'forge-edit-topic-title
+    "u" 'forge-copy-url-at-point-as-kill)
+  (warmacs/local-leader-keys
+    :keymaps 'forge-post-mode-map
+    warmacs-local-leader-key 'forge-post-submit
+    "c" 'forge-post-submit
+    "k" 'forge-post-cancel
+    "a" 'forge-post-cancel))
 
 ;; highlight changes
 (use-package git-gutter-fringe

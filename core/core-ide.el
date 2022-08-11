@@ -10,15 +10,18 @@
 
 (use-package tree-sitter-langs)
 
+(use-package tree-sitter-indent
+  :commands 'tree-sitter-indent-mode)
+
 ;; lsp
 
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         ;; (XXX-mode . lsp)
-         ;; if you want which-key integration
+  (setq lsp-keymap-prefix (format "%s l" warmacs-local-leader-key))
+  :hook ((python-mode . lsp)
+         (scala-mode . lsp)
+         (rust-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands
   (lsp lsp-deferred))

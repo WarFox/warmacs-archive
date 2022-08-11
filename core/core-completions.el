@@ -11,7 +11,6 @@
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :init
-
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
@@ -22,21 +21,22 @@
   (advice-add #'register-preview :override #'consult-register-window)
   (advice-add #'multi-occur :override #'consult-multi-occur)
   :general
-    ([remap apropos]                       #'consult-apropos)
-    ([remap bookmark-jump]                 #'consult-bookmark)
-    ([remap evil-show-marks]               #'consult-mark)
-    ([remap evil-show-registers]           #'consult-register)
-    ([remap goto-line]                     #'consult-goto-line)
-    ([remap imenu]                         #'consult-imenu)
-    ([remap locate]                        #'consult-locate)
-    ([remap load-theme]                    #'consult-theme)
-    ([remap man]                           #'consult-man)
-    ([remap recentf-open-files]            #'consult-recent-file)
-    ([remap switch-to-buffer]              #'consult-buffer)
-    ([remap switch-to-buffer-other-window] #'consult-buffer-other-window)
-    ([remap switch-to-buffer-other-frame]  #'consult-buffer-other-frame)
-    ([remap yank-pop]                      #'consult-yank-pop)
-    ([remap vc-git-grep]                   #'consult-git-grep)
+  ([remap apropos]                       #'consult-apropos)
+  ([remap bookmark-jump]                 #'consult-bookmark)
+  ([remap evil-show-marks]               #'consult-mark)
+  ([remap evil-show-registers]           #'consult-register)
+  ([remap goto-line]                     #'consult-goto-line)
+  ([remap imenu]                         #'consult-imenu)
+  ([remap locate]                        #'consult-locate)
+  ([remap load-theme]                    #'consult-theme)
+  ([remap man]                           #'consult-man)
+  ([remap recentf-open-files]            #'consult-recent-file)
+  ([remap switch-to-buffer]              #'consult-buffer)
+  ([remap switch-to-buffer-other-window] #'consult-buffer-other-window)
+  ([remap switch-to-buffer-other-frame]  #'consult-buffer-other-frame)
+  ([remap projectile-switch-to-buffer]   #'consult-project-buffer)
+  ([remap yank-pop]                      #'consult-yank-pop)
+  ([remap vc-git-grep]                   #'consult-git-grep)
 
   ("C-s" 'consult-line)
 
@@ -54,10 +54,26 @@
   :config
   (all-the-icons-completion-mode 1))
 
-(use-package embark)
+(use-package embark
+  :general
+  ("C-."  'embark-act)         ;; pick some comfortable binding
+  ("C-;"  'embark-dwim)        ;; good alternative: M-.
+  ("C-h B" 'embark-bindings) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-  :ensure t
   :after (embark consult)
   :demand t ; only necessary if you have the hook below
   ;; if you want to have consult previews as you move around an
