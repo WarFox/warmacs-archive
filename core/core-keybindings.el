@@ -141,20 +141,6 @@
            :which-key "prompt-kill-emacs")
     "Q" 'warmacs/kill-emacs))
 
-(use-package elisp-mode
-  ;;this is a built in package, so we don't want to try and install it
-  :straight (:type built-in)
-  :general
-  (warmacs/local-leader-keys
-    :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
-    "e" '(:ignore t :which-key "eval")
-    "eb" 'eval-buffer
-    "ed" 'eval-defun
-    "ee" 'eval-expression
-    "ep" 'pp-eval-last-sexp
-    "es" 'eval-last-sexp
-    "i" 'elisp-index-search))
-
 (general-nvmap
   "TAB" 'indent-for-tab-command)
 

@@ -34,7 +34,6 @@
       mouse-wheel-scroll-amount '(2 ((shift) . hscroll))
       mouse-wheel-scroll-amount-horizontal 2)
 
-
 ;;
 ;;; Cursor
 
@@ -113,5 +112,60 @@
   :init
   (column-number-mode 1)
   (size-indication-mode 1))
+
+(use-package hl-line
+  ;; Highlights the current line
+  :hook (emacs-startup . global-hl-line-mode)
+  :init
+  (defvar global-hl-line-modes
+    '(prog-mode text-mode conf-mode special-mode
+      org-agenda-mode dired-mode)
+    "What modes to enable `hl-line-mode' in.")
+  :config
+  ;; HACK I reimplement `global-hl-line-mode' so we can white/blacklist modes in
+  ;;      `global-hl-line-modes' _and_ so we can use `global-hl-line-mode',
+  ;;      which users expect to control hl-line in Emacs.
+  (define-globalized-minor-mode global-hl-line-mode hl-line-mode
+    (lambda ()
+      (and (cond (hl-line-mode nil)
+                 ((null global-hl-line-modes) nil)
+                 ((eq global-hl-line-modes t))
+                 ((eq (car global-hl-line-modes) 'not)
+                  (not (derived-mode-p global-hl-line-modes)))
+                 ((apply #'derived-mode-p global-hl-line-modes)))
+           (hl-line-mode +1))))
+
+  ;; Temporarily disable `hl-line' when selection is active, since it doesn't
+  ;; serve much purpose when the selection is so much more visible.
+  (defvar warmacs--hl-line-mode nil)
+
+  (add-hook 'hl-line-mode-hook
+    (defun warmacs-truly-disable-hl-line-h ()
+      (unless hl-line-mode
+        (setq-local warmacs--hl-line-mode nil))))
+
+  (dolist (hook '(evil-visual-state-entry-hook activate-mark-hook))
+       (add-hook hook
+                 (defun warmacs-disable-hl-line-h ()
+                   (when hl-line-mode
+                     (hl-line-mode -1)
+                     (setq-local warmacs--hl-line-mode t)))))
+
+  (dolist (hook '(evil-visual-state-exit-hook deactivate-mark-hook))
+       (add-hook hook
+                 (defun warmacs-enable-hl-line-maybe-h ()
+                   (when warmacs--hl-line-mode
+                     (hl-line-mode +1))))))
+
+(use-package rainbow-delimiters
+  ;; Make parenthesis depth easier to distinguish at a glance
+  :custom (rainbow-delimiters-max-face-count 4)
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package highlight-quoted
+  ;; Make quoted symbols easier to distinguish from free variables
+  :hook
+  (emacs-lisp-mode . highlight-quoted-mode)
+  (clojure-mode . highlight-quoted-mode))
 
 (provide 'core-ui)

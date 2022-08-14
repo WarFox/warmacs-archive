@@ -9,14 +9,13 @@
 (setq
  gc-cons-threshold most-positive-fixnum
 
-;; In noninteractive sessions, prioritize non-byte-compiled source files to
-;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
-;; to skip the mtime checks on every *.elc file.
- load-prefer-newer noninteractive
+;; Load byte-compiled source files. Saves us a little IO time to skip
+;; all the mtime checks on each lookup.
+ load-prefer-newer nil
 
-;; Prevent unwanted runtime compilation for gccemacs (native-comp) users;
-;; packages are compiled ahead-of-time when they are installed and site files
-;; are compiled when gccemacs is installed.
+;; Prevent unwanted runtime compilation for gccemacs (native-comp)
+;; users; packages are compiled ahead-of-time when they are installed
+;; and site files are compiled when gccemacs is installed.
 native-comp-deferred-compilation nil
 
 ;; In Emacs 27+, package initialization occurs before `user-init-file' is
@@ -24,26 +23,26 @@ native-comp-deferred-compilation nil
 ;; straight.el, so we must prevent Emacs from doing it early!
 package-enable-at-startup nil)
 
-
 (unless (or (daemonp)
           noninteractive
           init-file-debug)
-;; Premature redisplays can substantially affect startup times and produce
-;; ugly flashes of unstyled Emacs.
+
+  ;; Premature redisplays can substantially affect startup times and produce
+  ;; ugly flashes of unstyled Emacs.
   (setq-default inhibit-redisplay t
                 inhibit-message t)
   (add-hook 'window-setup-hook
-  (lambda ()
-    (setq-default inhibit-redisplay nil
-      inhibit-message nil)
-    (redisplay)))
+            (lambda ()
+              (setq-default inhibit-redisplay nil
+                            inhibit-message nil)
+              (redisplay)))
 
   ;; Site files tend to use `load-file', which emits "Loading X..." messages in
   ;; the echo area, which in turn triggers a redisplay. Redisplays can have a
   ;; substantial effect on startup times and in this case happens so early that
   ;; Emacs may flash white while starting up.
   (define-advice load-file (:override (file) silence)
-    (load file nil 'nomessage))
+    (load file nil :nomessage))
 
   ;; Undo our `load-file' advice above, to limit the scope of any edge cases it
   ;; may introduce down the road.

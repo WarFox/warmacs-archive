@@ -4,10 +4,6 @@
   :after doom-themes
   :custom
   (doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-
   :config
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
@@ -16,22 +12,23 @@
 
   ;; setup treemacs theme
   (doom-themes-treemacs-config)
-  :general
-  (:keymaps 'treemacs-mode-map
-    "c"   'treemacs-create
-    "d"   'treemacs-delet-file
-    "o"    (general-key-dispatch 'treemacs-visit-node
-                 "a" 'treemacs-visit-node-ace)
-    "t"         'treemacs-toggles
-    "y"         'treemacs-copy
-    "C-c C-p"   (general-key-dispatch 'treemacs-projects
-                  "c" 'treemacs-projects-collapse)))
+
+  ;; (general-def 'treemacs-mode-map
+  ;;   "c"   'treemacs-create
+  ;;   "d"   'treemacs-delet-file
+  ;;   "o"    (general-key-dispatch 'treemacs-visit-node
+  ;;                "a" 'treemacs-visit-node-ace)
+  ;;   "t"         'treemacs-toggles
+  ;;   "y"         'treemacs-copy
+  ;;   "C-c C-p"   (general-key-dispatch 'treemacs-projects
+  ;;                 "c" 'treemacs-projects-collapse))
+  )
 
 (use-package treemacs-evil
   :after (treemacs evil)
-  :general
-  (:keymaps 'evil-treemacs-state-map
-    "d"         'treemacs-delet-file
+  :init
+  (general-def 'evil-treemacs-state-map
+    ;; "d"         'treemacs-delet-file
     [return] #'treemacs-RET-action
     [tab]    #'treemacs-TAB-action
     "TAB"    #'treemacs-TAB-action

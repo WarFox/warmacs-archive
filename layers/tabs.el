@@ -7,13 +7,13 @@
   (centaur-tabs-modified-marker "⚠")
   (centaur-tabs-cycle-scope 'tabs)
   :hook
-  (emacs-startup . centaur-tabs-mode)
-  (dired-mode . centaur-tabs-local-mode)
-  (dashboard-mode . centaur-tabs-local-mode)
-  (term-mode . centaur-tabs-local-mode)
-  (calendar-mode . centaur-tabs-local-mode)
-  (org-agenda-mode . centaur-tabs-local-mode)
-  (helpful-mode . centaur-tabs-local-mode)
+  ((prog-mode text-mode) . centaur-tabs-mode)
+  ((dired-mode
+    dashboard-mode
+    term-mode
+    calendar-mode
+    org-agenda-mode
+    helpful-mode) . centaur-tabs-local-mode)
   :config
   (unless (daemonp)
     (setq centaur-tabs-set-bar 'left))

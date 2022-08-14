@@ -74,7 +74,23 @@
          :wk-full-keys nil
          "" '(:ignore t :which-key ,name))
        (,(intern (concat "warmacs/leader-menu-" name))
-        ,@body))))
+        ,@body)))
+
+  (defmacro warmacs/local-leader-menu (mode &rest body)
+    "Create a definer named warmacs/local-leader-menu-MODE wrapping warmacs/local-leader-keys
+     Create prefix map: warmacs-local.
+     Parameter mode must be a symbol not end with -mode"
+    (declare (indent 2))
+    (let ((local-leader-menu-name (concat "warmacs/local-leader-menu-" (symbol-name mode)))
+          (local-keymap (concat (symbol-name mode) "-mode-map")))
+      `(progn
+         (general-create-definer ,(intern local-leader-menu-name)
+           :wrapping warmacs/local-leader-keys
+           :keymaps (quote ,(intern local-keymap))
+           :wk-full-keys nil
+           "" '(:ignore t :which-key ,mode))
+         (,(intern local-leader-menu-name)
+          ,@body)))))
 
 ;; Core library of functions
 

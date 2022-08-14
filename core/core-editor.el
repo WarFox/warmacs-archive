@@ -162,8 +162,22 @@ initialized with the current directory instead of filename."
 (warmacs/leader-menu-files
   "R" #'warmacs/rename-current-buffer-file)
 
+;; undo-redo system
+;; https://codeberg.org/ideasman42/emacs-undo-fu
+(use-package undo-fu)
+
+(use-package undo-fu-session
+  :init
+  (global-undo-fu-session-mode)
+  :config
+  (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
+
+(use-package vundo)
+
 ;; Evil Keybindings
 (use-package evil
+  :custom
+  (evil-undo-system 'undo-fu)
   :init
   (setq
    evil-want-integration t
@@ -173,10 +187,11 @@ initialized with the current directory instead of filename."
 (use-package evil-collection
   :after evil
   :init
+  (setq evil-want-keybinding nil)
   (evil-collection-init))
 
 (use-package evil-goggles
-  :after evil-collection
+  :after evil
   :custom
   (evil-goggles-duration 0.05)
   :config
@@ -278,7 +293,8 @@ initialized with the current directory instead of filename."
   :if (display-graphic-p)
   :custom
   (fira-code-mode-disabled-ligatures '())  ; ligatures you don't want
-  :hook prog-mode)                         ; mode to enable fira-code-mode in
+  :init
+  :hook (prog-mode . fira-code-mode)) ; mode to enable fira-code-mode in
 
 ;; ;; highlight indent
 ;; (use-package highlight-indent-guides

@@ -14,17 +14,25 @@
   :commands 'tree-sitter-indent-mode)
 
 ;; lsp
-
+;; TODO need a lot of work here to get default which-key menu enabled for
+;; all languages with support for lsp
 (use-package lsp-mode
+  :commands (lsp lsp-deferred)
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix (format "%s l" warmacs-local-leader-key))
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
   :hook ((python-mode . lsp)
          (scala-mode . lsp)
          (rust-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
-  :commands
-  (lsp lsp-deferred))
+  :general
+  (:keymaps 'lsp-command-map
+  "=" '(:ignore t :which-key "format")
+  "=b" #'lsp-format-buffer
+  "=o" #'lsp-organize-imports
+  "=r" #'lsp-format-region))
 
 ;; optionally
 (use-package lsp-ui
