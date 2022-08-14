@@ -14,4 +14,4 @@
            (bound-and-true-p org-indent-mode)
            (highlight-indent-guides-mode -1)))))
 
-(provide 'layer/ui/indent-guides)
+(provide 'layer/+ui/indent-guide)

@@ -9,33 +9,15 @@
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode 'always)
   (treemacs-hide-gitignored-files-mode 0)
+  (treemacs-git-mode 'deferred)
 
   ;; setup treemacs theme
-  (doom-themes-treemacs-config)
-
-  ;; (general-def 'treemacs-mode-map
-  ;;   "c"   'treemacs-create
-  ;;   "d"   'treemacs-delet-file
-  ;;   "o"    (general-key-dispatch 'treemacs-visit-node
-  ;;                "a" 'treemacs-visit-node-ace)
-  ;;   "t"         'treemacs-toggles
-  ;;   "y"         'treemacs-copy
-  ;;   "C-c C-p"   (general-key-dispatch 'treemacs-projects
-  ;;                 "c" 'treemacs-projects-collapse))
-  )
+  (doom-themes-treemacs-config))
 
 (use-package treemacs-evil
   :after (treemacs evil)
   :init
-  (general-def 'evil-treemacs-state-map
-    ;; "d"         'treemacs-delet-file
-    [return] #'treemacs-RET-action
-    [tab]    #'treemacs-TAB-action
-    "TAB"    #'treemacs-TAB-action
-    ;; REVIEW Fix #1875 to be consistent with C-w {v,s}, but this should really
-    ;;        be considered upstream.
-    "o v"    #'treemacs-visit-node-horizontal-split
-    "o s"    #'treemacs-visit-node-vertical-split))
+  (require 'treemacs-evil))
 
 (use-package treemacs-projectile
   :after (treemacs projectile))
