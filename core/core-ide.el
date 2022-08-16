@@ -50,4 +50,9 @@
 (use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
+;; smartparens
+(use-package smartparens
+  :init
+  (require 'smartparens-config))
+
 (provide 'core-ide)

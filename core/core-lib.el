@@ -9,6 +9,8 @@
 (use-package request)
 (use-package bui)
 (use-package dash)
+(use-package aio)
+(use-package tablist)
 
 ;; Do things asynchronously
 (use-package emacs-async
@@ -163,5 +165,8 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
    `(progn
       ;; (message "use-layer! %s" ,layername)
       (warmacs--require-layer ,layername)))
+
+(defmacro provide-layer! (name)
+  `(provide (make-symbol (format "layer/%s" ,name))))
 
 (provide 'core-lib)

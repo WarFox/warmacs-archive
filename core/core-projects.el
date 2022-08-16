@@ -37,7 +37,7 @@
     "t" 'treemacs
     "T" 'projectile-test-project
     "v" 'projectile-vc)
-  (setq projectile-switch-project-action #'projectile-find-file-dwim))
+  (setq projectile-switch-project-action #'project-find-file))
 
 (put 'dired-find-alternate-file 'disabled nil)
 

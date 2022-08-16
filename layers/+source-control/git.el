@@ -74,8 +74,8 @@
   (warmacs/local-leader-keys
     :keymaps 'gitignore-mode-map
     "i" 'gitignore-templates-insert)
-  (warmacs/leader-menu-files
-    "i" 'gitignore-templates-new-file))
+  (warmacs/leader-menu-git
+    "fi" 'gitignore-templates-new-file))
 
 (use-package forge
   :after magit

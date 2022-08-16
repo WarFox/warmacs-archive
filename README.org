@@ -37,6 +37,8 @@ Supports =lsp= and =tree-sitter= out of the box for you programming experience.
 - https://github.com/doomemacs/doomemacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly
 - https://www.lucacambiaghi.com/vanilla-emacs/readme.html
 - [[https://alhassy.github.io/emacs.d/][A Life Configuring Emacs]]
+- https://github.com/SystemCrafters/crafted-emacs
+- https://www.youtube.com/watch?v=2agRcDHgRAg
 
 * License
 

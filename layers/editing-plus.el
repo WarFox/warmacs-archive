@@ -7,16 +7,16 @@
     ("i" string-inflection-all-cycle "cycle")
     ("q" nil "finished" :exit t))
   :general
-    (warmacs/leader-menu-text
-      "i" '(:ignore t :which-key "inflection")
-      "ic" 'string-inflection-lower-camelcase
-      "iC" 'string-inflection-camelcase
-      "ii" 'hydra-string-inflection/body
-      "i-" 'string-inflection-kebab-case
-      "ik" 'string-inflection-kebab-case
-      "i_" 'string-inflection-underscore
-      "iu" 'string-inflection-underscore
-      "iU" 'string-inflection-upcase))
+  (warmacs/leader-menu-text
+    "i" '(:ignore t :which-key "inflection")
+    "ic" 'string-inflection-lower-camelcase
+    "iC" 'string-inflection-camelcase
+    "ii" 'hydra-string-inflection/body
+    "i-" 'string-inflection-kebab-case
+    "ik" 'string-inflection-kebab-case
+    "i_" 'string-inflection-underscore
+    "iu" 'string-inflection-underscore
+    "iU" 'string-inflection-upcase))
 
 (use-package string-edit
   :general
@@ -35,16 +35,16 @@
   (avy-all-windows 'all-frames)
   (avy-background t)
   :config
-      (defun warmacs/avy-goto-url ()
-      "Use avy to go to an URL in the buffer."
-      (interactive)
-      (avy-jump "https?://"))
-    (defun warmacs/avy-open-url ()
-      "Use avy to select an URL in the buffer and open it."
-      (interactive)
-      (save-excursion
-        (warmacs/avy-goto-url)
-        (browse-url-at-point)))
+  (defun warmacs/avy-goto-url ()
+    "Use avy to go to an URL in the buffer."
+    (interactive)
+    (avy-jump "https?://"))
+  (defun warmacs/avy-open-url ()
+    "Use avy to select an URL in the buffer and open it."
+    (interactive)
+    (save-excursion
+      (warmacs/avy-goto-url)
+      (browse-url-at-point)))
   :general
   (warmacs/leader-menu-jump/join/split
     "b" 'avy-pop-mark
@@ -58,39 +58,39 @@
     "o" 'warmacs/avy-open-url))
 
 (use-package evil-easymotion
-    :after evil
-    :init
-    (defun buffer-evil-avy-goto-char-timer ()
-      "Call jump to the given chars use avy"
-      (interactive)
-      (let ((current-prefix-arg t))
-        (evil-avy-goto-char-timer)))
+  :after evil
+  :init
+  (defun buffer-evil-avy-goto-char-timer ()
+    "Call jump to the given chars use avy"
+    (interactive)
+    (let ((current-prefix-arg t))
+      (evil-avy-goto-char-timer)))
 
-    (evilem-default-keybindings "gs")
-    (define-key evilem-map "a" (evilem-create #'evil-forward-arg))
-    (define-key evilem-map "A" (evilem-create #'evil-backward-arg))
-    (define-key evilem-map "o" (evilem-create #'evil-jump-out-args))
-    (define-key evilem-map "s" #'evil-avy-goto-char-2)
-    (define-key evilem-map "/" #'evil-avy-goto-char-timer)
-    (define-key evilem-map (kbd "SPC") #'buffer-evil-avy-goto-char-timer)
+  (evilem-default-keybindings "gs")
+  (define-key evilem-map "a" (evilem-create #'evil-forward-arg))
+  (define-key evilem-map "A" (evilem-create #'evil-backward-arg))
+  (define-key evilem-map "o" (evilem-create #'evil-jump-out-args))
+  (define-key evilem-map "s" #'evil-avy-goto-char-2)
+  (define-key evilem-map "/" #'evil-avy-goto-char-timer)
+  (define-key evilem-map (kbd "SPC") #'buffer-evil-avy-goto-char-timer)
 
-    ;; Provide proper prefixes for which key
-    (which-key-add-keymap-based-replacements evil-motion-state-map
-      "gs"  "evil-easymotion")
-    (which-key-add-keymap-based-replacements evilem-map
-      "g" "misc"
-      "[" "section backward"
-      "]" "section forward")
+  ;; Provide proper prefixes for which key
+  (which-key-add-keymap-based-replacements evil-motion-state-map
+    "gs"  "evil-easymotion")
+  (which-key-add-keymap-based-replacements evilem-map
+    "g" "misc"
+    "[" "section backward"
+    "]" "section forward")
 
-    ;; Use evil-search backend, instead of isearch
-    (evilem-make-motion evilem-motion-search-next #'evil-ex-search-next
-                        :bind ((evil-ex-search-highlight-all nil)))
-    (evilem-make-motion evilem-motion-search-previous #'evil-ex-search-previous
-                        :bind ((evil-ex-search-highlight-all nil)))
-    (evilem-make-motion evilem-motion-search-word-forward #'evil-ex-search-word-forward
-                        :bind ((evil-ex-search-highlight-all nil)))
-    (evilem-make-motion evilem-motion-search-word-backward #'evil-ex-search-word-backward
-                        :bind ((evil-ex-search-highlight-all nil))))
+  ;; Use evil-search backend, instead of isearch
+  (evilem-make-motion evilem-motion-search-next #'evil-ex-search-next
+                      :bind ((evil-ex-search-highlight-all nil)))
+  (evilem-make-motion evilem-motion-search-previous #'evil-ex-search-previous
+                      :bind ((evil-ex-search-highlight-all nil)))
+  (evilem-make-motion evilem-motion-search-word-forward #'evil-ex-search-word-forward
+                      :bind ((evil-ex-search-highlight-all nil)))
+  (evilem-make-motion evilem-motion-search-word-backward #'evil-ex-search-word-backward
+                      :bind ((evil-ex-search-highlight-all nil))))
 
 (use-package whitespace-cleanup-mode
   :init
