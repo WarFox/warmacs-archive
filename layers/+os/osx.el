@@ -1,4 +1,4 @@
-;; org.el -*- lexical-binding: t; -*-
+;; +os/osx.el -*- lexical-binding: t; -*-
 
 (with-system darwin
   ;; Enable built-in trash support via finder API if available (only on Emacs
@@ -13,4 +13,4 @@
     (when gls
       (setq insert-directory-program gls))))
 
-(provide 'layer/osx)
+(provide 'layer/+os/osx)

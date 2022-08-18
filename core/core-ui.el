@@ -7,12 +7,13 @@
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
 
-;; frame
-(add-to-list 'default-frame-alist
-            '(ns-transparent-titlebar . t))
+(with-system darwin
+             ;; frame
+             (add-to-list 'default-frame-alist
+                          '(ns-transparent-titlebar . t))
 
-(add-to-list 'default-frame-alist
-            '(ns-appearance . dark)) ;; or light - depending on your theme
+             (add-to-list 'default-frame-alist
+                          '(ns-appearance . dark)))
 
 ;;
 ;;; Scrolling
@@ -119,7 +120,7 @@
   :init
   (defvar global-hl-line-modes
     '(prog-mode text-mode conf-mode special-mode
-      org-agenda-mode dired-mode)
+                org-agenda-mode dired-mode)
     "What modes to enable `hl-line-mode' in.")
   :config
   ;; HACK I reimplement `global-hl-line-mode' so we can white/blacklist modes in
@@ -140,22 +141,22 @@
   (defvar warmacs--hl-line-mode nil)
 
   (add-hook 'hl-line-mode-hook
-    (defun warmacs-truly-disable-hl-line-h ()
-      (unless hl-line-mode
-        (setq-local warmacs--hl-line-mode nil))))
+            (defun warmacs-truly-disable-hl-line-h ()
+              (unless hl-line-mode
+                (setq-local warmacs--hl-line-mode nil))))
 
   (dolist (hook '(evil-visual-state-entry-hook activate-mark-hook))
-       (add-hook hook
-                 (defun warmacs-disable-hl-line-h ()
-                   (when hl-line-mode
-                     (hl-line-mode -1)
-                     (setq-local warmacs--hl-line-mode t)))))
+    (add-hook hook
+              (defun warmacs-disable-hl-line-h ()
+                (when hl-line-mode
+                  (hl-line-mode -1)
+                  (setq-local warmacs--hl-line-mode t)))))
 
   (dolist (hook '(evil-visual-state-exit-hook deactivate-mark-hook))
-       (add-hook hook
-                 (defun warmacs-enable-hl-line-maybe-h ()
-                   (when warmacs--hl-line-mode
-                     (hl-line-mode +1))))))
+    (add-hook hook
+              (defun warmacs-enable-hl-line-maybe-h ()
+                (when warmacs--hl-line-mode
+                  (hl-line-mode +1))))))
 
 (use-package rainbow-delimiters
   ;; Make parenthesis depth easier to distinguish at a glance

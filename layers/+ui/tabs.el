@@ -1,4 +1,4 @@
-;;; tabs.el -*- lexical-binding: t; -*-
+;;; +ui/tabs.el -*- lexical-binding: t; -*-
 
 (use-package centaur-tabs
   :custom
@@ -32,4 +32,4 @@
             "g C-t"    'centaur-tabs-move-current-tab-to-right
             "g C-S-t"  'centaur-tabs-move-current-tab-to-left))
 
-(provide 'layer/tabs)
+(provide 'layer/+ui/tabs)

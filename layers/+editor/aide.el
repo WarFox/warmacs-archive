@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;; +editor/aide.el -*- lexical-binding: t; -*-
 
 (use-package aide
   :straight (aide
@@ -20,5 +20,6 @@
     "R" 'aide-openai-complete-region-insert))
 
 
-(provide 'layer/aide)
-;;; aide.el ends here
+(provide-layer! +editor/aide)
+
+;;; +editor/aide.el ends here

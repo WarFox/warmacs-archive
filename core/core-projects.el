@@ -22,8 +22,8 @@
     "d" 'projectile-find-dir
     "D" 'projectile-dired
     "e" 'projectile-edit-dir-locals
-    ;; "f" #'project-find-file ; 'projectile-find-file
-    "f" 'projectile-find-file
+    "f" #'project-find-file ; 'projectile-find-file
+    ;; "f" 'projectile-find-file
     "F" 'projectile-find-file-dwim
     "g" 'projectile-find-tag
     "G" 'projectile-regenerate-tags

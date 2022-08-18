@@ -296,10 +296,4 @@ initialized with the current directory instead of filename."
   :init
   :hook (prog-mode . fira-code-mode)) ; mode to enable fira-code-mode in
 
-;; ;; highlight indent
-;; (use-package highlight-indent-guides
-;;   :custom
-;;   (highlight-indent-guides-method 'bitmap)
-;;   :hook (prog-mode . highlight-indent-guides-mode))
-
 (provide 'core-editor)

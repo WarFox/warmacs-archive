@@ -3,4 +3,4 @@
 (warmacs/leader-menu-toggles/themes
   "F" 'toggle-frame-fullscreen)
 
-(provide 'layer/toggles)
+(provide 'layer/+emacs/toggles)

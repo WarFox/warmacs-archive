@@ -98,4 +98,4 @@
   :config
   (global-whitespace-cleanup-mode 1))
 
-(provide 'layer/editing-plus)
+(provide 'layer/+editor/editing-plus)

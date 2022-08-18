@@ -1,4 +1,4 @@
-;;; layers/+source-control/git.el -*- lexical-binding: t; -*-
+;;; +source-control/git.el -*- lexical-binding: t; -*-
 
 (use-package magit
   ;; :after git-rebase

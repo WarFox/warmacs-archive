@@ -13,4 +13,4 @@
       "bb" #'dockerfile-build-buffer
       "bB" #'dockerfile-build-no-cache-buffer))
 
-(provide-layer '+tools/docker)
+(provide-layer! +tools/docker)

@@ -1,4 +1,4 @@
-;;; windows.el -*- lexical-binding: t; -*-
+;;; core-windows.el -*- lexical-binding: t; -*-
 
 (use-package ace-window
   :general
@@ -74,4 +74,4 @@ If the universal prefix argument is used then kill the buffer too."
   "_"  'warmacs/maximize-horizontally
   "|"  'warmacs/maximize-vertically)
 
-(provide 'layer/windows)
+(provide 'core-windows)

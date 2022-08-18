@@ -1,4 +1,4 @@
-;;; zoom.el -*- lexical-binding: t; -*-
+;;; +ui/zoom.el -*- lexical-binding: t; -*-
 
 (defhydra hydra-text-scale (:timeout 4)
   "scale text"
@@ -10,4 +10,4 @@
 (warmacs/leader-menu-zoom
   "s" '(hydra-text-scale/body :which-key "scale text"))
 
-(provide 'layer/zoom)
+(provide 'layer/+ui/zoom)

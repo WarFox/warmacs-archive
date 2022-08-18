@@ -97,21 +97,21 @@
 ;; Core library of functions
 
 (defun warmacs/find-file-in-project (filename)
-    "Open a file like find-file. If the file belongs to a project, creates
+  "Open a file like find-file. If the file belongs to a project, creates
     a new persp and enables projectile mode for it."
-    (interactive (list (read-file-name "Find file: " nil default-directory (confirm-nonexistent-file-or-buffer))))
-    (let* ((persp-reset-windows-on-nil-window-conf t)
-          (filename-fullpath (file-truename filename))
-          (filename-directory (if (file-directory-p filename-fullpath)
-                                  (file-name-as-directory filename-fullpath)
-                                (file-name-directory filename-fullpath)))
-          (projectile-switch-project-action (lambda () (find-file filename-fullpath)))
-          (project-root (projectile-root-bottom-up filename-directory)))
-      (if project-root
-          (progn
-            (persp-switch (file-name-nondirectory (directory-file-name project-root)))
-            (projectile-switch-project-by-name project-root))
-        (message "Requested file does not belong to any project"))))
+  (interactive (list (read-file-name "Find file: " nil default-directory (confirm-nonexistent-file-or-buffer))))
+  (let* ((persp-reset-windows-on-nil-window-conf t)
+         (filename-fullpath (file-truename filename))
+         (filename-directory (if (file-directory-p filename-fullpath)
+                                 (file-name-as-directory filename-fullpath)
+                               (file-name-directory filename-fullpath)))
+         (projectile-switch-project-action (lambda () (find-file filename-fullpath)))
+         (project-root (projectile-root-bottom-up filename-directory)))
+    (if project-root
+        (progn
+          (persp-switch (file-name-nondirectory (directory-file-name project-root)))
+          (projectile-switch-project-by-name project-root))
+      (message "Requested file does not belong to any project"))))
 
 
 (defun warmacs--handle-load-error (e target path)
@@ -127,8 +127,8 @@
                     ((cons 'warmacs-module-error warmacs-emacs-dir)))))
     (signal (car err)
             (list (file-relative-name
-                    (concat source ".el")
-                    (cdr err))
+                   (concat source ".el")
+                   (cdr err))
                   e))))
 
 
@@ -142,31 +142,41 @@ directory path). If omitted, the lookup is relative to either `load-file-name',
 
 If NOERROR is non-nil, don't throw an error if the file doesn't exist."
   (let* ((path (or path
-                 (dir!)
-                 (error "Could not detect path to look for '%s' in"
-                   filename)))
-          (file (if path
-                  `(expand-file-name ,filename ,path)
-                  filename)))
+                   (dir!)
+                   (error "Could not detect path to look for '%s' in"
+                          filename)))
+         (file (if path
+                   `(expand-file-name ,filename ,path)
+                 filename)))
     `(condition-case-unless-debug e
-       (let (file-name-handler-alist)
-         (load ,file ,noerror 'nomessage))
+         (let (file-name-handler-alist)
+           (load ,file ,noerror 'nomessage))
        (warmacs-error (signal (car e) (cdr e)))
        (error (warmacs--handle-load-error e ,file ,path)))))
 
-(defun warmacs--require-layer (layer)
-  (let ((filename (concat warmacs-dir (format "layers/%s" layer)))
-        (feature  (intern (concat "layer" "/" layer))))
-    (message "use-layer! %s - load feature %s from %s" layer feature filename)
-    (require feature filename)))
+(defmacro use-layer! (LAYERNAME &rest body)
+  "use-package layer name from the layers/ path"
+  (declare (indent 2))
+  (let ((filename (concat warmacs-dir (format "layers/%s" LAYERNAME)))
+        (feature  (intern (format "layer/%s" LAYERNAME))))
+    `(progn 
+       (require (quote ,feature) ,filename)
+       (use-package ,feature
+         :load-path ,filename
+         :straight nil
+         :defer nil
+         :demand t
+         ,@body))))
 
-(defmacro use-layer! (layername)
-   (declare (indent 2))
-   `(progn
-      ;; (message "use-layer! %s" ,layername)
-      (warmacs--require-layer ,layername)))
+(defmacro provide-layer! (FEATURE)
+  (declare (indent 2))
+  (let ((feature (intern (format "layer/%s" FEATURE))))
+    `(provide (quote ,feature))))
 
-(defmacro provide-layer! (name)
-  `(provide (make-symbol (format "layer/%s" ,name))))
+(defmacro with-system (type &rest body)
+  "Evaluate BODY if `system-type' equals TYPE."
+  (declare (indent defun))
+  `(when (eq system-type ',type)
+     ,@body))
 
 (provide 'core-lib)

@@ -23,10 +23,7 @@
   (setq lsp-keymap-prefix "C-c l")
   :config
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  :hook ((python-mode . lsp)
-         (scala-mode . lsp)
-         (rust-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
   :general
   (:keymaps 'lsp-command-map
   "=" '(:ignore t :which-key "format")
@@ -54,5 +51,21 @@
 (use-package smartparens
   :init
   (require 'smartparens-config))
+
+;; Help everywhere
+(use-package helpful
+  :general
+  (warmacs/local-leader-keys
+    "h" 'helpful-at-point)
+  (warmacs/leader-menu-help
+    "h" 'helpful-at-point)
+  (:keymaps 'helpful-mode-map
+   :states 'normal
+   "q" 'quit-window)
+  ([remap describe-function] #'helpful-function)
+  ([remap describe-symbol] #'helpful-symbol)
+  ([remap describe-variable] #'helpful-variable)
+  ([remap describe-command] #'helpful-command)
+  ([remap describe-key] #'helpful-key))
 
 (provide 'core-ide)

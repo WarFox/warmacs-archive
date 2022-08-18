@@ -7,9 +7,7 @@
   (corfu-auto t)                 ;; Enable auto completion
 
   ;; Enable Corfu only for certain modes.
-  :hook ((prog-mode . corfu-mode)
-         (shell-mode . corfu-mode)
-         (eshell-mode . corfu-mode)))
+  :hook ((prog-mode shell-mode eshell-mode) . corfu-mode))
 
 (use-package kind-icon
   :after corfu
@@ -52,4 +50,5 @@
       (tempo-complete-tag)))
     (add-to-list 'hippie-expand-try-functions-list 'try-tempo-complete-tag))
 
-(provide 'layer/auto-completion)
+(provide 'layer/+editor/auto-completion)
+

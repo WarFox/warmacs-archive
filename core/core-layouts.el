@@ -1,13 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun warmacs--layouts ()
+(defun warmacs-layouts ()
   (interactive)
   (message "layouts"))
 
 (use-package eyebrowse
   :general
   (warmacs/leader-keys
-    "l" 'warmacs--layouts))
+    "l" 'warmacs-layouts))
 
 (provide 'core-layouts)

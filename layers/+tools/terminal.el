@@ -1,4 +1,4 @@
-;; terminal.el -*- lexical-binding: t; -*-
+;; +tools/terminal.el -*- lexical-binding: t; -*-
 
 (use-package vterm
   :general
@@ -10,4 +10,4 @@
   (warmacs/leader-keys
     "'" 'multi-vterm))
 
-(provide 'layer/terminal)
+(provide-layer! +tools/terminal)

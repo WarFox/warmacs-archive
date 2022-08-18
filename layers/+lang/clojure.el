@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;; +lang/clojure.el -*- lexical-binding: t; -*-
 
 (defconst clojure-mode-maps
   '(clojure-mode-map
@@ -390,4 +390,4 @@
 ;;             (with-eval-after-load 'cider
 ;;               (flycheck-clojure-inject-jack-in-dependencies))))
 
-(provide 'layer/+lang/clojure)
+(provide-layer! +lang/clojure)

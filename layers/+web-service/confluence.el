@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;; +web-service/confluence.el -*- lexical-binding: t; -*-
 
 (use-package confluence
   :after org
@@ -35,25 +35,15 @@
     "S" 'warmacs/confluence-save-to-confluence-major-edit
     "TAB" 'confluence-toggle-page-content-type))
 
-;; (spacemacs|use-package-add-hook org
-;;     :post-config
-;;     (progn
-;;       (require 'ox-confluence)
-;;       (spacemacs/set-leader-keys-for-major-mode 'org-mode
-;;         "ec" 'org-confluence-export-as-confluence)))
-
 (use-package ox-confluence
   :straight (:type built-in)
+  :hook
+  (org-mode .  (lambda ()
+                  (require 'ox-confluence)))
   :general
   (warmacs/local-leader-keys
     :major-modes t
     :keymaps 'org-mode-map
     "ec" 'org-confluence-export-as-confluence))
-
-  ;; :hook
-  ;; ((org-mode .  (progn
-  ;;                 (require 'ox-confluence)
-  ;;                 (message "configuring ox-confluence"))))
-
 
 (provide 'layer/+web-service/confluence)

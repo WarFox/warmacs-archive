@@ -49,6 +49,7 @@ whichever is found first. Must end in a slash.")
   (require 'core-treemacs)
   (require 'core-completions)
   (require 'core-layouts)
+  (require 'core-windows)
   (require 'core-projects))
 
 (defun warmacs-layer-loader (file)

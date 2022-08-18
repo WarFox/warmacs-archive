@@ -1,4 +1,4 @@
-;;; ui/indent-guides.el -*- lexical-binding: t; -*-
+;;; +ui/indent-guides.el -*- lexical-binding: t; -*-
 
 (use-package highlight-indent-guides
   :hook ((prog-mode text-mode conf-mode) . highlight-indent-guides-mode)
