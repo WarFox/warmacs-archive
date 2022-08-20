@@ -132,7 +132,8 @@
 (use-package vmd-mode
   :if (eq 'vmd markdown-live-preview-engine)
   :init
-  (warmacs/local-leader-keys markdown--keybinding-maps
+  (warmacs/local-leader-keys
+    :keymaps markdown--keybinding-maps
     "cP" 'vmd-mode))
 
 (provide 'layer/+markup/markdown)

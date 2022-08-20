@@ -51,7 +51,9 @@
   "el" #'find-library
   "l"  #'locate
   "r"  #'recentf-open-files
-  "y" '(:ignore t :which-key "yank"))
+  "y" '(:ignore t :which-key "yank")
+  "D" #'delete-current-buffer-file
+  "R" #'warmacs/rename-current-buffer-file)
 
 (warmacs/leader-menu "help" "h"
   "d" '(:ignore t :which-key "describe")

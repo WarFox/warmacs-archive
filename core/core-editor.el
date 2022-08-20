@@ -27,93 +27,46 @@
 (setq backup-directory-alist '(("" . "~/.emacs.d/auto-save/")))
 
 (defun warmacs-backup-file-name (fpath)
-"If the new path's directories does not exist, create them."
+  "If the new path's directories does not exist, create them."
   (let* ((backupRootDir "~/.emacs.d/emacs-backup/")
-        (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path, ➢ for example: “C:”
-        (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~"))))
+         (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path, ➢ for example: “C:”
+         (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~"))))
     (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
     backupFilePath))
 
 (setq
-  make-backup-file-name-function 'warmacs-backup-file-name)
+ make-backup-file-name-function 'warmacs-backup-file-name)
 ;; end disable file backups ~ and ##autosave
 
-;; TODO refactor the rename file/buffer functions
-(defun f--rename-current-buffer-file (filename)
-  "Renames current buffer and file it is visiting."
-  (if (not (and filename (file-exists-p filename)))
-          (error "Buffer '%s' is not visiting a file!" filename)
-        (let ((new-name (read-file-name "New name: " filename)))
-          (if (get-buffer new-name)
-              (error "A buffer named '%s' already exists!" new-name)
-            (rename-file filename new-name 1)
-            (rename-buffer new-name)
-            (set-visited-file-name new-name)
-            (set-buffer-modified-p nil)
-            (message "File '%s' successfully renamed to '%s'"
-                     name (file-name-nondirectory new-name))))))
+;;;###autoload
+(defun warmacs--rename-current-buffer-file (file)
+  "Renames current buffer and file it is visiting. Check file
+exists before calling this function"
+  (let ((new-name (read-file-name "New name: " file)))
+    (if (get-buffer new-name)
+        (error "A buffer named '%s' already exists!" new-name)
+      (f-move file new-name)
+      (rename-buffer new-name)
+      (set-visited-file-name new-name)
+      (set-buffer-modified-p nil)
+      (message "File '%s' successfully renamed to '%s'"
+               file (file-name-nondirectory new-name))))) 
 
-(defun f--delete-current-buffer-file ()
-    "Removes file connected to current buffer and kills buffer."
-    (interactive)
-    (let ((filename (buffer-file-name))
-          (buffer (current-buffer))
-          (name (buffer-name)))
-      (if (not (and filename (file-exists-p filename)))
-          (ido-kill-buffer)
-        (when (yes-or-no-p "Are you sure you want to remove this file? ")
-          (delete-file filename)
-          (kill-buffer buffer)
-          (message "File '%s' successfully removed" filename)))))
+;;;###autoload
+(defun delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (f-this-file))
+        (buffer (current-buffer)))
+    (if (not (and filename (f-exists? filename)))
+        (ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (f-delete filename)
+        (when (yes-or-no-p (format "Kill the buffer %s? " buffer))
+          (kill-buffer buffer))
+        (message "File '%s' successfully removed" filename)))))
 
-;; originally from magnars
-(defun warmacs--rename-buffer-visiting-a-file (&optional arg)
-  (let* ((old-filename (buffer-file-name))
-         (old-short-name (file-name-nondirectory (buffer-file-name)))
-         (old-dir (file-name-directory old-filename))
-         (new-name (let ((path (read-file-name "New name: " (if arg old-dir old-filename))))
-                     (if (string= (file-name-nondirectory path) "")
-                         (concat path old-short-name)
-                       path)))
-         (new-dir (file-name-directory new-name))
-         (new-short-name (file-name-nondirectory new-name))
-         (file-moved-p (not (string-equal new-dir old-dir)))
-         (file-renamed-p (not (string-equal new-short-name old-short-name))))
-    (cond ((get-buffer new-name)
-           (error "A buffer named '%s' already exists!" new-name))
-          ((string-equal new-name old-filename)
-           (warmacs--show-hide-helm-or-ivy-prompt-msg
-            "Rename failed! Same new and old name" 1.5)
-           (warmacs--rename-current-buffer-file))
-          (t
-           (let ((old-directory (file-name-directory new-name)))
-             (when (and (not (file-exists-p old-directory))
-                        (yes-or-no-p
-                         (format "Create directory '%s'?" old-directory)))
-               (make-directory old-directory t)))
-           (rename-file old-filename new-name 1)
-           (rename-buffer new-name)
-           (set-visited-file-name new-name)
-           (set-buffer-modified-p nil)
-           (when (fboundp 'recentf-add-file)
-             (recentf-add-file new-name)
-             (recentf-remove-if-non-kept old-filename))
-           (when (and (configuration-layer/package-used-p 'projectile)
-                      (projectile-project-p))
-             (funcall #'projectile-invalidate-cache nil))
-           (message (cond ((and file-moved-p file-renamed-p)
-                           (concat "File Moved & Renamed\n"
-                                   "From: " old-filename "\n"
-                                   "To:   " new-name))
-                          (file-moved-p
-                           (concat "File Moved\n"
-                                   "From: " old-filename "\n"
-                                   "To:   " new-name))
-                          (file-renamed-p
-                           (concat "File Renamed\n"
-                                   "From: " old-short-name "\n"
-                                   "To:   " new-short-name))))))))
-
+;;;###autoload
 (defun warmacs--rename-buffer-or-save-new-file ()
   (let ((old-short-name (buffer-name))
         key)
@@ -154,21 +107,16 @@ be saved to a file, or just renamed.
 If called without a prefix argument, the prompt is
 initialized with the current directory instead of filename."
   (interactive "P")
-  (let ((file (buffer-file-name)))
-    (if (and file (file-exists-p file))
-        (f--rename-current-buffer-file file)
+  (let ((file (f-this-file)))
+    (if (and file (f-exists? file))
+        (warmacs--rename-current-buffer-file file)
       (warmacs--rename-buffer-or-save-new-file))))
-
-(warmacs/leader-menu-files
-  "R" #'warmacs/rename-current-buffer-file)
 
 ;; undo-redo system
 ;; https://codeberg.org/ideasman42/emacs-undo-fu
 (use-package undo-fu)
 
 (use-package undo-fu-session
-  :init
-  (global-undo-fu-session-mode)
   :config
   (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'")))
 
@@ -258,9 +206,9 @@ initialized with the current directory instead of filename."
 
   :general
   (:keymaps 'evil-normal-state-map
-    "gc" #'evilnc-comment-operator
-    "gC" '(:ignore t :which-key "yank comment")
-    "gCy" 'evilnc-copy-and-comment-operator))
+            "gc" #'evilnc-comment-operator
+            "gC" '(:ignore t :which-key "yank comment")
+            "gCy" 'evilnc-copy-and-comment-operator))
 
 (use-package evil-mc
   :after evil

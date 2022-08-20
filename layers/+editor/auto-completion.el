@@ -44,6 +44,8 @@
 
 (use-package tempo
   :straight (:type built-in)
+  :hook
+  ((org-mode prog-mode markdown-mode) . (lambda () (require 'tempo)))
   :init
   (defun try-tempo-complete-tag (old)
     (unless old
