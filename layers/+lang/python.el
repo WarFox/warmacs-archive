@@ -24,9 +24,7 @@
 (use-package lsp-pyright
   :hook (python-mode . lsp-deferred))
 
-(use-package dap-mode
-  :config
-  (require 'dap-python))
+(use-package dap-python :ensure nil :straight nil)
 
 (use-package python-mode
   :mode

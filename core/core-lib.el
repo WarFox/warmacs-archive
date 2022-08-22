@@ -12,6 +12,9 @@
 (use-package aio)
 (use-package tablist)
 
+;; Keep ~/.emacs.d/ clean
+(use-package no-littering)
+
 ;; Do things asynchronously
 (use-package emacs-async
   :init

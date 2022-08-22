@@ -228,7 +228,9 @@ initialized with the current directory instead of filename."
 ;; enable recent files
 (use-package emacs
   :config
-  (recentf-mode 1))
+  (recentf-mode 1)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory))
 
 ;; hl-todo-mode in individual buffers or use the global variant global-hl-todo-mode
 ;; highlight todo and similar keywords

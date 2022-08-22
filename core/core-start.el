@@ -21,3 +21,22 @@
   (server-start))
 
 (provide 'core-start)
+
+;;; Don't edit below text, emacs uses this for custom-set-variables
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((org-global-properties
+      (header-args:sql . ":dbhost localhost :database uk_data_streams_dev :engine postgresql :exports result"))
+     (org-roam-db-location . "~/My Drive/research/docs/org-roam.db")
+     (org-roam-directory . "~/My Drive/research/docs"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
