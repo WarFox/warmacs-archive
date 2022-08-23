@@ -21,8 +21,6 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
-  :config
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
   :hook ((lsp-mode . lsp-enable-which-key-integration))
   :general
   (:keymaps 'lsp-command-map
@@ -55,13 +53,11 @@
   :init
   (require 'smartparens-config))
 
-;; Help everywhere
+;; Help everywhere for emacs-lisp
 (use-package helpful
-  :general
-  (warmacs/local-leader-keys
-    "h" 'helpful-at-point)
+  :general 
   (warmacs/leader-menu-help
-    "h" 'helpful-at-point)
+    "hh" 'helpful-at-point)
   (:keymaps 'helpful-mode-map
    :states 'normal
    "q" 'quit-window)

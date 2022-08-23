@@ -225,13 +225,6 @@ initialized with the current directory instead of filename."
   :config
   (persistent-scratch-setup-default))
 
-;; enable recent files
-(use-package emacs
-  :config
-  (recentf-mode 1)
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory))
-
 ;; hl-todo-mode in individual buffers or use the global variant global-hl-todo-mode
 ;; highlight todo and similar keywords
 (use-package hl-todo
@@ -245,5 +238,13 @@ initialized with the current directory instead of filename."
   (fira-code-mode-disabled-ligatures '())  ; ligatures you don't want
   :init
   :hook (prog-mode . fira-code-mode)) ; mode to enable fira-code-mode in
+
+;; enable recent files
+(use-package emacs
+  :after no-littering
+  :config
+  (recentf-mode 1)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory))
 
 (provide 'core-editor)

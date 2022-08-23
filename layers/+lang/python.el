@@ -38,7 +38,7 @@
   (tree-sitter-require 'python)
   :general
   (warmacs/local-leader-menu-python
-    "l" '(:keymap lsp-command-map :which-key "lsp")
+    "" '(:keymap lsp-command-map :which-key "lsp")
     "gb" #'xref-pop-marker-stack
     "gd" #'xref-find-definitions
     "ge" #'lsp-treemacs-errors-list

@@ -14,6 +14,9 @@
 
 ;; Keep ~/.emacs.d/ clean
 (use-package no-littering)
+  ;; :config
+  ;; (setq auto-save-file-name-transforms
+  ;;       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 ;; Do things asynchronously
 (use-package emacs-async

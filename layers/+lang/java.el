@@ -23,10 +23,18 @@
   :straight (:type built-in)
   :general
   (warmacs/local-leader-menu java
+      "" '(:keymap lsp-command-map :which-key "lsp")
+      "=" '(:ignore t :which-key "format")
+      "F" '(:ignore t :which-key "folders")
+      "G" '(:ignore t :which-key "peek")
+      "T" '(:ignore t :which-key "toggles")
+      "a" '(:ignore t :which-key "actions")
       "b" '(:ignore t :which-key "build")
-      "bb" #'lsp-java-build-project
+      "g" '(:ignore t :which-key "goto")
       "r" '(:ignore t :which-key "refactor")
-      "rr" '(lsp-rename :which-key "rename")))
+      "w" '(:ignore t :which-key "workspace")
+      "h" '(:ignore t :which-key "help")
+      "bb" #'lsp-java-build-project))
 
 ;; Must configure runtimes
 ;; (lsp-java-configuration-runtimes
