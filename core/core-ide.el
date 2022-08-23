@@ -4,7 +4,7 @@
 
 (use-package tree-sitter
   :hook
-  (tree-sitter-after-on-hook . #'tree-sitter-hl-mode)
+  (tree-sitter-after-on . #'tree-sitter-hl-mode)
   :config
   (global-tree-sitter-mode 1))
 
@@ -21,7 +21,8 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
-  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  (lsp-mode . lsp-lens-mode)
+  (lsp-mode . lsp-enable-which-key-integration)
   :general
   (:keymaps 'lsp-command-map
   "=" '(:ignore t :which-key "format")

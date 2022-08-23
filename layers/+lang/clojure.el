@@ -29,7 +29,6 @@
   ;; add support for evil
   (evil-set-initial-state 'cider-stacktrace-mode 'motion)
   (evil-set-initial-state 'cider-popup-buffer-mode 'motion)
-  (add-hook 'cider--debug-mode-hook 'warmacs/cider-debug-setup)
 
   (defadvice cider-find-var (before add-evil-jump activate)
     (evil-set-jump))
@@ -236,25 +235,21 @@
     :keymaps 'cider-clojure-interaction-mode-map
     "epl" 'cider-eval-print-last-sexp))
 
-;; (use-package clj-refactor
-;;   :defer t
-;;   :init
-;;   (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-;;   :config
-;;   (progn
-;;     (cljr-add-keybindings-with-prefix "C-c C-f")
-;;     ;; Usually we do not set keybindings in :config, however this must be done
-;;     ;; here because it reads the variable `cljr--all-helpers'. Since
-;;     ;; `clj-refactor-mode' is added to the hook, this should trigger when a
-;;     ;; clojure buffer is opened anyway, so there's no "keybinding delay".
-;;     (warmacs|forall-clojure-modes m
-;;                                   (dolist (r cljr--all-helpers)
-;;                                     (let* ((binding (car r))
-;;                                            (func (cadr r)))
-;;                                       (unless (string-prefix-p "hydra" (symbol-name func))
-;;                                         (warmacs/leader-keys-for-major-mode m
-;;                                                                                 (concat "r" binding) func)))))))
-
+(use-package clj-refactor
+  :hook (clojure-mode . clj-refactor-mode)
+  :config
+  (cljr-add-keybindings-with-prefix "C-c C-f")
+  ;; Usually we do not set keybindings in :config, however this must be done
+  ;; here because it reads the variable `cljr--all-helpers'. Since
+  ;; `clj-refactor-mode' is added to the hook, this should trigger when a
+  ;; clojure buffer is opened anyway, so there's no "keybinding delay".
+  (warmacs|forall-clojure-modes m
+                                (dolist (r cljr--all-helpers)
+                                  (let* ((binding (car r))
+                                         (func (cadr r)))
+                                    (unless (string-prefix-p "hydra" (symbol-name func))
+                                      (warmacs/leader-keys-for-major-mode m
+                                                                          (concat "r" binding) func))))))
 ;; (use-package clojure-mode
 ;;   :defer t
 ;;   :init
@@ -313,9 +308,6 @@
 ;;   (when clojure-enable-fancify-symbols
 ;;     (warmacs|forall-clojure-modes m
 ;;                                   (clojure/fancify-symbols m))))
-
-;; (use-package clojure-snippets
-;;   :defer t)
 
 ;; (use-package sayid
 ;;   :defer t

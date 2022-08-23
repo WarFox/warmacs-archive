@@ -35,10 +35,14 @@
 
 (use-package yasnippet
   :config
-  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand))
+  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
+  :init
+  (yas-global-mode 1))
 
 (use-package auto-yasnippet
   :after 'yasnippet)
+
+(use-package yasnippet-snippets)
 
 ;; https://oremacs.com/2015/01/30/auto-yasnippet/
 
@@ -47,6 +51,7 @@
   :hook
   ((org-mode prog-mode markdown-mode) . (lambda () (require 'tempo)))
   :init
+  (require 'tempo)
   (defun try-tempo-complete-tag (old)
     (unless old
       (tempo-complete-tag)))

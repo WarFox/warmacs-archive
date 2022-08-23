@@ -1,5 +1,7 @@
 ;; core-projects.el -*- lexical-binding: t; -*-
 
+;; Package-Requires: (treemacs)
+
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode 1)
