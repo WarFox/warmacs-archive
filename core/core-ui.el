@@ -8,12 +8,12 @@
 (tooltip-mode -1)           ; Disable tooltips
 
 (with-system darwin
-             ;; frame
-             (add-to-list 'default-frame-alist
-                          '(ns-transparent-titlebar . t))
+  ;; frame
+  (add-to-list 'default-frame-alist
+               '(ns-transparent-titlebar . t))
 
-             (add-to-list 'default-frame-alist
-                          '(ns-appearance . dark)))
+  (add-to-list 'default-frame-alist
+               '(ns-appearance . dark)))
 
 ;;
 ;;; Scrolling

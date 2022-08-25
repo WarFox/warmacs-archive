@@ -15,8 +15,10 @@
     "ee" #'eval-expression
     "ep" #'pp-eval-last-sexp
     "es" #'eval-last-sexp
+    "h" '(:ignore t :which-key "help")
+    "hh" #'helpful-at-point
     "i"  '(:ignore t :which-key "insert")
     "il" #'elisp-enable-lexical-binding
     "/"  #'elisp-index-search))
 
-(provide 'layer/+lang/emacs-lisp)
+(provide-layer! +lang/emacs-lisp)

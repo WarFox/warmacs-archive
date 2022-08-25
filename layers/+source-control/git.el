@@ -1,18 +1,15 @@
 ;;; +source-control/git.el -*- lexical-binding: t; -*-
 
 (use-package magit
-  ;; :after git-rebase
   :commands (magit-status magit-get-current-branch magit-completing-read-function)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  (magit-bury-buffer-function #'magit-restore-window-configuration)
+  (magit-revision-show-gravatars '("^Author:     " . "^Commit:     "))
+  ;; (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   :hook
   (with-editor-mode . evil-normalize-keymaps)
-  :init
-  (setq
-   git-magit-status-fullscreen nil
-   magit-bury-buffer-function #'magit-restore-window-configuration
-   magit-revision-show-gravatars '("^Author:     " . "^Commit:     ") )
-
+  :general
   (warmacs/leader-menu-git
     "b"  'warmacs/git-blame-transient-state/body
     "c"  'magit-clone
@@ -28,18 +25,8 @@
     "S"  'magit-stage-file
     "U"  'magit-unstage-file)
 
-  :config
-  ;; confirm/abort
-  ;; (add-hook 'with-editor-mode-hook 'evil-normalize-keymaps)
-  ;; full screen magit-status
-  (when git-magit-status-fullscreen
-    (setq magit-display-buffer-function
-          'magit-display-buffer-fullframe-status-v1))
-  :general
-
   (warmacs/local-leader-keys
     :states '(normal motion)
-    :major-modes t
     :keymaps '(with-editor-mode-map)
     "," 'with-editor-finish
     "a" 'with-editor-cancel
@@ -68,9 +55,11 @@
             "gr" 'magit-list-repositories
             "RET" 'magit-repolist-status))
 
+(use-package git-modes)
+
 (use-package gitignore-templates
-  :after (magit)
-  :init
+  :commands (gitignore-templates-insert gitignore-templates-new-file)
+  :general
   (warmacs/local-leader-keys
     :keymaps 'gitignore-mode-map
     "i" 'gitignore-templates-insert)
@@ -78,7 +67,6 @@
     "fi" 'gitignore-templates-new-file))
 
 (use-package forge
-  :after magit
   :init
   (setq
    forge-database-file (concat warmacs-cache-dir
@@ -113,4 +101,4 @@
   :diminish git-gutter-mode
   :config (global-git-gutter-mode 1))
 
-(provide 'layer/+source-control/git)
+(provide-layer! +source-control/git)

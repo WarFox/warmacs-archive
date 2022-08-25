@@ -21,8 +21,9 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
-  (lsp-mode . lsp-lens-mode)
-  (lsp-mode . lsp-enable-which-key-integration)
+  :hook
+  ((lsp-mode . lsp-lens-mode)
+   (lsp-mode . lsp-enable-which-key-integration))
   :general
   (:keymaps 'lsp-command-map
   "=" '(:ignore t :which-key "format")
@@ -58,7 +59,7 @@
 (use-package helpful
   :general 
   (warmacs/leader-menu-help
-    "hh" 'helpful-at-point)
+    "h" 'helpful-at-point)
   (:keymaps 'helpful-mode-map
    :states 'normal
    "q" 'quit-window)

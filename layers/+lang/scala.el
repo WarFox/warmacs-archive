@@ -1,52 +1,60 @@
 ;; +lang/scala.el -*- lexical-binding: t; -*-
 
-(warmacs/local-leader-menu scala
-    "b" #'(:ignore t :whick-key "sbt"))
+(warmacs/local-leader-menu scala)
 
 (defun scala/newline-and-indent-with-asterisk ()
   (interactive)
   (newline-and-indent)
-  (message "new and inddent")
   (scala-indent:insert-asterisk-on-multiline-comment))
 
 (use-package scala-mode
-  :interpreter
-  ("scala" . scala-mode)
   :hook
-  ((scala-mode . dap-mode))
+  (scala-mode . dap-mode)
+  (scala-mode . lsp-deferred)
   :custom
   (scala-indent:align-forms t)
   (scala-indent:align-parameters t)
   (scala-indent:default-run-on-strategy scala-indent:eager-strategy)
   :general
-  (:keymaps 'scala-mode-map
-            :states 'normal
-            "RET" #'scala/newline-and-indent-with-asterisk))
+  (general-nmap
+    :keymaps 'scala-mode-map
+    "RET" #'scala/newline-and-indent-with-asterisk)
+  (warmacs/local-leader-menu-scala
+    "" '(:keymap lsp-command-map :package lsp :which-key "lsp")
+    "=" '(:ignore t :which-key "formatting")
+    "F" '(:ignore t :which-key "folders")
+    "G" '(:ignore t :which-key "peek")
+    "T" '(:ignore t :which-key "toggle")
+    "a" '(:ignore t :which-key "code actions")
+    "h" '(:ignore t :which-key "help")
+    "g" '(:ignore t :which-key "goto")
+    "r" '(:ignore t :which-key "refactor")
+    "w" '(:ignore t :which-key "workspace")))
 
 (use-package sbt-mode
-  :commands sbt-start sbt-command
+  :commands (sbt-start sbt-command sbt-hydra)
   :init
-  (defun spacemacs/scala-sbt-scalafmt-all ()
+  (defun warmacs/scala-sbt-scalafmt-all ()
     "Run `scalafmtAll' via SBT"
     (interactive)
     (sbt-command "scalafmtAll"))
 
-  (defun spacemacs/scala-sbt-compile ()
+  (defun warmacs/scala-sbt-compile ()
     "Run `compile' via SBT"
     (interactive)
     (sbt-command "compile"))
 
-  (defun spacemacs/scala-sbt-test ()
+  (defun warmacs/scala-sbt-test ()
     "Run `test' via SBT"
     (interactive)
     (sbt-command "test"))
 
-  (defun spacemacs/scala-sbt-compile-it ()
+  (defun warmacs/scala-sbt-compile-it ()
     "Compile the `it' scope via SBT"
     (interactive)
     (sbt-command "It / compile"))
 
-  (defun spacemacs/scala-sbt-compile-test ()
+  (defun warmacs/scala-sbt-compile-test ()
     "Compile the `test' scope via SBT"
     (interactive)
     (sbt-command "Test / compile"))
@@ -61,18 +69,17 @@
   (setq sbt:program-options '("-Dsbt.supershell=false"))
   :general
   (warmacs/local-leader-menu-scala 
+    "b" '(:ignore t :which-key "build")
     "b." 'sbt-hydra
     "bb" 'sbt-command
-    "bc" #'spacemacs/scala-sbt-compile
-    "bt" #'spacemacs/scala-sbt-test
-    "bI" #'spacemacs/scala-sbt-compile-it
-    "bT" #'spacemacs/scala-sbt-compile-test
-    "b=" #'spacemacs/scala-sbt-scalafmt-all))
+    "bc" #'warmacs/scala-sbt-compile
+    "bt" #'warmacs/scala-sbt-test
+    "bI" #'warmacs/scala-sbt-compile-it
+    "bT" #'warmacs/scala-sbt-compile-test
+    "br" #'sbt-send-region
+    "b=" #'warmacs/scala-sbt-scalafmt-all))
 
 (use-package lsp-metals
-  :after lsp
-  :hook
-  (scala-mode . #'lsp-deferred)
   :custom
   (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"))
   :init

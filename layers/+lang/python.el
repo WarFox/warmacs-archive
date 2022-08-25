@@ -7,9 +7,15 @@
 ;; declare the local leader menu
 (warmacs/local-leader-menu python
     "=" '(:ignore t :which-key "format")
-    "e" '(:ignore t :which-key "errors")
+    "F" '(:ignore t :which-key "folders")
+    "G" '(:ignore t :which-key "peek")
+    "T" '(:ignore t :which-key "toggles")
+    "a" '(:ignore t :which-key "actions")
+    "b" '(:ignore t :which-key "build")
     "g" '(:ignore t :which-key "goto")
     "r" '(:ignore t :which-key "refactor")
+    "w" '(:ignore t :which-key "workspace")
+    "h" '(:ignore t :which-key "help")
     "v" '(:ignore t :which-key "venv")
     "vo" '(:ignore t :which-key "poetry"))
 
@@ -21,28 +27,25 @@
 
 (use-package pipenv)
 
-(use-package lsp-pyright
-  :hook (python-mode . lsp-deferred))
+(use-package lsp-pyright)
 
 (use-package dap-python :ensure nil :straight nil)
 
 (use-package python-mode
   :mode
   (("\\.py\\'" . python-mode))
-  :after (lsp lsp-treemacs tree-sitter)
   :custom
   (python-indent-offset 4)
   (python-shell-interpreter "python3")
   (dap-python-executable "python3")
   :hook
-  ((python-mode . #'lsp)
+  ((python-mode . #'lsp-deferred)
    (python-mode . #'lsp-enable-which-key-integration)
    (python-mode . #'tree-sitter-mode)
    (python-mode . #'tree-sitter-hl-mode)
    (python-mode . #'tree-sitter-indent-mode))
   :config
   (tree-sitter-require 'python)
-  (require 'dap-python)
   ;; Highlight only keywords in Python.
   (add-hook 'python-mode-hook
             (lambda ()
@@ -50,28 +53,24 @@
                             (lambda (capture-name)
 	                          (string= capture-name "keyword")))))
 
-;; Highlight Python docstrings with a different face.
-(add-hook 'python-mode-hook
-  (lambda ()
-    (add-function :before-until (local 'tree-sitter-hl-face-mapping-function)
-      (lambda (capture-name)
-	(pcase capture-name
-	  ("doc" 'font-lock-comment-face))))))
+  ;; Highlight Python docstrings with a different face.
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (add-function :before-until (local 'tree-sitter-hl-face-mapping-function)
+                            (lambda (capture-name)
+	                          (pcase capture-name
+	                            ("doc" 'font-lock-comment-face))))))
 
   :general
   (warmacs/local-leader-menu-python
-    "" '(:keymap lsp-command-map :which-key "lsp")
-    "gb" #'xref-pop-marker-stack
-    "gd" #'xref-find-definitions
-    "ge" #'lsp-treemacs-errors-list
-    "rr" #'lsp-rename) )
+    "" '(:keymap lsp-command-map :which-key "lsp")))
+    ;; "gb" #'xref-pop-marker-stack))
 
 (use-package poetry
-    :commands (poetry-venv-toggle poetry-tracking-mode)
-    :general
-    (warmacs/local-leader-menu-python
-      "vod" 'poetry-venv-deactivate
-      "vow" 'poetry-venv-workon
-      "vot" 'poetry-venv-toggle))
+  :general
+  (warmacs/local-leader-menu-python
+    "vod" 'poetry-venv-deactivate
+    "vow" 'poetry-venv-workon
+    "vot" 'poetry-venv-toggle))
 
 (provide 'layer/+lang/python)
