@@ -23,7 +23,7 @@
   :straight (:type built-in)
   :general
   (warmacs/local-leader-menu java
-      "" '(:keymap lsp-command-map :which-key "lsp")
+      "" '(:keymap lsp-command-map :package lsp :which-key "lsp")
       "=" '(:ignore t :which-key "format")
       "F" '(:ignore t :which-key "folders")
       "G" '(:ignore t :which-key "peek")

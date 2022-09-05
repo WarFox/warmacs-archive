@@ -81,7 +81,7 @@
 (warmacs/leader-menu "project" "p")
 
 (warmacs/leader-menu "registers/rings" "r"
-  "y" #'yank-pop)
+  "y" #'consult-yank-pop)
 
 (warmacs/leader-menu "search" "s"
   "g"  '(:ignore t :which-key "git"))

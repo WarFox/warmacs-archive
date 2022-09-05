@@ -10,4 +10,4 @@
   (:keymaps 'yaml-mode-map
    "\C-m" 'newline-and-indent))
 
-(provide 'layer/+lang/yaml)
+(provide-layer! +lang/yaml)

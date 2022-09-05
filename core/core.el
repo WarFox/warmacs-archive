@@ -9,6 +9,10 @@
 
  highlight-nonselected-windows nil
 
+ max-lisp-eval-depth 10000 ; default 1600 is too low
+
+ max-specpdl-size 10000 ; default 2500 is too low
+
  ;; More performant rapid scrolling over unfontified regions. May cause brief
  ;; spells of inaccurate syntax highlighting right after scrolling, which should
  ;; quickly self-correct.

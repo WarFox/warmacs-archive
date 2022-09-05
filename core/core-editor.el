@@ -124,6 +124,7 @@ initialized with the current directory instead of filename."
 
 ;; Evil Keybindings
 (use-package evil
+  :defer 1
   :custom
   (evil-undo-system 'undo-fu)
   :init
