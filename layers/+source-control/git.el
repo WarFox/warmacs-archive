@@ -101,4 +101,16 @@
   :diminish git-gutter-mode
   :config (global-git-gutter-mode 1))
 
+(use-package git-timemachine
+  :straight (git-timemachine
+             :type git
+             :host nil
+             ;; :host codeberg
+             :repo "https://codeberg.com/pidu/git-timemachine")
+  :general
+  (:keymaps 'git-timemachine-mode-map
+   :states 'normal
+   "n" #'git-timemachine-show-next-revision
+   "p" #'git-timemachine-show-previous-revision))
+
 (provide-layer! +source-control/git)

@@ -46,4 +46,4 @@
     :keymaps 'org-mode-map
     "ec" 'org-confluence-export-as-confluence))
 
-(provide 'layer/+web-service/confluence)
+(provide-layer! +web-service/confluence)
