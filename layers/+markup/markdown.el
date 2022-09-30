@@ -134,6 +134,6 @@
   :init
   (warmacs/local-leader-keys
     :keymaps markdown--keybinding-maps
-    "cP" 'vmd-mode))
+    "cP" #'vmd-mode))
 
-(provide 'layer/+markup/markdown)
+(provide-layer! +markup/markdown)

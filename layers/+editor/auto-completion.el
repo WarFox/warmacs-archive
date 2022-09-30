@@ -55,7 +55,7 @@
   (defun try-tempo-complete-tag (old)
     (unless old
       (tempo-complete-tag)))
-    (add-to-list 'hippie-expand-try-functions-list 'try-tempo-complete-tag))
+  (add-to-list 'hippie-expand-try-functions-list 'try-tempo-complete-tag))
 
 (provide 'layer/+editor/auto-completion)
 
