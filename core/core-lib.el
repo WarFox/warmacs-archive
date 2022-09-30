@@ -137,6 +137,13 @@
                    (cdr err))
                   e))))
 
+;; Core hook functions
+
+(defun disable-display-line-numbers-mode-h ()
+    "Hook function to explicitly disable line number display"
+    (display-line-numbers-mode -1))
+
+;; Core Macros
 
 (defmacro load! (filename &optional path noerror)
   "Load a file relative to the current executing file (`load-file-name').
@@ -165,7 +172,12 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
   (declare (indent 2))
   (let ((filename (concat warmacs-dir (format "layers/%s" LAYERNAME)))
         (feature  (intern (format "layer/%s" LAYERNAME))))
-    `(progn 
+    `(progn
+        ;; unload if feature is loaded, so that new changes are loaded
+        ;; this check is not required on startup
+        ;; TODO optimising for only when loading after startup might save time
+       (when (featurep (quote ,feature))
+        (unload-feature (quote ,feature) t))
        (require (quote ,feature) ,filename)
        (use-package ,feature
          :load-path ,filename

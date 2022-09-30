@@ -85,8 +85,9 @@
 ;; Enable line numbers in most text-editing modes. We avoid
 ;; `global-display-line-numbers-mode' because there are many special and
 ;; temporary modes where we don't need/want them.
-(dolist (hook '(prog-mode-hook text-mode-hook conf-mode-hook))
-  (add-hook hook #'display-line-numbers-mode))
+(use-package emacs
+  :hook
+  ((prog-mode text-mode conf-mode) . #'display-line-numbers-mode))
 
 ;; Themes
 

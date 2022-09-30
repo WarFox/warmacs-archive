@@ -51,6 +51,7 @@
   "el" #'find-library
   "l"  #'locate
   "r"  #'recentf-open-files
+  "t"  #'treemacs-find-file
   "y" '(:ignore t :which-key "yank")
   "D" #'delete-current-buffer-file
   "R" #'warmacs/rename-current-buffer-file)

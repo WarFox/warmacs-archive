@@ -4,7 +4,6 @@ Emacs configuration heavily inspired by Doom, Spacemacs.
 
 Built around the capabilities of =use-package=, =straight.el=, =general=, and =evil=.
 
-
 emacs 28.1
 
 * Core Principles

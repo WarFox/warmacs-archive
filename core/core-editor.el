@@ -127,6 +127,7 @@ initialized with the current directory instead of filename."
   :defer 1
   :custom
   (evil-undo-system 'undo-fu)
+  :defer 1
   :init
   (setq
    evil-want-integration t

@@ -10,7 +10,6 @@
   (treemacs-fringe-indicator-mode 'always)
   (treemacs-hide-gitignored-files-mode 0)
   (treemacs-git-mode 'deferred)
-
   ;; setup treemacs theme
   (doom-themes-treemacs-config))
 
