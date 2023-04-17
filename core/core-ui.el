@@ -2,9 +2,11 @@
 
 (message "core-ui")
 
-(scroll-bar-mode -1)        ; Disable scroll-bar-mode
-(set-fringe-mode 10)        ; Give some breathing room
-(tool-bar-mode -1)          ; Disable the toolbar
+(when (display-graphic-p)
+  (scroll-bar-mode -1)      ; Disable scroll-bar-mode
+  (tool-bar-mode -1)        ; Disable the toolbar
+  (set-fringe-mode 10))     ; Give some breathing room
+
 (tooltip-mode -1)           ; Disable tooltips
 
 (with-system darwin

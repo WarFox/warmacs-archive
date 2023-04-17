@@ -51,19 +51,23 @@
             (lambda ()
               (add-function :before-while (local 'tree-sitter-hl-face-mapping-function)
                             (lambda (capture-name)
-	                          (string= capture-name "keyword")))))
+                              (string= capture-name "keyword")))))
 
   ;; Highlight Python docstrings with a different face.
   (add-hook 'python-mode-hook
             (lambda ()
               (add-function :before-until (local 'tree-sitter-hl-face-mapping-function)
                             (lambda (capture-name)
-	                          (pcase capture-name
-	                            ("doc" 'font-lock-comment-face))))))
+                              (pcase capture-name
+                                ("doc" 'font-lock-comment-face))))))
 
   :general
   (warmacs/local-leader-menu-python
-    "" '(:keymap lsp-command-map :which-key "lsp")))
+    "" '(:keymap lsp-command-map :which-key "lsp")
+    "'" #'run-python
+    "i" '(:ignore t :which-key "insert")
+    "if" #'python-skeleton-if
+    "id" #'python-skeleton-def))
     ;; "gb" #'xref-pop-marker-stack))
 
 (use-package poetry

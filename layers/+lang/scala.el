@@ -1,6 +1,16 @@
 ;; +lang/scala.el -*- lexical-binding: t; -*-
 
-(warmacs/local-leader-menu scala)
+(warmacs/local-leader-menu scala
+    "" '(:keymap lsp-command-map :package lsp :which-key "lsp")
+    "=" '(:ignore t :which-key "formatting")
+    "F" '(:ignore t :which-key "folders")
+    "G" '(:ignore t :which-key "peek")
+    "T" '(:ignore t :which-key "toggle")
+    "a" '(:ignore t :which-key "code actions")
+    "h" '(:ignore t :which-key "help")
+    "g" '(:ignore t :which-key "goto")
+    "r" '(:ignore t :which-key "refactor")
+    "w" '(:ignore t :which-key "workspace"))
 
 (defun scala/newline-and-indent-with-asterisk ()
   (interactive)
@@ -18,18 +28,7 @@
   :general
   (general-nmap
     :keymaps 'scala-mode-map
-    "RET" #'scala/newline-and-indent-with-asterisk)
-  (warmacs/local-leader-menu-scala
-    "" '(:keymap lsp-command-map :package lsp :which-key "lsp")
-    "=" '(:ignore t :which-key "formatting")
-    "F" '(:ignore t :which-key "folders")
-    "G" '(:ignore t :which-key "peek")
-    "T" '(:ignore t :which-key "toggle")
-    "a" '(:ignore t :which-key "code actions")
-    "h" '(:ignore t :which-key "help")
-    "g" '(:ignore t :which-key "goto")
-    "r" '(:ignore t :which-key "refactor")
-    "w" '(:ignore t :which-key "workspace")))
+    "RET" #'scala/newline-and-indent-with-asterisk))
 
 (use-package sbt-mode
   :commands (sbt-start sbt-command sbt-hydra)
