@@ -21,7 +21,10 @@ native-comp-deferred-compilation nil
 ;; In Emacs 27+, package initialization occurs before `user-init-file' is
 ;; loaded, but after `early-init-file'. Package initialization is handled by
 ;; straight.el, so we must prevent Emacs from doing it early!
-package-enable-at-startup nil)
+package-enable-at-startup nil
+
+;; We want to start with the simplest shell available for speed
+shell-file-name "/bin/bash")
 
 (unless (or (daemonp)
           noninteractive
