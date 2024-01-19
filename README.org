@@ -1,5 +1,7 @@
 #+title: Warmacs
 
+This project is archived. New setup brewing [here](https://github.com/WarFox/warmacs)
+
 Emacs configuration heavily inspired by Doom, Spacemacs.
 
 Built around the capabilities of =use-package=, =straight.el=, =general=, and =evil=.
@@ -20,7 +22,7 @@ Great help features
 
 ** Consistency
 
-No surprises, consitent workflow everywhere.
+No surprises, consistent workflow everywhere.
 
 ** Evil
 
