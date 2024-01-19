@@ -36,7 +36,6 @@
     "r" 'projectile-recentf
     "R" 'projectile-replace
     "S" 'projectile-save-project-buffers
-    "t" 'treemacs
     "T" 'projectile-test-project
     "v" 'projectile-vc)
   (setq projectile-switch-project-action #'project-find-file))

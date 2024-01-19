@@ -1,6 +1,6 @@
 #+title: Warmacs
 
-This project is archived. New setup brewing [here](https://github.com/WarFox/warmacs)
+This project is archived. New setup brewing [[https://github.com/WarFox/warmacs][here]].
 
 Emacs configuration heavily inspired by Doom, Spacemacs.
 

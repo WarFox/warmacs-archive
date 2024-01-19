@@ -1,5 +1,17 @@
 ;;; core-treemacs.el -*- lexical-binding: t; -*-
 
+(defun warmacs/treemacs-project-toggle ()
+  "Toggle and add the current project to treemacs if not already added."
+  (interactive)
+  (if (eq (treemacs-current-visibility) 'visible)
+      (delete-window (treemacs-get-local-window))
+    (let ((path (projectile-ensure-project (projectile-project-root)))
+          (name (projectile-project-name)))
+      (unless (treemacs-current-workspace)
+        (treemacs--find-workspace))
+      (treemacs-do-add-project-to-workspace path name)
+      (treemacs-select-window))))
+
 (use-package treemacs
   :after doom-themes
   :custom
@@ -11,7 +23,10 @@
   (treemacs-hide-gitignored-files-mode 0)
   (treemacs-git-mode 'deferred)
   ;; setup treemacs theme
-  (doom-themes-treemacs-config))
+  (doom-themes-treemacs-config)
+  :general
+  (warmacs/leader-menu-project
+    "t" 'warmacs/treemacs-project-toggle))
 
 (use-package treemacs-evil
   :after (treemacs evil)
