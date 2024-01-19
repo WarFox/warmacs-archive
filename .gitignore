@@ -4,3 +4,17 @@ elpa
 persp-confs
 *.eld
 amx-items
+.persistent-scratch
+projectile.cache
+eshell/
+history
+projects
+recentf
+request/
+transient/
+url/
+.org-id-locations
+.dap-breakpoints
+.lsp-session*
+games/
+undo-fu-session
