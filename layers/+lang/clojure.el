@@ -202,13 +202,14 @@
     "Tp" 'warmacs/cider-toggle-repl-pretty-printing
     "Tt" 'cider-auto-test-mode
     ;; cider-tests
-    "ta" 'warmacs/cider-test-run-all-tests
-    "tb" 'cider-test-show-report
-    "tl" 'warmacs/cider-test-run-loaded-tests
-    "tn" 'warmacs/cider-test-run-ns-tests
-    "tp" 'warmacs/cider-test-run-project-tests
-    "tr" 'warmacs/cider-test-rerun-failed-tests
-    "tt" 'warmacs/cider-test-run-focused-test
+    "t" '(:keymap cider-test-commands-map :package cider)
+    ;; "ta" 'warmacs/cider-test-run-all-tests
+    ;; "tb" 'cider-test-show-report
+    ;; "tl" 'warmacs/cider-test-run-loaded-tests
+    ;; "tn" 'warmacs/cider-test-run-ns-tests
+    ;; "tp" 'warmacs/cider-test-run-project-tests
+    ;; "tr" 'warmacs/cider-test-rerun-failed-tests
+    ;; "tt" 'warmacs/cider-test-run-focused-test
     ;; cider-debug and inspect
     "db" 'cider-debug-defun-at-point
     "de" 'warmacs/cider-display-error-buffer
@@ -238,18 +239,14 @@
 (use-package clj-refactor
   :hook (clojure-mode . clj-refactor-mode)
   :config
-  (cljr-add-keybindings-with-prefix "C-c C-f")
-  ;; Usually we do not set keybindings in :config, however this must be done
-  ;; here because it reads the variable `cljr--all-helpers'. Since
-  ;; `clj-refactor-mode' is added to the hook, this should trigger when a
-  ;; clojure buffer is opened anyway, so there's no "keybinding delay".
-  (warmacs|forall-clojure-modes m
-                                (dolist (r cljr--all-helpers)
-                                  (let* ((binding (car r))
-                                         (func (cadr r)))
-                                    (unless (string-prefix-p "hydra" (symbol-name func))
-                                      (warmacs/leader-keys-for-major-mode m
-                                                                          (concat "r" binding) func))))))
+  (cljr-add-keybindings-with-prefix "C-c C-f"))
+
+(use-package clojure-mode
+  :hook (clojure-mode . aggressive-indent-mode)
+  :init
+    (add-to-list 'magic-mode-alist '("#!.*boot\\s-*$" . clojure-mode))
+    (add-to-list 'auto-mode-alist '("\\.boot\\'" . clojure-mode)))
+
 ;; (use-package clojure-mode
 ;;   :defer t
 ;;   :init

@@ -2,7 +2,7 @@
 
 (use-package docker)
 
-(use-package tramp-container)
+;; (use-package tramp-container)
 
 (use-package dockerfile-mode
   :init

@@ -91,12 +91,14 @@
     (declare (indent 2))
     (let ((local-leader-menu-name (concat "warmacs/local-leader-menu-" (symbol-name mode)))
           (local-keymap (concat (symbol-name mode) "-mode-map")))
+      (message ">> Setting up local-leader menu for %s with keymap %s" mode local-keymap)
       `(progn
          (general-create-definer ,(intern local-leader-menu-name)
            :wrapping warmacs/local-leader-keys
            :keymaps (quote ,(intern local-keymap))
            :wk-full-keys nil
            "" '(:ignore t :which-key ,mode))
+         (message "created definer %s" ,local-leader-menu-name)
          (,(intern local-leader-menu-name)
           ,@body)))))
 

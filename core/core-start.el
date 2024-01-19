@@ -30,7 +30,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((org-global-properties
+   '((cider-shadow-cljs-default-options . "app")
+     (org-global-properties
       (header-args:sql . ":dbhost localhost :database uk_data_streams_dev :engine postgresql :exports result"))
      (org-roam-db-location . "~/My Drive/research/docs/org-roam.db")
      (org-roam-directory . "~/My Drive/research/docs"))))
@@ -40,3 +41,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'erase-buffer 'disabled nil)

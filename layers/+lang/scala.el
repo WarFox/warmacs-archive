@@ -67,7 +67,7 @@
   ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
   (setq sbt:program-options '("-Dsbt.supershell=false"))
   :general
-  (warmacs/local-leader-menu-scala 
+  (warmacs/local-leader-menu-scala
     "b" '(:ignore t :which-key "build")
     "b." 'sbt-hydra
     "bb" 'sbt-command

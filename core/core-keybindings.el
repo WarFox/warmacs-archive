@@ -29,6 +29,11 @@
   (interactive)
   (switch-to-buffer nil))
 
+(defun copy-buffer ()
+  "Copy entire buffer to clipboard"
+  (interactive)
+  (clipboard-kill-ring-save (point-min) (point-max)))
+
 ;; Declare global menus
 (warmacs/leader-menu "applications" "a"
   "p" #'list-processes
@@ -43,6 +48,7 @@
   "o" '(switch-to-other-buffer :which-key "other-buffer")
   "p"  #'previous-buffer
   "r"  #'rename-buffer
+  "Y"  #'copy-buffer
   "s" '(switch-to-scratch-buffer :which-key "scratch-buffer")
   "TAB" '(switch-to-other-buffer :which-key "other-buffer"))
 

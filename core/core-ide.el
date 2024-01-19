@@ -3,8 +3,6 @@
 ;; tree-sitter
 
 (use-package tree-sitter
-  :hook
-  (tree-sitter-after-on . #'tree-sitter-hl-mode)
   :config
   (global-tree-sitter-mode 1))
 
@@ -23,13 +21,13 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook
   ((lsp-mode . lsp-lens-mode)
-   (lsp-mode . lsp-enable-which-key-integration))
-  :general
-  (:keymaps 'lsp-command-map
-  "=" '(:ignore t :which-key "format")
-  "=b" #'lsp-format-buffer
-  "=o" #'lsp-organize-imports
-  "=r" #'lsp-format-region))
+   (lsp-mode . lsp-enable-which-key-integration)))
+  ;; :general
+  ;; (:keymaps 'lsp-command-map
+  ;; "=" '(:ignore t :which-key "format")
+  ;; "=b" #'lsp-format-buffer
+  ;; "=o" #'lsp-organize-imports
+  ;; "=r" #'lsp-format-region))
 
 ;; optionally
 (use-package lsp-ui
@@ -45,7 +43,6 @@
 
 ;; optionally if you want to use debugger
 (use-package dap-mode
-  :after lsp-mode
   :config
   (dap-auto-configure-mode 1))
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
@@ -68,5 +65,7 @@
   ([remap describe-variable] #'helpful-variable)
   ([remap describe-command] #'helpful-command)
   ([remap describe-key] #'helpful-key))
+
+(use-package aggressive-indent-mode)
 
 (provide 'core-ide)
